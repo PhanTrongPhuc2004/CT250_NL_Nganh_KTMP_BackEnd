@@ -1,0 +1,14 @@
+const NguoiDung = require('../models/NguoiDung');
+const mongoose = require('mongoose');
+const generateCode = require('../utils/generateCode');
+const Schema = mongoose.Schema;
+
+const NguoiHamMo = new Schema({
+  maNguoiDung: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => generateCode('FAN'),
+  },
+});
+module.exports = NguoiDung.discriminator('NguoiHamMo', NguoiHamMo);
