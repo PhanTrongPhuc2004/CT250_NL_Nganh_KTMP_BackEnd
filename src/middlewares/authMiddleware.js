@@ -1,5 +1,5 @@
 const jwt = require('jsonwebtoken');
-const NguoiDung = require('../models/NguoiDung');
+const NguoiDung = require('../models/NguoiDung.model');
 const mongoose = require('mongoose');
 async function authMiddleware(req, res, next) {
   const token = req.cookies.token;

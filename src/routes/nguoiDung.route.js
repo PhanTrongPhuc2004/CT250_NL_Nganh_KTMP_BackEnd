@@ -1,7 +1,12 @@
 const NguoiDungController = require('../controller/NguoiDung.controller');
 const authMiddleware = require('../middlewares/authMiddleware');
 const nguoiDungRouter = require('express').Router();
+nguoiDungRouter.post('/register', NguoiDungController.register);
 nguoiDungRouter.post('/login', NguoiDungController.login);
 nguoiDungRouter.post('/logout', NguoiDungController.logout);
 nguoiDungRouter.get('/check', authMiddleware, NguoiDungController.check);
+nguoiDungRouter.get('/all', NguoiDungController.getAllUsers);
+nguoiDungRouter.put('/:id', NguoiDungController.updateUser);
+nguoiDungRouter.delete('/:id', NguoiDungController.deleteUser);
+nguoiDungRouter.get('/me', authMiddleware, NguoiDungController.getMe);
 module.exports = nguoiDungRouter;

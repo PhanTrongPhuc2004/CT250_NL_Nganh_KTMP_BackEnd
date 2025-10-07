@@ -1,4 +1,4 @@
-const NguoiDung = require('../models/NguoiDung');
+const NguoiDung = require('./NguoiDung.model');
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 const Schema = mongoose.Schema;

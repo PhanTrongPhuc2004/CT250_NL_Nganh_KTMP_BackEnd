@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-const NguoiHamMo = require('../models/NguoiHamMo');
+const NguoiHamMo = require('../models/NguoiHamMo.model.js');
 class NguoiHamMoController {
   async register(req, res) {
     try {
