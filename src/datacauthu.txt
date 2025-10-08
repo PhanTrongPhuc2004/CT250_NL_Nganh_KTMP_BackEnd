@@ -1,0 +1,103 @@
+[
+  {
+    "tenCauThu": "Nguyễn Văn Toàn",
+    "diaChi": "Hải Dương, Việt Nam",
+    "ngaySinh": "1996-04-12",
+    "chieuCao": 168,
+    "viTri": "Tiền đạo",
+    "quocTich": "Việt Nam",
+    "sdt": "0987654321",
+    "email": "vantoan96@example.com",
+    "soAo": 9,
+    "chanThuan": "Phải",
+    "cauLacBoCu": "HAGL",
+    "namHanhNghe": 8,
+    "ngayGiaNhap": "2022-07-01",
+    "anhMinhHoa": "src/data/cauthu01.jpg"
+  },
+  {
+    "tenCauThu": "Đặng Văn Lâm",
+    "diaChi": "Hà Nội, Việt Nam",
+    "ngaySinh": "1993-08-13",
+    "chieuCao": 188,
+    "viTri": "Thủ môn",
+    "quocTich": "Việt Nam",
+    "sdt": "0978123456",
+    "email": "vanlam93@example.com",
+    "soAo": 1,
+    "chanThuan": "Phải",
+    "cauLacBoCu": "Muangthong United",
+    "namHanhNghe": 10,
+    "ngayGiaNhap": "2021-09-10",
+    "anhMinhHoa": "src/data/cauthu02.jpg"
+
+  },
+  {
+    "tenCauThu": "Quế Ngọc Hải",
+    "diaChi": "Nghệ An, Việt Nam",
+    "ngaySinh": "1993-05-15",
+    "chieuCao": 180,
+    "viTri": "Hậu vệ",
+    "quocTich": "Việt Nam",
+    "sdt": "0909988776",
+    "email": "ngochai93@example.com",
+    "soAo": 3,
+    "chanThuan": "Phải",
+    "cauLacBoCu": "Sông Lam Nghệ An",
+    "namHanhNghe": 11,
+    "ngayGiaNhap": "2020-08-20",
+    "anhMinhHoa": "src/data/cauthu03.jpg"
+
+  },
+  {
+    "tenCauThu": "Nguyễn Quang Hải",
+    "diaChi": "Hà Nội, Việt Nam",
+    "ngaySinh": "1997-04-12",
+    "chieuCao": 168,
+    "viTri": "Tiền vệ",
+    "quocTich": "Việt Nam",
+    "sdt": "0911222333",
+    "email": "quanghai97@example.com",
+    "soAo": 19,
+    "chanThuan": "Trái",
+    "cauLacBoCu": "Hà Nội FC",
+    "namHanhNghe": 9,
+    "ngayGiaNhap": "2022-01-15",
+    "anhMinhHoa": "src/data/cauthu04.jpg"
+
+  },
+  {
+    "tenCauThu": "Phan Văn Đức",
+    "diaChi": "Nghệ An, Việt Nam",
+    "ngaySinh": "1996-04-11",
+    "chieuCao": 172,
+    "viTri": "Tiền vệ",
+    "quocTich": "Việt Nam",
+    "sdt": "0933444555",
+    "email": "vanduc96@example.com",
+    "soAo": 20,
+    "chanThuan": "Phải",
+    "cauLacBoCu": "Sông Lam Nghệ An",
+    "namHanhNghe": 7,
+    "ngayGiaNhap": "2021-06-10",
+    "anhMinhHoa": "src/data/cauthu05.jpg"
+
+  },
+  {
+    "tenCauThu": "Nguyễn Tiến Linh",
+    "diaChi": "Hải Dương, Việt Nam",
+    "ngaySinh": "1997-10-20",
+    "chieuCao": 183,
+    "viTri": "Tiền đạo",
+    "quocTich": "Việt Nam",
+    "sdt": "0944667788",
+    "email": "tienlinh97@example.com",
+    "soAo": 22,
+    "chanThuan": "Phải",
+    "cauLacBoCu": "Becamex Bình Dương",
+    "namHanhNghe": 8,
+    "ngayGiaNhap": "2022-03-05",
+    "anhMinhHoa": "src/data/cauthu06.jpg"
+
+  }
+]

@@ -1,0 +1,42 @@
+[
+  {
+    "maHopDong": "HD001",
+    "ngayBatDau": "2024-01-01",
+    "ngayKetThuc": "2025-01-01",
+    "luong": 20000000,
+    "dieuKhoan": "Cầu thủ phải tham gia đầy đủ các buổi tập và thi đấu theo lịch CLB.",
+    "trangThai": "Còn hiệu lực"
+  },
+  {
+    "maHopDong": "HD002",
+    "ngayBatDau": "2023-07-01",
+    "ngayKetThuc": "2024-07-01",
+    "luong": 15000000,
+    "dieuKhoan": "Huấn luyện viên chịu trách nhiệm huấn luyện kỹ thuật cho đội 1.",
+    "trangThai": "Hết hạn"
+  },
+  {
+    "maHopDong": "HD003",
+    "ngayBatDau": "2024-06-15",
+    "ngayKetThuc": "2026-06-15",
+    "luong": 30000000,
+    "dieuKhoan": "Hợp đồng tài trợ áo đấu và quảng cáo cho thương hiệu nước giải khát X.",
+    "trangThai": "Còn hiệu lực"
+  },
+  {
+    "maHopDong": "HD004",
+    "ngayBatDau": "2022-08-01",
+    "ngayKetThuc": "2024-08-01",
+    "luong": 25000000,
+    "dieuKhoan": "Cầu thủ có thể được cho mượn tối đa 1 mùa giải nếu có CLB khác đề xuất.",
+    "trangThai": "Đã chấm dứt"
+  },
+  {
+    "maHopDong": "HD005",
+    "ngayBatDau": "2025-03-01",
+    "ngayKetThuc": "2026-03-01",
+    "luong": 18000000,
+    "dieuKhoan": "Hợp đồng tạm hoãn trong trường hợp cầu thủ bị chấn thương dài hạn.",
+    "trangThai": "Tạm hoãn"
+  }
+]

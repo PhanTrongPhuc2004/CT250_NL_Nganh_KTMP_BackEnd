@@ -1,0 +1,38 @@
+[
+  {
+    "tenQuaLuuNiem": "Áo thi đấu có chữ ký",
+    "gia": 1200000,
+    "moTa": "Áo đấu chính thức của đội tuyển, có chữ ký của các cầu thủ nổi tiếng.",
+    "anhMinhHoa": "src/data/qua01.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Bóng lưu niệm",
+    "gia": 850000,
+    "moTa": "Quả bóng da cao cấp in logo CLB và chữ ký huấn luyện viên trưởng.",
+    "anhMinhHoa": "src/data/qua02.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Móc khóa logo đội bóng",
+    "gia": 50000,
+    "moTa": "Móc khóa kim loại khắc nổi logo câu lạc bộ, nhỏ gọn, tinh tế.",
+    "anhMinhHoa": "src/data/qua03.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Cốc sứ in hình cầu thủ",
+    "gia": 120000,
+    "moTa": "Cốc sứ cao cấp in hình cầu thủ yêu thích, thích hợp làm quà tặng.",
+    "anhMinhHoa": "src/data/qua04.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Mũ lưỡi trai đội tuyển",
+    "gia": 180000,
+    "moTa": "Mũ thể thao cotton thoáng mát, thêu logo đội tuyển quốc gia.",
+    "anhMinhHoa": "src/data/qua05.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Khăn choàng cổ cổ vũ",
+    "gia": 90000,
+    "moTa": "Khăn choàng cổ màu đỏ, in khẩu hiệu cổ vũ đội tuyển Việt Nam.",
+    "anhMinhHoa": "src/data/qua06.jpg"
+  }
+]
