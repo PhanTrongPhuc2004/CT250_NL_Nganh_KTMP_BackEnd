@@ -1,0 +1,72 @@
+[
+  {
+    "hoVaTen": "Nguyễn Quốc Tuấn",
+    "email": "tuan.hl1@example.com",
+    "tenDangNhap": "hlv_tuan01",
+    "matKhau": "123456",
+    "vaiTro": "huanluyenvien",
+    "diaChi": "25 Nguyễn Huệ, Quận 1, TP. HCM",
+    "namHanhNghe": "10",
+    "cauLacBoCu": "Hoàng Anh Gia Lai",
+    "quocTich": "Việt Nam",
+    "ngayGiaNhap": "2015-03-10",
+    "anhMinhHoa": "https://example.com/images/hlv_tuan.jpg",
+    "namSinh": 1975
+  },
+  {
+    "hoVaTen": "Phan Thanh Hùng",
+    "email": "hung.hl2@example.com",
+    "tenDangNhap": "hlv_hung02",
+    "matKhau": "123456",
+    "vaiTro": "huanluyenvien",
+    "diaChi": "120 Trần Phú, Hà Đông, Hà Nội",
+    "namHanhNghe": "15",
+    "cauLacBoCu": "SHB Đà Nẵng",
+    "quocTich": "Việt Nam",
+    "ngayGiaNhap": "2010-06-20",
+    "anhMinhHoa": "https://example.com/images/hlv_hung.jpg",
+    "namSinh": 1960
+  },
+  {
+    "hoVaTen": "Park Hang Seo",
+    "email": "park.hl3@example.com",
+    "tenDangNhap": "hlv_park03",
+    "matKhau": "123456",
+    "vaiTro": "huanluyenvien",
+    "diaChi": "Seoul, Hàn Quốc",
+    "namHanhNghe": "25",
+    "cauLacBoCu": "ĐT Việt Nam",
+    "quocTich": "Hàn Quốc",
+    "ngayGiaNhap": "2017-10-01",
+    "anhMinhHoa": "https://example.com/images/hlv_park.jpg",
+    "namSinh": 1959
+  },
+  {
+    "hoVaTen": "Kiatisak Senamuang",
+    "email": "kiatisak.hl4@example.com",
+    "tenDangNhap": "hlv_kiatisak04",
+    "matKhau": "123456",
+    "vaiTro": "huanluyenvien",
+    "diaChi": "Bangkok, Thái Lan",
+    "namHanhNghe": "20",
+    "cauLacBoCu": "Hoàng Anh Gia Lai",
+    "quocTich": "Thái Lan",
+    "ngayGiaNhap": "2021-01-05",
+    "anhMinhHoa": "https://example.com/images/hlv_kiatisak.jpg",
+    "namSinh": 1973
+  },
+  {
+    "hoVaTen": "Trương Việt Hoàng",
+    "email": "hoang.hl5@example.com",
+    "tenDangNhap": "hlv_hoang05",
+    "matKhau": "123456",
+    "vaiTro": "huanluyenvien",
+    "diaChi": "98 Lê Lợi, TP. Hải Phòng",
+    "namHanhNghe": "12",
+    "cauLacBoCu": "Viettel FC",
+    "quocTich": "Việt Nam",
+    "ngayGiaNhap": "2014-04-18",
+    "anhMinhHoa": "https://example.com/images/hlv_hoang.jpg",
+    "namSinh": 1976
+  }
+]

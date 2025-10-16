@@ -26,7 +26,7 @@ const NguoiDung = new Schema({
   },
   vaiTro: {
     type: String,
-    default: 'FAN',
+    default: 'nguoihammo',
   },
 });
 

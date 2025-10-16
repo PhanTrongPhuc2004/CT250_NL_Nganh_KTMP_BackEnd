@@ -1,0 +1,37 @@
+[
+  {
+    "hoVaTen": "Nguyễn Văn Đức",
+    "email": "duc.admin1@example.com",
+    "tenDangNhap": "admin_duc01",
+    "matKhau": "123456",
+    "vaiTro": "admin"
+  },
+  {
+    "hoVaTen": "Trần Hồng Minh",
+    "email": "minh.admin2@example.com",
+    "tenDangNhap": "admin_minh02",
+    "matKhau": "123456",
+    "vaiTro": "admin"
+  },
+  {
+    "hoVaTen": "Phạm Quang Huy",
+    "email": "huy.admin3@example.com",
+    "tenDangNhap": "admin_huy03",
+    "matKhau": "123456",
+    "vaiTro": "admin"
+  },
+  {
+    "hoVaTen": "Lê Thị Thu",
+    "email": "thu.admin4@example.com",
+    "tenDangNhap": "admin_thu04",
+    "matKhau": "123456",
+    "vaiTro": "admin"
+  },
+  {
+    "hoVaTen": "Ngô Văn Tài",
+    "email": "tai.admin5@example.com",
+    "tenDangNhap": "admin_tai05",
+    "matKhau": "123456",
+    "vaiTro": "admin"
+  }
+]

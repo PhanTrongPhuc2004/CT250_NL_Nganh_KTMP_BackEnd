@@ -8,7 +8,7 @@ const NguoiHamMo = new Schema({
     type: String,
     required: true,
     unique: true,
-    default: () => generateCode('FAN'),
+    default: () => generateCode('fan'),
   },
 });
 module.exports = NguoiDung.discriminator('NguoiHamMo', NguoiHamMo);

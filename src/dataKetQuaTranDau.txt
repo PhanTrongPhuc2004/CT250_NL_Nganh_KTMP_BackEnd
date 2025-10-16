@@ -1,0 +1,25 @@
+[
+  {
+    "tranDauId": "68ecf97a07fe6af5b2221261",
+    "tiSo": [3, 1],
+    "tiLeKiemSoatBong": [58, 42],
+    "danhSachGhiBan": [
+      "68ecfefe48602d5064e96859",
+      "68ecf47576996a6b72fa6687",
+      "68ecf47576996a6b72fa6687"
+    ],
+    "soTheVang": 2,
+    "soTheDo": 0
+  },
+  {
+    "tranDauId": "68ecf97a07fe6af5b2221261",
+    "tiSo": [2, 2],
+    "tiLeKiemSoatBong": [51, 49],
+    "danhSachGhiBan": [
+      "68ecf47576996a6b72fa6687",
+      "68ecfefe48602d5064e96859"
+    ],
+    "soTheVang": 1,
+    "soTheDo": 1
+  }
+]

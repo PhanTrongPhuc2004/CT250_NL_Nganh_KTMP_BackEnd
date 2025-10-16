@@ -1,13 +1,14 @@
-import mongoose from 'mongoose';
-import { Schema } from 'mongoose';
-import generateCode from '../utils/generateCode.js';
+const mongoose = require('mongoose');
+const generateCode = require('../utils/generateCode');
+const { Schema } = mongoose;
+const NguoiDung = require('./NguoiDung.model');
 const AdminSchema = new Schema({
   maNguoiDung: {
     type: String,
     required: true,
     unique: true,
-    default: () => generateCode('FAN'),
+    default: () => generateCode('Admin'),
   },
 });
 
-export default mongoose.models.Admin || mongoose.model('Admin', AdminSchema);
+module.exports = NguoiDung.discriminator('Admin', AdminSchema);

@@ -1,5 +1,5 @@
 // services/cauthuService.js
-const Cauthu = require("../models/cauthu");
+const Cauthu = require('../models/cauthu');
 
 /**
  * Lấy danh sách tất cả cầu thủ
@@ -47,7 +47,7 @@ async function deleteCauthu(id) {
  * @param {String} keyword - Từ khóa tìm kiếm
  */
 async function searchCauthus(keyword) {
-  const regex = new RegExp(keyword, "i"); // tìm kiếm không phân biệt hoa thường
+  const regex = new RegExp(keyword, 'i'); // tìm kiếm không phân biệt hoa thường
   return await Cauthu.find({
     $or: [{ name: regex }, { position: regex }, { nationality: regex }],
   });

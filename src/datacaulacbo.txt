@@ -1,0 +1,37 @@
+[
+  {
+    "ten": "Hà Nội FC",
+    "namThanhLap": "2006-06-18",
+    "diaChi": "Sân vận động Hàng Đẫy, Quận Đống Đa, Hà Nội",
+    "lienHe": "024-3772-2555",
+    "moTa": "Câu lạc bộ bóng đá hàng đầu Việt Nam, từng nhiều lần vô địch V-League."
+  },
+  {
+    "ten": "Hoàng Anh Gia Lai",
+    "namThanhLap": "2001-01-10",
+    "diaChi": "Sân vận động Pleiku, TP. Pleiku, Gia Lai",
+    "lienHe": "0269-3822-345",
+    "moTa": "CLB nổi tiếng với lứa cầu thủ học viện HAGL Arsenal JMG, phong cách thi đấu đẹp mắt."
+  },
+  {
+    "ten": "Viettel FC",
+    "namThanhLap": "1954-09-15",
+    "diaChi": "Sân vận động Hàng Đẫy, Hà Nội",
+    "lienHe": "1900-8098",
+    "moTa": "Câu lạc bộ có truyền thống lâu đời, thuộc Tập đoàn Công nghiệp - Viễn thông Quân đội Viettel."
+  },
+  {
+    "ten": "Becamex Bình Dương",
+    "namThanhLap": "1976-03-20",
+    "diaChi": "Sân vận động Gò Đậu, TP. Thủ Dầu Một, Bình Dương",
+    "lienHe": "0274-3822-111",
+    "moTa": "CLB từng 4 lần vô địch V-League, nổi tiếng với lối chơi mạnh mẽ và kỷ luật."
+  },
+  {
+    "ten": "SHB Đà Nẵng",
+    "namThanhLap": "1976-05-30",
+    "diaChi": "Sân vận động Hòa Xuân, TP. Đà Nẵng",
+    "lienHe": "0236-3885-555",
+    "moTa": "Đội bóng miền Trung giàu truyền thống, từng là nơi sản sinh nhiều cầu thủ tài năng."
+  }
+]
