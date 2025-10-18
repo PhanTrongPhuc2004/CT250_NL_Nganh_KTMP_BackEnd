@@ -17,7 +17,7 @@ class NguoiDungController {
     const vaiTro = req.body.vaiTro;
     try {
       // Kiểm tra vai trò hợp lệ
-      const allowedRoles = ['admin', 'fan', 'huanluyenvien', 'cauthu'];
+      const allowedRoles = ['admin', 'nguoihammo', 'huanluyenvien', 'cauthu'];
       if (!allowedRoles.includes(vaiTro)) {
         return res.status(400).json({ message: 'Vai trò không hợp lệ' });
       }
