@@ -3,8 +3,8 @@ const express = require('express');
 const path = require('path');
 const cookieParser = require('cookie-parser');
 const logger = require('morgan');
-const db = require('./config/db');
-const route = require('./routes/index.route');
+const db = require('./src/config/db');
+const route = require('./src/routes/index.route');
 const app = express();
 const cors = require('cors');
 //connect db

@@ -5,7 +5,7 @@
     "email": "an.nguyen@example.com",
     "tenDangNhap": "an123",
     "matKhau": "123456",
-    "vaiTro": "FAN"
+    "vaiTro": "nguoihammo"
   },
   {
     "maNguoiDung": "ND002",
@@ -13,7 +13,7 @@
     "email": "bich.tran@example.com",
     "tenDangNhap": "bichtran",
     "matKhau": "123456",
-    "vaiTro": "CAUTHU"
+    "vaiTro": "nguoihammo"
   },
   {
     "maNguoiDung": "ND003",
@@ -21,7 +21,7 @@
     "email": "hoa.le@example.com",
     "tenDangNhap": "minhhoa",
     "matKhau": "123456",
-    "vaiTro": "HLV"
+    "vaiTro": "nguoihammo"
   },
   {
     "maNguoiDung": "ND004",
@@ -29,7 +29,7 @@
     "email": "tuan.pham@example.com",
     "tenDangNhap": "quoctuan",
     "matKhau": "123456",
-    "vaiTro": "ADMIN"
+    "vaiTro": "nguoihammo"
   },
   {
     "maNguoiDung": "ND005",
@@ -37,6 +37,6 @@
     "email": "phuoc.dang@example.com",
     "tenDangNhap": "phuoc123",
     "matKhau": "123456",
-    "vaiTro": "FAN"
+    "vaiTro": "nguoihammo"
   }
 ]

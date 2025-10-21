@@ -15,6 +15,7 @@ require('dotenv').config();
 class NguoiDungController {
   async register(req, res) {
     const vaiTro = req.body.vaiTro;
+    console.log(vaiTro);
     try {
       // Kiểm tra vai trò hợp lệ
       const allowedRoles = ['admin', 'nguoihammo', 'huanluyenvien', 'cauthu'];
