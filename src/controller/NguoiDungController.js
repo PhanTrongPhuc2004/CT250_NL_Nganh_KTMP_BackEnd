@@ -169,6 +169,7 @@ class NguoiDungController {
       console.log(err);
     }
   }
+  
 }
 
 module.exports = new NguoiDungController();
