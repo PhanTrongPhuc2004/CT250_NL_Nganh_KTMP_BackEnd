@@ -72,7 +72,16 @@ class NguoiDungController {
       maxAge: 3600000,
     });
 
-    res.status(200).json({ message: 'Đăng nhập thành công', vaiTro: nguoidung.vaiTro });
+    res.status(200).json({
+    message: 'Đăng nhập thành công',
+    user: {
+      _id: nguoidung._id,
+      tenDangNhap: nguoidung.tenDangNhap,
+      hoVaTen: nguoidung.hoVaTen,
+      vaiTro: nguoidung.vaiTro
+    },
+      token,
+    });
   }
 
   check(req, res) {
