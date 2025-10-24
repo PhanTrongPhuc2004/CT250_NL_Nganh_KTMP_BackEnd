@@ -34,7 +34,7 @@
     "chanThuan": "Trái",
     "cauLacBoCu": "SHB Đà Nẵng",
     "namHanhNghe": 7,
-    "anhMinhHoa": "https://example.com/images/huy5.jpg",
+    "anhMinhHoa": "public/data/cauthu04.jpg",
     "doiHinhId": "68ecf35f76996a6b72fa6678"
   },
   {
@@ -53,7 +53,7 @@
     "chanThuan": "Cả hai",
     "cauLacBoCu": "Hoàng Anh Gia Lai",
     "namHanhNghe": 4,
-    "anhMinhHoa": "https://example.com/images/khoi8.jpg",
+    "anhMinhHoa": "public/data/cauthu03.jpg",
     "doiHinhId": "68ecf34d76996a6b72fa6676"
   },
   {
@@ -72,7 +72,7 @@
     "chanThuan": "Phải",
     "cauLacBoCu": "Hoàng Anh Gia Lai",
     "namHanhNghe": 8,
-    "anhMinhHoa": "https://example.com/images/vantoan9.jpg",
+    "anhMinhHoa": "public/data/cauthu01.jpg",
     "doiHinhId": "68ecf35f76996a6b72fa6678"
   },
   {
@@ -91,7 +91,7 @@
     "chanThuan": "Trái",
     "cauLacBoCu": "Khánh Hòa FC",
     "namHanhNghe": 6,
-    "anhMinhHoa": "https://example.com/images/minh1.jpg",
+     "anhMinhHoa": "public/data/cauthu02.jpg",
     "doiHinhId": "68ecf36976996a6b72fa667a"
   }
 ]
