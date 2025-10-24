@@ -11,6 +11,8 @@ const doiHinhRouter = require('./doiHinhRouter');
 const ketQuaTranDauRouter = require('./ketQuaTranDauRouter');
 const thongSoCauThuRouter = require('./thongSoCauThuRouter');
 
+const DonHangRoute = require("./DonHang.route");
+
 function route(app) {
   app.use('/nguoihammo', nguoiHamMoRouter);
   app.use('/nguoidung', nguoiDungRouter);
@@ -24,6 +26,8 @@ function route(app) {
   app.use('/doihinh', doiHinhRouter);
   app.use('/ketquatrandau', ketQuaTranDauRouter);
   app.use('/thongsocauthu', thongSoCauThuRouter);
+
+  app.use("/donhang", DonHangRoute);
 }
 
 module.exports = route;
