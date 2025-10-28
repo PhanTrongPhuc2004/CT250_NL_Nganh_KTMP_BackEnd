@@ -9,7 +9,8 @@ const DonHangService = {
 
   // Lấy tất cả đơn hàng của 1 user
   async layDonHangTheoUser(username) {
-    return await DonHang.find({ username }).sort({ date: -1 });
+    return await DonHang.find({ tenDangNhap: username }).sort({ date: -1 });
+
   },
 
   // Lấy toàn bộ đơn hàng (dành cho admin)

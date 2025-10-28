@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const DonHangSchema = new mongoose.Schema({
-  username: { type: String, required: true }, // tên đăng nhập của người dùng
+  tenDangNhap: { type: String, required: true }, // tên đăng nhập của người dùng
   name: { type: String, required: true },     // người nhận
   phone: { type: String, required: true },
   address: { type: String, required: true },
