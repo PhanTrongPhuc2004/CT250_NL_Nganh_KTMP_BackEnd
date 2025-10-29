@@ -9,6 +9,7 @@ const app = express();
 const cors = require('cors');
 //connect db
 db.connectDB();
+app.use('/data', express.static('data'));
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

@@ -10,8 +10,7 @@ const tapLuyenRouter = require('./tapLuyenRouter');
 const doiHinhRouter = require('./doiHinhRouter');
 const ketQuaTranDauRouter = require('./ketQuaTranDauRouter');
 const thongSoCauThuRouter = require('./thongSoCauThuRouter');
-const muaGiaiRouter = require('./muaGiaiRouter');
-const giaiDauRouter = require('./giaiDauRouter');
+
 function route(app) {
   app.use('/nguoihammo', nguoiHamMoRouter);
   app.use('/nguoidung', nguoiDungRouter);
@@ -25,8 +24,6 @@ function route(app) {
   app.use('/doihinh', doiHinhRouter);
   app.use('/ketquatrandau', ketQuaTranDauRouter);
   app.use('/thongsocauthu', thongSoCauThuRouter);
-  app.use('/muagiai', muaGiaiRouter);
-  app.use('/giaidau', giaiDauRouter);
 }
 
 module.exports = route;
