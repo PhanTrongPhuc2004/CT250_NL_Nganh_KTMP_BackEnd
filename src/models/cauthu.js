@@ -14,8 +14,6 @@ const cauthuSchema = new mongoose.Schema({
   chieuCao: {
     type: Number, // chiều cao (cm)
     required: false,
-    min: 100,
-    max: 250,
   },
   viTri: {
     type: String, // vị trí thi đấu

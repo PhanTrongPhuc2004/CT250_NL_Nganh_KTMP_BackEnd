@@ -33,6 +33,7 @@ class CauLacBoController {
   }
 
   async updateCauLacBoInfor(req, res) {
+    console.log('Update request body:', req.body);
     try {
       const club = await cauLacBoService.updateInfor(req.params.id, req.body, { new: true });
       if (!club) {

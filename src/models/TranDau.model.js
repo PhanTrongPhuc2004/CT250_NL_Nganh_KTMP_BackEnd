@@ -33,6 +33,11 @@ const TranDauSchema = new mongoose.Schema(
       ref: 'DoiHinh', // tham chiếu tới collection Lineup
       required: true,
     },
+    giaiDauId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: 'GiaiDau', // tham chiếu tới collection Lineup
+      required: true,
+    },
   },
   {
     timestamps: true, // tự động thêm createdAt & updatedAt

@@ -5,6 +5,7 @@ const doiHinhService = require('../services/doiHinhService');
 class TranDauController {
   // [POST] api/trandau
   async createTranDau(req, res) {
+    console.log('tao tran dau', req.body);
     try {
       const newTranDau = await tranDauService.createTranDau(req.body);
 

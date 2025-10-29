@@ -9,18 +9,18 @@ const getAllAdmins = async () => {
 };
 
 const getAdminById = async (id) => {
-  return await Admin.findByPk(id);
+  return await Admin.findById(id);
 };
 
 const updateAdmin = async (id, updateData) => {
-  const admin = await Admin.findByPk(id);
+  const admin = await Admin.findById(id);
   if (!admin) return null;
   await admin.update(updateData);
   return admin;
 };
 
 const deleteAdmin = async (id) => {
-  const admin = await Admin.findByPk(id);
+  const admin = await Admin.findById(id);
   if (!admin) return null;
   await admin.destroy();
   return true;
