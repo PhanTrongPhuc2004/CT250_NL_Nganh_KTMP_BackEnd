@@ -12,6 +12,8 @@ const ketQuaTranDauRouter = require('./ketQuaTranDauRouter');
 const thongSoCauThuRouter = require('./thongSoCauThuRouter');
 const veRouter = require('./ve.route');
 const DonHangRoute = require("./DonHang.route");
+const giaiDauRouter = require('./giaidau.route');
+const muaGiaiRouter = require('./muagiai.route');
 
 
 function route(app) {
@@ -29,6 +31,8 @@ function route(app) {
   app.use('/thongsocauthu', thongSoCauThuRouter);
   app.use('/ve', veRouter);
   app.use("/donhang", DonHangRoute);
+  app.use('/giaidau', giaiDauRouter);
+  app.use('/muagiai', muaGiaiRouter);
 }
 
 module.exports = route;

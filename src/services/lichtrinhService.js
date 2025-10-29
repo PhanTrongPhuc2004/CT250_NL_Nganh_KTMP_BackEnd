@@ -1,45 +1,34 @@
-const LichTrinh = require("../models/lichtrinh");
+const LichTrinh = require('../models/LichTrinh.model');
+const MuaGiai = require('../models/MuaGiai.model');
 
-/**
- * Tạo lịch trình mới
- */
-async function createLichTrinh(data) {
-  const lichtrinh = new LichTrinh(data);
-  return await lichtrinh.save();
-}
+const createLichTrinh = async (data) => {
+  const { maMuaGiai } = data;
+  const muaGiai = await MuaGiai.findOne({ maMuaGiai });
+  if (!muaGiai) throw new Error('Mùa giải không tồn tại');
+  const lich = new LichTrinh(data);
+  return await lich.save();
+};
 
-/**
- * Lấy danh sách tất cả lịch trình
- */
-async function getAllLichTrinh() {
-  return await LichTrinh.find().sort({ createdAt: -1 });
-}
+const getAllLichTrinh = async () => {
+  return await LichTrinh.find();
+};
 
-/**
- * Lấy chi tiết lịch trình theo ID
- */
-async function getLichTrinhById(id) {
-  return await LichTrinh.findById(id);
-}
+const getLichTrinhByMa = async (maLichTrinh) => {
+  return await LichTrinh.findOne({ maLichTrinh });
+};
 
-/**
- * Cập nhật lịch trình theo ID
- */
-async function updateLichTrinh(id, data) {
-  return await LichTrinh.findByIdAndUpdate(id, data, { new: true });
-}
+const updateLichTrinh = async (maLichTrinh, data) => {
+  return await LichTrinh.findOneAndUpdate({ maLichTrinh }, data, { new: true });
+};
 
-/**
- * Xóa lịch trình theo ID
- */
-async function deleteLichTrinh(id) {
-  return await LichTrinh.findByIdAndDelete(id);
-}
+const deleteLichTrinh = async (maLichTrinh) => {
+  return await LichTrinh.findOneAndDelete({ maLichTrinh });
+};
 
 module.exports = {
   createLichTrinh,
   getAllLichTrinh,
-  getLichTrinhById,
+  getLichTrinhByMa,
   updateLichTrinh,
   deleteLichTrinh,
 };

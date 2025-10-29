@@ -7,56 +7,28 @@ class VeController {
   async muaVe(req, res) {
     try {
       const { maTranDau, soLuong } = req.body;
-      const user = req.user;  // Từ authMiddleware
+      const user = req.user;
 
       if (user.vaiTro !== 'nguoihammo') {
         return res.status(403).json({ message: 'Chỉ người hâm mộ mới mua vé được' });
       }
 
-      // Kiểm tra trận đấu tồn tại và vé còn (giả định TranDau có field soVeConLai)
-      const tranDau = await TranDau.findOne({ maTranDau });  // Sử dụng maTranDau như trong model NguoiDung
-      if (!tranDau) {
-        return res.status(404).json({ message: 'Trận đấu không tồn tại' });
-      }
-      if (tranDau.soVeConLai < soLuong) {
-        return res.status(400).json({ message: 'Vé đã hết hoặc không đủ số lượng' });
+      const tranDau = await TranDau.findOne({ maTranDau });
+      if (!tranDau || tranDau.soVeConLai < soLuong) {
+        return res.status(400).json({ message: 'Vé đã hết hoặc không đủ' });
       }
 
-      // Tính giá (giả định giaVe từ TranDau)
       const gia = tranDau.giaVe * soLuong;
-
-      // Placeholder cho thanh toán (tích hợp VNPay/Momo thực tế, tương tự các service khác)
-      // const paymentResult = await integratePayment(gia, user.email);
-      // if (!paymentResult.success) {
-      //   return res.status(402).json({ message: 'Thanh toán thất bại' });
-      // }
-
-      // Tạo vé mới
-      const veData = {
-        maTranDau: tranDau._id,  // Sử dụng _id từ MongoDB
-        maNguoiDung: user._id,
-        soLuong,
-        gia,
-        status: 'reserved',  // Ban đầu reserved, sau thanh toán thành paid
-      };
+      const veData = { maTranDau, maNguoiDung: user._id, soLuong, gia, status: 'reserved' };
       const newVe = await veService.createVe(veData);
 
-      // Generate QR code (data là maVe + maTranDau)
-      const qrData = `VE-${newVe.maVe}-TRAN-${maTranDau}`;
-      const qrCode = await QRCode.toDataURL(qrData);
-
-      // Update vé với QR và status paid
+      const qrCode = await QRCode.toDataURL(`VE-${newVe.maVe}`);
       const updatedVe = await veService.updateVe(newVe._id, { qrCode, status: 'paid' });
 
-      // Update số vé còn lại ở TranDau
-      await TranDau.findByIdAndUpdate(tranDau._id, { $inc: { soVeConLai: -soLuong } });
+      await TranDau.updateOne({ maTranDau }, { $inc: { soVeConLai: -soLuong } });
 
-      // Gửi email xác nhận (placeholder, tương tự gửi OTP trong NguoiDung nếu có)
-      // sendEmail(user.email, 'Xác nhận vé', `QR Code: ${qrCode}`);
-
-      res.status(200).json({ message: 'Mua vé thành công', data: updatedVe });
+      res.json({ message: 'Mua vé thành công', data: updatedVe });
     } catch (error) {
-      console.error('Error mua ve:', error);
       res.status(500).json({ message: 'Lỗi server', error });
     }
   }

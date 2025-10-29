@@ -1,0 +1,15 @@
+{
+  "tenGiaiDau": "V-League",
+  "namToChuc": 2025,
+  "moTa": "Giải bóng đá chuyên nghiệp Việt Nam"
+}, 
+{
+  "tenGiaiDau": "Ngoại hạng Anh",
+  "namToChuc": 2025,
+  "moTa": "Giải bóng đá chuyên nghiệp Ngoại hạng Anh"
+},
+{
+  "tenGiaiDau": "Cup liên đoàn Anh",
+  "namToChuc": 2025,
+  "moTa": "Giải bóng đá chuyên nghiệp Cup liên đoàn Anh"
+},

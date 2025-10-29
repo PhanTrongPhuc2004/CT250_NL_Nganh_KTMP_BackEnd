@@ -1,33 +1,12 @@
 [
-  {
-    
-    "diaDiem": "Sân vận động Mỹ Đình, Hà Nội",
-    "ngayDienRa": "2025-10-20",
-    "capDau": ["Hà Nội FC", "HAGL"],
-    "thoiGianDienRa": "19:30"
-  },
-  {
-    "diaDiem": "Sân Thống Nhất, TP. HCM",
-    "ngayDienRa": "2025-10-25",
-    "capDau": ["TP. HCM", "Bình Dương"],
-    "thoiGianDienRa": "18:00"
-  },
-  {
-    "diaDiem": "Sân Lạch Tray, Hải Phòng",
-    "ngayDienRa": "2025-11-01",
-    "capDau": ["Hải Phòng", "Than Quảng Ninh"],
-    "thoiGianDienRa": "17:00"
-  },
-  {
-    "diaDiem": "Sân Cẩm Phả, Quảng Ninh",
-    "ngayDienRa": "2025-11-05",
-    "capDau": ["Than Quảng Ninh", "Nam Định"],
-    "thoiGianDienRa": "20:00"
-  },
-  {
-    "diaDiem": "Sân Hòa Xuân, Đà Nẵng",
-    "ngayDienRa": "2025-11-10",
-    "capDau": ["SHB Đà Nẵng", "SLNA"],
-    "thoiGianDienRa": "19:00"
-  }
+ {
+  "maMuaGiai": "_____",   //Phải copy mã thật bên bảng mùa giải đang tồn tại qua mới tạo mới dc
+  "diaDiem": "Sân Hàng Đẫy",
+  "ngayBatDau": "2025-11-15T19:00:00.000Z",
+  "thoiGian": "07:00",
+  "capDau": ["Hà Nội FC", "TP.HCM FC"],
+  "doiHinhId": "671f8a1b2c3d4e5f67890155",
+  "giaVe": 200000,
+  "soVeConLai": 1000
+}
 ]

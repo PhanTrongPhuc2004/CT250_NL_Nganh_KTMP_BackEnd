@@ -1,32 +1,20 @@
 [
-  {
-    "maLichTrinh": "LT001",
-    "diaDiem": "Sân vận động Quốc gia Mỹ Đình",
-    "ngayBatDau": "2025-11-20T08:00:00Z",
-    "thoiGian": "08:00 - 11:00"
-  },
-  {
-    "maLichTrinh": "LT002",
-    "diaDiem": "Trung tâm huấn luyện Viettel, Hà Nội",
-    "ngayBatDau": "2025-11-22T14:00:00Z",
-    "thoiGian": "14:00 - 17:00"
-  },
-  {
-    "maLichTrinh": "LT003",
-    "diaDiem": "Sân vận động Thống Nhất, TP.HCM",
-    "ngayBatDau": "2025-11-25T18:30:00Z",
-    "thoiGian": "18:30 - 21:00"
-  },
-  {
-    "maLichTrinh": "LT004",
-    "diaDiem": "Trung tâm thể thao Quận 7, TP.HCM",
-    "ngayBatDau": "2025-11-28T09:00:00Z",
-    "thoiGian": "09:00 - 12:00"
-  },
-  {
-    "maLichTrinh": "LT005",
-    "diaDiem": "Sân vận động Hòa Xuân, Đà Nẵng",
-    "ngayBatDau": "2025-12-01T15:00:00Z",
-    "thoiGian": "15:00 - 17:30"
-  }
+{
+  "maMuaGiai": "___",   //Phải copy mã thật bên bảng mùa giải đang tồn tại qua mới tạo mới dc
+  "diaDiem": "Sân vận động Mỹ Đình",
+  "ngayBatDau": "2025-11-10T08:00:00.000Z",
+  "thoiGian": "06:30 - 10:00"
+},
+{
+  "maMuaGiai": "___",   //Phải copy mã thật bên bảng mùa giải đang tồn tại qua mới tạo mới dc
+  "diaDiem": "Sân vận động Mỹ Đình",
+  "ngayBatDau": "2025-11-10T08:00:00.000Z",
+  "thoiGian": "13:30 - 16:00"
+},
+{
+  "maMuaGiai": "___",   //Phải copy mã thật bên bảng mùa giải đang tồn tại qua mới tạo mới dc
+  "diaDiem": "Sân vận động Mỹ Đình",
+  "ngayBatDau": "2025-11-10T08:00:00.000Z",
+  "thoiGian": "18:00 - 20:30"
+}
 ]

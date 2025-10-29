@@ -1,35 +1,34 @@
 const TranDau = require('../models/TranDau.model');
+const MuaGiai = require('../models/MuaGiai.model');
 
-// Create
-async function createTranDau(data) {
+const createTranDau = async (data) => {
+  const { maMuaGiai } = data;
+  const muaGiai = await MuaGiai.findOne({ maMuaGiai });
+  if (!muaGiai) throw new Error('Mùa giải không tồn tại');
   const tranDau = new TranDau(data);
   return await tranDau.save();
-}
+};
 
-// Read all
-async function getAllTranDaus() {
+const getAllTranDau = async () => {
   return await TranDau.find();
-}
+};
 
-// Read by id
-async function getTranDauById(id) {
-  return await TranDau.findById(id);
-}
+const getTranDauByMa = async (maTranDau) => {
+  return await TranDau.findOne({ maTranDau });
+};
 
-// Update
-async function updateTranDau(id, data) {
-  return await TranDau.findByIdAndUpdate(id, data, { new: true });
-}
+const updateTranDau = async (maTranDau, data) => {
+  return await TranDau.findOneAndUpdate({ maTranDau }, data, { new: true });
+};
 
-// Delete
-async function deleteTranDau(id) {
-  return await TranDau.findByIdAndDelete(id);
-}
+const deleteTranDau = async (maTranDau) => {
+  return await TranDau.findOneAndDelete({ maTranDau });
+};
 
 module.exports = {
   createTranDau,
-  getAllTranDaus,
-  getTranDauById,
+  getAllTranDau,
+  getTranDauByMa,
   updateTranDau,
   deleteTranDau,
 };

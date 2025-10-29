@@ -1,16 +1,19 @@
 [
-  {
-    "diaDiem": "Sân Quận 1",
-    "thoiGianTapLuyen": "16:30",
-    "ngayDienRa": "2025-10-17T00:00:00.000Z",
-    "noiDung": "Khởi động chiến thuật phòng ngự phản công",
-    "tranDauId": "68eca683f8bb466ad2ef8dec"
-  },
-  {
-    "diaDiem": "Sân Quận 1",
-    "thoiGianTapLuyen": "17:00",
-    "ngayDienRa": "2025-10-18T00:00:00.000Z",
-    "noiDung": "Luyện đá phạt góc và tình huống cố định",
-    "tranDauId": "68eca683f8bb466ad2ef8dec"
-  }
+{
+  "maMuaGiai": "____", //Phải copy mã thật bên bảng mùa giải đang tồn tại qua mới tạo mới dc
+  "maTranDau": "____",  //Phải copy mã thật bên bảng trận đấu đang tồn tại qua mới tạo mới dc
+  "diaDiem": "Sân tập CLB",
+  "ngayBatDau": "2025-11-13T18:00:00.000Z",
+  "thoiGian": "06:00 - 10:00",
+  "noiDung": "Tập chiến thuật phòng ngự"
+},
+{
+  "maMuaGiai": "____",
+  "maTranDau": "____",
+  "diaDiem": "Sân tập CLB",
+  "ngayBatDau": "2025-11-13T18:00:00.000Z",
+  "thoiGian": "13:00 - 16:00",
+  "noiDung": "Tập chiến thuật phòng ngự"
+}
+
 ]

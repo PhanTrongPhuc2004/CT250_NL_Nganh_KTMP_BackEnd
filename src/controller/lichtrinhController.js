@@ -1,68 +1,58 @@
-const lichTrinhService = require("../services/lichtrinhService");
-/**
- * POST /api/lichtrinh
- * Tạo lịch trình mới
- */
-exports.createLichTrinh = async (req, res) => {
-  try {
-    const created = await lichTrinhService.createLichTrinh(req.body);
-    res.status(201).json({ message: "Thêm lịch trình thành công", data: created });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi thêm lịch trình", error: error.message });
-  }
-};
+const lichTrinhService = require('../services/lichtrinhService');
 
-/**
- * GET /api/lichtrinh
- * Lấy danh sách lịch trình
- */
-exports.getAllLichTrinh = async (req, res) => {
-  try {
-    const list = await lichTrinhService.getAllLichTrinh();
-    res.status(200).json(list);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi lấy danh sách lịch trình", error: error.message });
+class LichTrinhController {
+  async createLichTrinh(req, res) {
+    try {
+      const data = req.body;
+      const lich = await lichTrinhService.createLichTrinh(data);
+      res.status(201).json({ message: 'Tạo lịch thành công', data: lich });
+    } catch (error) {
+      res.status(400).json({ message: error.message });
+    }
   }
-};
 
-/**
- * GET /api/lichtrinh/:id
- * Lấy chi tiết lịch trình theo ID
- */
-exports.getLichTrinhById = async (req, res) => {
-  try {
-    const lichtrinh = await lichTrinhService.getLichTrinhById(req.params.id);
-    if (!lichtrinh) return res.status(404).json({ message: "Không tìm thấy lịch trình" });
-    res.status(200).json(lichtrinh);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi lấy thông tin lịch trình", error: error.message });
+  async getAllLichTrinh(req, res) {
+    try {
+      const list = await lichTrinhService.getAllLichTrinh();
+      res.json(list);
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
   }
-};
 
-/**
- * PUT /api/lichtrinh/:id
- * Cập nhật lịch trình
- */
-exports.updateLichTrinh = async (req, res) => {
-  try {
-    const updated = await lichTrinhService.updateLichTrinh(req.params.id, req.body);
-    if (!updated) return res.status(404).json({ message: "Không tìm thấy lịch trình để cập nhật" });
-    res.status(200).json({ message: "Cập nhật lịch trình thành công", data: updated });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi cập nhật lịch trình", error: error.message });
+  async getLichTrinhById(req, res) {
+    try {
+      const { ma } = req.params;
+      const lich = await lichTrinhService.getLichTrinhByMa(ma);
+      if (!lich) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json(lich);
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
   }
-};
 
-/**
- * DELETE /api/lichtrinh/:id
- * Xóa lịch trình
- */
-exports.deleteLichTrinh = async (req, res) => {
-  try {
-    const deleted = await lichTrinhService.deleteLichTrinh(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Không tìm thấy lịch trình để xóa" });
-    res.status(200).json({ message: "Xóa lịch trình thành công" });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi xóa lịch trình", error: error.message });
+  async updateLichTrinh(req, res) {
+    try {
+      const { ma } = req.params;
+      const data = req.body;
+      const updated = await lichTrinhService.updateLichTrinh(ma, data);
+      if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Cập nhật thành công', data: updated });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
   }
-};
+
+  async deleteLichTrinh(req, res) {
+    try {
+      const { ma } = req.params;
+      const deleted = await lichTrinhService.deleteLichTrinh(ma);
+      if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Xóa thành công' });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
+}
+
+module.exports = new LichTrinhController();

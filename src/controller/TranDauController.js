@@ -1,102 +1,81 @@
 const tranDauService = require('../services/tranDauService');
-const tapLuyenService = require('../services/tapLuyenService');
-const doiHinhService = require('../services/doiHinhService');
+const LichTapLuyen = require('../models/TapLuyen.model');
 
 class TranDauController {
-  // [POST] api/trandau
   async createTranDau(req, res) {
     try {
-      const newTranDau = await tranDauService.createTranDau(req.body);
-
-      res.status(201).json(newTranDau);
+      const data = req.body;
+      const tranDau = await tranDauService.createTranDau(data);
+      res.status(201).json({ message: 'Tạo trận đấu thành công', data: tranDau });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
   }
 
-  // [GET] api/trandau
   async getAllTranDaus(req, res) {
     try {
-      const tranDaus = await tranDauService.getAllTranDaus();
-      res.status(200).json(tranDaus);
+      const list = await tranDauService.getAllTranDau();
+      res.json(list);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 
-  // [GET] api/trandau/:id
   async getTranDauById(req, res) {
     try {
-      const tranDau = await tranDauService.getTranDauById(req.params.id);
-
-      if (!tranDau) {
-        return res.status(404).json({ message: 'Trận đấu không tìm thấy' });
-      }
-      res.status(200).json(tranDau);
+      const { ma } = req.params;
+      const tranDau = await tranDauService.getTranDauByMa(ma);
+      if (!tranDau) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json(tranDau);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 
-  // [PUT] api/trandau/:id
   async updateTranDau(req, res) {
     try {
-      const updatedTranDau = await tranDauService.updateTranDau(req.params.id, req.body);
-      if (!updatedTranDau) {
-        return res.status(404).json({ message: 'Trận đấu không tìm thấy' });
-      }
-      res.status(200).json(updatedTranDau);
+      const { ma } = req.params;
+      const data = req.body;
+      const updated = await tranDauService.updateTranDau(ma, data);
+      if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Cập nhật thành công', data: updated });
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 
-  // [DELETE] api/trandau/:id
   async deleteTranDau(req, res) {
     try {
-      const deletedTranDau = await tranDauService.deleteTranDau(req.params.id);
-      if (!deletedTranDau) {
-        return res.status(404).json({ message: 'Trận đấu không tìm thấy' });
-      }
-      res.status(200).json({ message: 'Xóa trận đấu thành công' });
+      const { ma } = req.params;
+      const deleted = await tranDauService.deleteTranDau(ma);
+      if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Xóa thành công' });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
-
-  //get lich tap theo id tran dau
-  //[GET] /trandau/:id/lichtap
 
   async getLichTapByTranDauId(req, res) {
     try {
-      const lichTap = await tapLuyenService.getLichTapByTranDauId(req.params.id);
-
-      if (!lichTap) {
-        return res.status(400).json({ message: 'Không tìm thấy lịch tập' });
-      }
-
-      res.status(200).json(lichTap);
+      const { ma } = req.params;
+      const lichList = await LichTapLuyen.find({ maTranDau: ma });
+      res.json(lichList);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
-  //[GET] /trandau/:id/full
-  //lay toan bo thong tin cua tran dau
+
   async getFullTranDau(req, res) {
     try {
-      const tranDau = await tranDauService.getTranDauById(req.params.id);
-      const lichTapLuyens = await tapLuyenService.getLichTapByTranDauId(req.params.id);
-      const doiHinh = await doiHinhService.getDetailDoiHinh(tranDau.doiHinhId);
-      if (!tranDau) {
-        return res.status(404).json({ message: 'Trận đấu không tìm thấy' });
-      }
-      res.status(200).json({ trandau: tranDau, lichtapluyen: lichTapLuyens, doiHinh: doiHinh });
+      const { ma } = req.params;
+      const tranDau = await tranDauService.getTranDauByMa(ma);
+      if (!tranDau) return res.status(404).json({ message: 'Không tìm thấy' });
+      const lichTap = await LichTapLuyen.find({ maTranDau: ma });
+      res.json({ ...tranDau.toObject(), lichTapLuyen: lichTap });
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
-
-  //)
 }
 
 module.exports = new TranDauController();

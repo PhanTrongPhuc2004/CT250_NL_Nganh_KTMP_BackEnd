@@ -1,80 +1,28 @@
 const Ve = require('../models/Ve.model');
 
-// Create a new Ve
-const createVe = async (veData) => {
-    try {
-        const newVe = new Ve(veData);
-        await newVe.save();
-        return newVe;
-    } catch (error) {
-        throw new Error('Error creating Ve: ' + error.message);
-    }
+const createVe = async (data) => {
+    const ve = new Ve(data);
+    return await ve.save();
 };
 
-// Get all Ve
 const getAllVe = async () => {
-    try {
-        const veList = await Ve.find().populate('maTranDau maNguoiDung');
-        return veList;
-    } catch (error) {
-        throw new Error('Error fetching Ve: ' + error.message);
-    }
+    return await Ve.find().populate('maTranDau', 'maTranDau diaDiem ngayBatDau').populate('maNguoiDung', 'hoVaTen');
 };
 
-// Get Ve by ID
 const getVeById = async (id) => {
-    try {
-        const ve = await Ve.findById(id).populate('maTranDau maNguoiDung');
-        if (!ve) {
-            throw new Error('Ve not found');
-        }
-        return ve;
-    } catch (error) {
-        throw new Error('Error fetching Ve by ID: ' + error.message);
-    }
+    return await Ve.findById(id);
 };
 
-// Update Ve by ID (ví dụ: update status sau thanh toán)
-const updateVe = async (id, veData) => {
-    try {
-        const updatedVe = await Ve.findByIdAndUpdate(id, veData, { new: true });
-        if (!updatedVe) {
-            throw new Error('Ve not found');
-        }
-        return updatedVe;
-    } catch (error) {
-        throw new Error('Error updating Ve: ' + error.message);
-    }
-};
-
-// Delete Ve by ID
-const deleteVe = async (id) => {
-    try {
-        const deletedVe = await Ve.findByIdAndDelete(id);
-        if (!deletedVe) {
-            throw new Error('Ve not found');
-        }
-        return deletedVe;
-    } catch (error) {
-        throw new Error('Error deleting Ve: ' + error.message);
-    }
-};
-
-// Get Ve by User ID (vé của người hâm mộ)
 const getVeByUser = async (userId) => {
-    try {
-        const veList = await Ve.find({ maNguoiDung: userId }).populate('maTranDau');
-        return veList;
-    } catch (error) {
-        throw new Error('Error fetching Ve by User: ' + error.message);
-    }
+    return await Ve.find({ maNguoiDung: userId });
 };
 
-module.exports = {
-    createVe,
-    getAllVe,
-    getVeById,
-    updateVe,
-    deleteVe,
-    getVeByUser,
+const updateVe = async (id, data) => {
+    return await Ve.findByIdAndUpdate(id, data, { new: true });
 };
+
+const deleteVe = async (id) => {
+    return await Ve.findByIdAndDelete(id);
+};
+
+module.exports = { createVe, getAllVe, getVeById, getVeByUser, updateVe, deleteVe };

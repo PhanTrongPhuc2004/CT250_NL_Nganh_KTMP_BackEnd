@@ -1,11 +1,12 @@
-const express = require("express");
+const express = require('express');
 const router = express.Router();
-const lichTrinhController = require("../controller/lichtrinhController");
+const LichTrinhController = require('../controller/LichTrinhController');
+const authMiddleware = require('../middlewares/authMiddleware');
 
-router.post("/", lichTrinhController.createLichTrinh);
-router.get("/", lichTrinhController.getAllLichTrinh);
-router.get("/:id", lichTrinhController.getLichTrinhById);
-router.put("/:id", lichTrinhController.updateLichTrinh);
-router.delete("/:id", lichTrinhController.deleteLichTrinh);
+router.post('/', authMiddleware, LichTrinhController.createLichTrinh);
+router.get('/', LichTrinhController.getAllLichTrinh);
+router.get('/:ma', LichTrinhController.getLichTrinhById);
+router.put('/:ma', authMiddleware, LichTrinhController.updateLichTrinh);
+router.delete('/:ma', authMiddleware, LichTrinhController.deleteLichTrinh);
 
 module.exports = router;

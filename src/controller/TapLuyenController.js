@@ -1,65 +1,58 @@
-const tapLuyenService = require('../services/tapLuyenService');
+const lichTapLuyenService = require('../services/tapLuyenService');
 
-class TapLuyenController {
-  // [POST] api/tapluyen
+class LichTapLuyenController {
   async createTapLuyen(req, res) {
     try {
-      const newTapLuyen = await tapLuyenService.createTapLuyen(req.body);
-      res.status(201).json(newTapLuyen);
+      const data = req.body;
+      const lich = await lichTapLuyenService.createLichTapLuyen(data);
+      res.status(201).json({ message: 'Tạo lịch tập thành công', data: lich });
     } catch (error) {
       res.status(400).json({ message: error.message });
     }
   }
 
-  // [GET] api/tapluyen
   async getAllTapLuyen(req, res) {
     try {
-      const tapLuyenList = await tapLuyenService.getAllTapLuyen();
-      res.status(200).json(tapLuyenList);
+      const list = await lichTapLuyenService.getAllLichTapLuyen();
+      res.json(list);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 
-  // [GET] api/tapluyen/:id
   async getTapLuyenById(req, res) {
     try {
-      const tapLuyen = await tapLuyenService.getTapLuyenById(req.params.id);
-      if (!tapLuyen) {
-        return res.status(404).json({ message: 'Buổi tập luyện không tìm thấy' });
-      }
-      res.status(200).json(tapLuyen);
+      const { ma } = req.params;
+      const lich = await lichTapLuyenService.getLichTapLuyenByMa(ma);
+      if (!lich) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json(lich);
     } catch (error) {
-      res.status(500).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 
-  // [PUT] api/tapluyen/:id
   async updateTapLuyen(req, res) {
     try {
-      const updatedTapLuyen = await tapLuyenService.updateTapLuyen(req.params.id, req.body);
-      if (!updatedTapLuyen) {
-        return res.status(404).json({ message: 'Buổi tập luyện không tìm thấy' });
-      }
-      res.status(200).json(updatedTapLuyen);
+      const { ma } = req.params;
+      const data = req.body;
+      const updated = await lichTapLuyenService.updateLichTapLuyen(ma, data);
+      if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Cập nhật thành công', data: updated });
     } catch (error) {
-      res.status(400).json({ message: error.message });
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 
-  // [DELETE] api/tapluyen/:id
   async deleteTapLuyen(req, res) {
     try {
-      const deletedTapLuyen = await tapLuyenService.deleteTapLuyen(req.params.id);
-      if (!deletedTapLuyen) {
-        res.json({ message: 'Xóa thất bại' });
-      } else {
-        res.json({ message: 'Xóa thành công' });
-      }
-    } catch (err) {
-      console.log(err);
+      const { ma } = req.params;
+      const deleted = await lichTapLuyenService.deleteLichTapLuyen(ma);
+      if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Xóa thành công' });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
     }
   }
 }
 
-module.exports = new TapLuyenController();
+module.exports = new LichTapLuyenController();
