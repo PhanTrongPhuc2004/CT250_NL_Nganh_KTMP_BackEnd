@@ -16,13 +16,14 @@
     "express": "^4.21.2",
     "helmet": "^8.1.0",
     "http-errors": "~1.6.3",
-    "jade": "^1.9.2",
+    "jade": "^0.29.0",
     "joi": "^18.0.1",
     "jsonwebtoken": "^9.0.2",
     "mongoose": "^8.18.3",
     "morgan": "^1.10.1",
     "mysql2": "^3.15.1",
-    "nodemon": "^3.1.10"
+    "nodemon": "^3.1.10",
+    "qrcode": "^1.5.4"
   },
   "devDependencies": {
     "prettier": "^3.6.2"
