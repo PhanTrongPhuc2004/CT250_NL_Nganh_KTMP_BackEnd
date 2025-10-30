@@ -7,9 +7,9 @@
     "vaiTro": "admin"
   },
   {
-    "hoVaTen": "Trần Hồng Minh",
-    "email": "minh.admin2@example.com",
-    "tenDangNhap": "admin_minh02",
+    "hoVaTen": "Nguyễn Thiên Phúc",
+    "email": "admin2@example.com",
+    "tenDangNhap": "admin02",
     "matKhau": "123456",
     "vaiTro": "admin"
   },
