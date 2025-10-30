@@ -1,3 +1,4 @@
+// Gọi các thư viện cần thiết
 const createError = require('http-errors');
 const express = require('express');
 const path = require('path');
@@ -7,17 +8,18 @@ const db = require('./src/config/db');
 const route = require('./src/routes/index.route');
 const app = express();
 const cors = require('cors');
-//connect db
+
+// Kết nối đến cơ sở dữ liệu
 db.connectDB();
+
+// Cấu hình middleware cho ứng dụng
 app.use('/data', express.static('data'));
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 
+// Gán các route cho ứng dụng
 route(app);
-app.listen(5000, () => {
-  console.log('Server is running on http://localhost:5000');
-});
 
 module.exports = app;

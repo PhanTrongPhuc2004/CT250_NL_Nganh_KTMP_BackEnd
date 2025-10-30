@@ -1,4 +1,4 @@
 {
-  "maTranDau": "_____",   //Phải copy mã thật bên bảng trận đấu  đang tồn tại qua mới tạo mới dc
+  "maTranDau": "_____",   //Phải copy mã thật bên bảng trận đấu đang tồn tại qua mới tạo mới dc
   "soLuong": 2
 }
