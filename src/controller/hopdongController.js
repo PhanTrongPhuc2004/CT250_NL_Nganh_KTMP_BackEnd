@@ -1,69 +1,61 @@
-const hopDongService = require("../services/hopdongService");
+const HopDongService = require("../services/hopDongService");
 
-/**
- * POST /api/hopdong
- * Tạo hợp đồng mới
- */
-exports.createHopDong = async (req, res) => {
-  try {
-    const created = await hopDongService.createHopDong(req.body);
-    res.status(201).json({ message: "Thêm hợp đồng thành công", data: created });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi thêm hợp đồng", error: error.message });
-  }
+const HopDongController = {
+  async getAll(req, res) {
+    try {
+      const hopDongs = await HopDongService.getAll();
+      res.status(200).json(hopDongs);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  async getById(req, res) {
+    try {
+      const hopDong = await HopDongService.getById(req.params.id);
+      if (!hopDong) return res.status(404).json({ message: "Không tìm thấy hợp đồng!" });
+      res.status(200).json(hopDong);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
+
+  async create(req, res) {
+    try {
+      const hopDong = await HopDongService.create(req.body);
+      res.status(201).json(hopDong);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  },
+
+  async update(req, res) {
+    try {
+      const hopDong = await HopDongService.update(req.params.id, req.body);
+      res.status(200).json(hopDong);
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  },
+
+  async delete(req, res) {
+    try {
+      const hopDong = await HopDongService.delete(req.params.id);
+      res.status(200).json({ message: "Đã xóa hợp đồng thành công", hopDong });
+    } catch (error) {
+      res.status(400).json({ error: error.message });
+    }
+  },
+
+  async getByStatus(req, res) {
+    try {
+      const { trangThai } = req.params;
+      const hopDongs = await HopDongService.getByStatus(trangThai);
+      res.status(200).json(hopDongs);
+    } catch (error) {
+      res.status(500).json({ error: error.message });
+    }
+  },
 };
 
-/**
- * GET /api/hopdong
- * Lấy danh sách hợp đồng
- */
-exports.getAllHopDong = async (req, res) => {
-  try {
-    const list = await hopDongService.getAllHopDong();
-    res.status(200).json(list);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi lấy danh sách hợp đồng", error: error.message });
-  }
-};
-
-/**
- * GET /api/hopdong/:id
- * Lấy chi tiết hợp đồng theo ID
- */
-exports.getHopDongById = async (req, res) => {
-  try {
-    const hopdong = await hopDongService.getHopDongById(req.params.id);
-    if (!hopdong) return res.status(404).json({ message: "Không tìm thấy hợp đồng" });
-    res.status(200).json(hopdong);
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi lấy thông tin hợp đồng", error: error.message });
-  }
-};
-
-/**
- * PUT /api/hopdong/:id
- * Cập nhật hợp đồng
- */
-exports.updateHopDong = async (req, res) => {
-  try {
-    const updated = await hopDongService.updateHopDong(req.params.id, req.body);
-    if (!updated) return res.status(404).json({ message: "Không tìm thấy hợp đồng để cập nhật" });
-    res.status(200).json({ message: "Cập nhật hợp đồng thành công", data: updated });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi cập nhật hợp đồng", error: error.message });
-  }
-};
-
-/**
- * DELETE /api/hopdong/:id
- * Xóa hợp đồng
- */
-exports.deleteHopDong = async (req, res) => {
-  try {
-    const deleted = await hopDongService.deleteHopDong(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Không tìm thấy hợp đồng để xóa" });
-    res.status(200).json({ message: "Xóa hợp đồng thành công" });
-  } catch (error) {
-    res.status(500).json({ message: "Lỗi khi xóa hợp đồng", error: error.message });
-  }
-};
+module.exports = HopDongController;
