@@ -1,34 +1,48 @@
+// src/services/tranDauService.js
 const TranDau = require('../models/TranDau.model');
-const MuaGiai = require('../models/MuaGiai.model');
 
-const createTranDau = async (data) => {
-  const { maMuaGiai } = data;
-  const muaGiai = await MuaGiai.findOne({ maMuaGiai });
-  if (!muaGiai) throw new Error('Mùa giải không tồn tại');
-  const tranDau = new TranDau(data);
-  return await tranDau.save();
-};
+class TranDauService {
+  async createTranDau(data) {
+    return await TranDau.create(data);
+  }
 
-const getAllTranDau = async () => {
-  return await TranDau.find();
-};
+  async getAllTranDau() {
+    return await TranDau.find()
+      .populate('doiNha', 'tenDoiBong logoUrl')
+      .populate('doiKhach', 'tenDoiBong logoUrl')
+      .populate('maMuaGiai', 'tenMuaGiai')
+      .sort({ ngayBatDau: 1 });
+  }
 
-const getTranDauByMa = async (maTranDau) => {
-  return await TranDau.findOne({ maTranDau });
-};
+  async getTranDauByMa(maTranDau) {
+    return await TranDau.findOne({ maTranDau })
+      .populate('doiNha', 'tenDoiBong logoUrl')
+      .populate('doiKhach', 'tenDoiBong logoUrl')
+      .populate('maMuaGiai');
+  }
 
-const updateTranDau = async (maTranDau, data) => {
-  return await TranDau.findOneAndUpdate({ maTranDau }, data, { new: true });
-};
+  async getTranDauById(id) {
+    return await TranDau.findById(id)
+      .populate('doiNha', 'tenDoiBong logoUrl')
+      .populate('doiKhach', 'tenDoiBong logoUrl')
+      .populate('maMuaGiai');
+  }
 
-const deleteTranDau = async (maTranDau) => {
-  return await TranDau.findOneAndDelete({ maTranDau });
-};
+  async updateTranDauByMa(maTranDau, data) {
+    return await TranDau.findOneAndUpdate({ maTranDau }, data, { new: true });
+  }
 
-module.exports = {
-  createTranDau,
-  getAllTranDau,
-  getTranDauByMa,
-  updateTranDau,
-  deleteTranDau,
-};
+  async updateTranDauById(id, data) {
+    return await TranDau.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  async deleteTranDauByMa(maTranDau) {
+    return await TranDau.findOneAndDelete({ maTranDau });
+  }
+
+  async deleteTranDauById(id) {
+    return await TranDau.findByIdAndDelete(id);
+  }
+}
+
+module.exports = new TranDauService();

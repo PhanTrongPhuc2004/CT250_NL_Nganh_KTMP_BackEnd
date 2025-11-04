@@ -1,40 +1,48 @@
+// src/services/tapLuyenService.js
 const LichTapLuyen = require('../models/TapLuyen.model');
-const MuaGiai = require('../models/MuaGiai.model');
-const TranDau = require('../models/TranDau.model');
 
-const createLichTapLuyen = async (data) => {
-  const { maMuaGiai, maTranDau } = data;
-  await Promise.all([
-    MuaGiai.findOne({ maMuaGiai }),
-    TranDau.findOne({ maTranDau })
-  ]).then(([muaGiai, tranDau]) => {
-    if (!muaGiai) throw new Error('Mùa giải không tồn tại');
-    if (!tranDau) throw new Error('Trận đấu không tồn tại');
-  });
-  const lich = new LichTapLuyen(data);
-  return await lich.save();
-};
+class LichTapService {
+  async createLichTap(data) {
+    return await LichTapLuyen.create(data);
+  }
 
-const getAllLichTapLuyen = async () => {
-  return await LichTapLuyen.find();
-};
+  async getAllLichTap() {
+    return await LichTapLuyen.find()
+      .populate('maDoiBong', 'tenDoiBong')
+      .populate('maTranDau', 'diaDiem ngayBatDau')
+      .populate('maMuaGiai', 'tenMuaGiai')
+      .sort({ ngayBatDau: 1 });
+  }
 
-const getLichTapLuyenByMa = async (maLichTapLuyen) => {
-  return await LichTapLuyen.findOne({ maLichTapLuyen });
-};
+  async getLichTapByMa(maLichTapLuyen) {
+    return await LichTapLuyen.findOne({ maLichTapLuyen })
+      .populate('maDoiBong')
+      .populate('maTranDau')
+      .populate('maMuaGiai');
+  }
 
-const updateLichTapLuyen = async (maLichTapLuyen, data) => {
-  return await LichTapLuyen.findOneAndUpdate({ maLichTapLuyen }, data, { new: true });
-};
+  async getLichTapById(id) {
+    return await LichTapLuyen.findById(id)
+      .populate('maDoiBong')
+      .populate('maTranDau')
+      .populate('maMuaGiai');
+  }
 
-const deleteLichTapLuyen = async (maLichTapLuyen) => {
-  return await LichTapLuyen.findOneAndDelete({ maLichTapLuyen });
-};
+  async updateLichTapByMa(maLichTapLuyen, data) {
+    return await LichTapLuyen.findOneAndUpdate({ maLichTapLuyen }, data, { new: true });
+  }
 
-module.exports = {
-  createLichTapLuyen,
-  getAllLichTapLuyen,
-  getLichTapLuyenByMa,
-  updateLichTapLuyen,
-  deleteLichTapLuyen,
-};
+  async updateLichTapById(id, data) {
+    return await LichTapLuyen.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  async deleteLichTapByMa(maLichTapLuyen) {
+    return await LichTapLuyen.findOneAndDelete({ maLichTapLuyen });
+  }
+
+  async deleteLichTapById(id) {
+    return await LichTapLuyen.findByIdAndDelete(id);
+  }
+}
+
+module.exports = new LichTapService();

@@ -1,3 +1,4 @@
+// src/controller/TranDauController.js
 const tranDauService = require('../services/tranDauService');
 const LichTapLuyen = require('../models/TapLuyen.model');
 
@@ -12,7 +13,7 @@ class TranDauController {
     }
   }
 
-  async getAllTranDaus(req, res) {
+  async getAllTranDau(req, res) {
     try {
       const list = await tranDauService.getAllTranDau();
       res.json(list);
@@ -21,10 +22,10 @@ class TranDauController {
     }
   }
 
-  async getTranDauById(req, res) {
+  async getTranDauByMa(req, res) {
     try {
-      const { ma } = req.params;
-      const tranDau = await tranDauService.getTranDauByMa(ma);
+      const { maTranDau } = req.params;
+      const tranDau = await tranDauService.getTranDauByMa(maTranDau);
       if (!tranDau) return res.status(404).json({ message: 'Không tìm thấy' });
       res.json(tranDau);
     } catch (error) {
@@ -32,11 +33,22 @@ class TranDauController {
     }
   }
 
-  async updateTranDau(req, res) {
+  async getTranDauById(req, res) {
     try {
-      const { ma } = req.params;
+      const { id } = req.params;
+      const tranDau = await tranDauService.getTranDauById(id);
+      if (!tranDau) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json(tranDau);
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
+
+  async updateTranDauByMa(req, res) {
+    try {
+      const { maTranDau } = req.params;
       const data = req.body;
-      const updated = await tranDauService.updateTranDau(ma, data);
+      const updated = await tranDauService.updateTranDauByMa(maTranDau, data);
       if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
       res.json({ message: 'Cập nhật thành công', data: updated });
     } catch (error) {
@@ -44,10 +56,22 @@ class TranDauController {
     }
   }
 
-  async deleteTranDau(req, res) {
+  async updateTranDauById(req, res) {
     try {
-      const { ma } = req.params;
-      const deleted = await tranDauService.deleteTranDau(ma);
+      const { id } = req.params;
+      const data = req.body;
+      const updated = await tranDauService.updateTranDauById(id, data);
+      if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Cập nhật thành công', data: updated });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
+
+  async deleteTranDauByMa(req, res) {
+    try {
+      const { maTranDau } = req.params;
+      const deleted = await tranDauService.deleteTranDauByMa(maTranDau);
       if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
       res.json({ message: 'Xóa thành công' });
     } catch (error) {
@@ -55,10 +79,21 @@ class TranDauController {
     }
   }
 
-  async getLichTapByTranDauId(req, res) {
+  async deleteTranDauById(req, res) {
     try {
-      const { ma } = req.params;
-      const lichList = await LichTapLuyen.find({ maTranDau: ma });
+      const { id } = req.params;
+      const deleted = await tranDauService.deleteTranDauById(id);
+      if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json({ message: 'Xóa thành công' });
+    } catch (error) {
+      res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
+
+  async getLichTapByMaTranDau(req, res) {
+    try {
+      const { maTranDau } = req.params;
+      const lichList = await LichTapLuyen.find({ maTranDau }).populate('maDoiBong', 'tenDoiBong');
       res.json(lichList);
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server' });
@@ -67,10 +102,11 @@ class TranDauController {
 
   async getFullTranDau(req, res) {
     try {
-      const { ma } = req.params;
-      const tranDau = await tranDauService.getTranDauByMa(ma);
+      const { maTranDau } = req.params;
+      const tranDau = await tranDauService.getTranDauByMa(maTranDau);
       if (!tranDau) return res.status(404).json({ message: 'Không tìm thấy' });
-      const lichTap = await LichTapLuyen.find({ maTranDau: ma });
+
+      const lichTap = await LichTapLuyen.find({ maTranDau }).populate('maDoiBong', 'tenDoiBong');
       res.json({ ...tranDau.toObject(), lichTapLuyen: lichTap });
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server' });

@@ -1,18 +1,6 @@
 {
   "tenMuaGiai": "V-League 2025",
-  "maGiaiDau": "____", //Phải copy mã thật bên bảng giải đấu đang tồn tại qua mới tạo mới dc
+  "maGiaiDau": "____", // Cần mã thật
   "ngayBatDau": "2025-02-01T00:00:00.000Z",
   "ngayKetThuc": "2025-11-30T00:00:00.000Z"
-},
-{
-  "tenMuaGiai": "V-League 2026",
-  "maGiaiDau": "____", //Phải copy mã thật bên bảng giải đấu đang tồn tại qua mới tạo mới dc
-  "ngayBatDau": "2025-02-01T00:00:00.000Z",
-  "ngayKetThuc": "2025-11-30T00:00:00.000Z"
-},
-{
-  "tenMuaGiai": "V-League 2027",
-  "maGiaiDau": "____", //Phải copy mã thật bên bảng giải đấu đang tồn tại qua mới tạo mới dc
-  "ngayBatDau": "2025-02-01T00:00:00.000Z",
-  "ngayKetThuc": "2025-11-30T00:00:00.000Z"
-},
+}

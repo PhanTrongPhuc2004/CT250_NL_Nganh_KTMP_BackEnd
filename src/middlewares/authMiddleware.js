@@ -1,3 +1,4 @@
+// src/middlewares/authMiddleware.js
 const jwt = require('jsonwebtoken');
 const NguoiDung = require('../models/NguoiDung.model');
 const mongoose = require('mongoose');

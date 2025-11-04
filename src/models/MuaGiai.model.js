@@ -1,3 +1,4 @@
+// src/models/MuaGiai.model.js
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 
@@ -15,7 +16,7 @@ const MuaGiaiSchema = new mongoose.Schema({
     },
     maGiaiDau: {
         type: String,
-        ref: 'GiaiDau', // Dùng maGiaiDau (string)
+        ref: 'GiaiDau',
         required: true,
     },
     ngayBatDau: {

@@ -1,3 +1,4 @@
+// src/models/GiaiDau.model.js
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 
@@ -13,7 +14,7 @@ const GiaiDauSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    namToChuc: {
+    namThanhLap: {  
         type: Number,
         required: true,
     },

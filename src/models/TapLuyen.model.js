@@ -1,3 +1,4 @@
+// src/models/LichTapLuyen.model.js
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 
@@ -11,6 +12,11 @@ const LichTapLuyenSchema = new mongoose.Schema({
   maMuaGiai: {
     type: String,
     ref: 'MuaGiai',
+    required: true,
+  },
+  maDoiBong: { 
+    type: String,
+    ref: 'DoiBong',
     required: true,
   },
   maTranDau: {

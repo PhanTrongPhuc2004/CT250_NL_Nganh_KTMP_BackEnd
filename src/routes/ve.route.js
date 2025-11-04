@@ -1,13 +1,37 @@
+// src/routes/ve.route.js
+const express = require('express');
+const router = express.Router();
 const VeController = require('../controller/VeController');
-const authMiddleware = require('../middlewares/authMiddleware');  // Sử dụng middleware hiện có
+const authMiddleware = require('../middlewares/authMiddleware');
 
-const veRouter = require('express').Router();
+// [POST] /ve/mua - Mua vé
+router.post('/mua', authMiddleware, VeController.muaVe);
 
-veRouter.post('/mua', authMiddleware, VeController.muaVe);  // Mua vé, yêu cầu đăng nhập
-veRouter.get('/', authMiddleware, VeController.getAllVe);  // Chỉ admin, có thể thêm check vaiTro trong controller nếu cần
-veRouter.get('/user', authMiddleware, VeController.getVeByUser);  // Vé của user
-veRouter.get('/:id', authMiddleware, VeController.getVeById);
-veRouter.put('/:id', authMiddleware, VeController.updateVe);
-veRouter.delete('/:id', authMiddleware, VeController.deleteVe);
+// [GET] /ve - Lấy tất cả vé (admin)
+router.get('/', authMiddleware, VeController.getAllVe);
 
-module.exports = veRouter;
+// [GET] /ve/user - Lấy vé của user hiện tại
+router.get('/user', authMiddleware, VeController.getVeByUser);
+
+// [GET] /ve/ma/:maVe - Lấy theo mã vé
+router.get('/ma/:maVe', authMiddleware, VeController.getVeByMa);
+
+// [GET] /ve/id/:id - Lấy theo _id
+router.get('/id/:id', authMiddleware, VeController.getVeById);
+
+// [GET] /ve/trandau/:maTranDau - Lấy vé theo mã trận đấu
+router.get('/trandau/:maTranDau', authMiddleware, VeController.getVeByMaTranDau);
+
+// [PUT] /ve/ma/:maVe - Cập nhật theo mã
+router.put('/ma/:maVe', authMiddleware, VeController.updateVeByMa);
+
+// [PUT] /ve/id/:id - Cập nhật theo _id
+router.put('/id/:id', authMiddleware, VeController.updateVeById);
+
+// [DELETE] /ve/ma/:maVe - Xóa theo mã
+router.delete('/ma/:maVe', authMiddleware, VeController.deleteVeByMa);
+
+// [DELETE] /ve/id/:id - Xóa theo _id
+router.delete('/id/:id', authMiddleware, VeController.deleteVeById);
+
+module.exports = router;

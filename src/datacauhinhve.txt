@@ -1,0 +1,9 @@
+{
+    "maTranDau": "___",
+    "loaiVe": "VIP",
+    "khuVuc": "A",
+    "hangGhe": "1",
+    "soGheBatDau": 1,
+    "soGheKetThuc": 20,
+    "giaVe": 1000000
+  }

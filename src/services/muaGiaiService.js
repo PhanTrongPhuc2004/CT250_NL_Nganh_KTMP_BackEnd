@@ -1,34 +1,38 @@
+// src/services/muaGiaiService.js
 const MuaGiai = require('../models/MuaGiai.model');
-const GiaiDau = require('../models/GiaiDau.model');
 
-const createMuaGiai = async (data) => {
-    const { maGiaiDau } = data;
-    const giaiDau = await GiaiDau.findOne({ maGiaiDau });
-    if (!giaiDau) throw new Error('Giải đấu không tồn tại');
-    const muaGiai = new MuaGiai(data);
-    return await muaGiai.save();
-};
+class MuaGiaiService {
+    async createMuaGiai(data) {
+        return await MuaGiai.create(data);
+    }
 
-const getAllMuaGiai = async () => {
-    return await MuaGiai.find();
-};
+    async getAllMuaGiai() {
+        return await MuaGiai.find().populate('maGiaiDau', 'tenGiaiDau').sort({ ngayBatDau: 1 });
+    }
 
-const getMuaGiaiByMa = async (maMuaGiai) => {
-    return await MuaGiai.findOne({ maMuaGiai });
-};
+    async getMuaGiaiByMa(maMuaGiai) {
+        return await MuaGiai.findOne({ maMuaGiai }).populate('maGiaiDau');
+    }
 
-const updateMuaGiai = async (maMuaGiai, data) => {
-    return await MuaGiai.findOneAndUpdate({ maMuaGiai }, data, { new: true });
-};
+    async getMuaGiaiById(id) {
+        return await MuaGiai.findById(id).populate('maGiaiDau');
+    }
 
-const deleteMuaGiai = async (maMuaGiai) => {
-    return await MuaGiai.findOneAndDelete({ maMuaGiai });
-};
+    async updateMuaGiaiByMa(maMuaGiai, data) {
+        return await MuaGiai.findOneAndUpdate({ maMuaGiai }, data, { new: true });
+    }
 
-module.exports = {
-    createMuaGiai,
-    getAllMuaGiai,
-    getMuaGiaiByMa,
-    updateMuaGiai,
-    deleteMuaGiai,
-};
+    async updateMuaGiaiById(id, data) {
+        return await MuaGiai.findByIdAndUpdate(id, data, { new: true });
+    }
+
+    async deleteMuaGiaiByMa(maMuaGiai) {
+        return await MuaGiai.findOneAndDelete({ maMuaGiai });
+    }
+
+    async deleteMuaGiaiById(id) {
+        return await MuaGiai.findByIdAndDelete(id);
+    }
+}
+
+module.exports = new MuaGiaiService();

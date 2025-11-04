@@ -1,4 +1,7 @@
 {
-  "maTranDau": "_____",   //Phải copy mã thật bên bảng trận đấu đang tồn tại qua mới tạo mới dc
-  "soLuong": 2
+  "maTranDau": "___",
+  "loaiVe": "VIP",
+  "khuVuc": "A",
+  "hangGhe": "5",
+  "soGhe": "12"
 }

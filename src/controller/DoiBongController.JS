@@ -1,53 +1,53 @@
-// src/controller/MuaGiaiController.js
-const muaGiaiService = require('../services/muaGiaiService');
+// src/controller/DoiBongController.js
+const doiBongService = require('../services/doiBongService');
 
-class MuaGiaiController {
-    async createMuaGiai(req, res) {
+class DoiBongController {
+    async createDoiBong(req, res) {
         try {
             const data = req.body;
-            const muaGiai = await muaGiaiService.createMuaGiai(data);
-            res.status(201).json({ message: 'Tạo mùa giải thành công', data: muaGiai });
+            const doiBong = await doiBongService.createDoiBong(data);
+            res.status(201).json({ message: 'Tạo đội bóng thành công', data: doiBong });
         } catch (error) {
             res.status(400).json({ message: error.message });
         }
     }
 
-    async getAllMuaGiai(req, res) {
+    async getAllDoiBong(req, res) {
         try {
-            const list = await muaGiaiService.getAllMuaGiai();
+            const list = await doiBongService.getAllDoiBong();
             res.json(list);
         } catch (error) {
             res.status(500).json({ message: 'Lỗi server' });
         }
     }
 
-    async getMuaGiaiByMa(req, res) {
+    async getDoiBongByMa(req, res) {
         try {
-            const { maMuaGiai } = req.params;
-            const muaGiai = await muaGiaiService.getMuaGiaiByMa(maMuaGiai);
-            if (!muaGiai) return res.status(404).json({ message: 'Không tìm thấy' });
-            res.json(muaGiai);
+            const { maDoiBong } = req.params;
+            const doiBong = await doiBongService.getDoiBongByMa(maDoiBong);
+            if (!doiBong) return res.status(404).json({ message: 'Không tìm thấy' });
+            res.json(doiBong);
         } catch (error) {
             res.status(500).json({ message: 'Lỗi server' });
         }
     }
 
-    async getMuaGiaiById(req, res) {
+    async getDoiBongById(req, res) {
         try {
             const { id } = req.params;
-            const muaGiai = await muaGiaiService.getMuaGiaiById(id);
-            if (!muaGiai) return res.status(404).json({ message: 'Không tìm thấy' });
-            res.json(muaGiai);
+            const doiBong = await doiBongService.getDoiBongById(id);
+            if (!doiBong) return res.status(404).json({ message: 'Không tìm thấy' });
+            res.json(doiBong);
         } catch (error) {
             res.status(500).json({ message: 'Lỗi server' });
         }
     }
 
-    async updateMuaGiaiByMa(req, res) {
+    async updateDoiBongByMa(req, res) {
         try {
-            const { maMuaGiai } = req.params;
+            const { maDoiBong } = req.params;
             const data = req.body;
-            const updated = await muaGiaiService.updateMuaGiaiByMa(maMuaGiai, data);
+            const updated = await doiBongService.updateDoiBongByMa(maDoiBong, data);
             if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
             res.json({ message: 'Cập nhật thành công', data: updated });
         } catch (error) {
@@ -55,11 +55,11 @@ class MuaGiaiController {
         }
     }
 
-    async updateMuaGiaiById(req, res) {
+    async updateDoiBongById(req, res) {
         try {
             const { id } = req.params;
             const data = req.body;
-            const updated = await muaGiaiService.updateMuaGiaiById(id, data);
+            const updated = await doiBongService.updateDoiBongById(id, data);
             if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
             res.json({ message: 'Cập nhật thành công', data: updated });
         } catch (error) {
@@ -67,10 +67,10 @@ class MuaGiaiController {
         }
     }
 
-    async deleteMuaGiaiByMa(req, res) {
+    async deleteDoiBongByMa(req, res) {
         try {
-            const { maMuaGiai } = req.params;
-            const deleted = await muaGiaiService.deleteMuaGiaiByMa(maMuaGiai);
+            const { maDoiBong } = req.params;
+            const deleted = await doiBongService.deleteDoiBongByMa(maDoiBong);
             if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
             res.json({ message: 'Xóa thành công' });
         } catch (error) {
@@ -78,10 +78,10 @@ class MuaGiaiController {
         }
     }
 
-    async deleteMuaGiaiById(req, res) {
+    async deleteDoiBongById(req, res) {
         try {
             const { id } = req.params;
-            const deleted = await muaGiaiService.deleteMuaGiaiById(id);
+            const deleted = await doiBongService.deleteDoiBongById(id);
             if (!deleted) return res.status(404).json({ message: 'Không tìm thấy' });
             res.json({ message: 'Xóa thành công' });
         } catch (error) {
@@ -90,4 +90,4 @@ class MuaGiaiController {
     }
 }
 
-module.exports = new MuaGiaiController();
+module.exports = new DoiBongController();

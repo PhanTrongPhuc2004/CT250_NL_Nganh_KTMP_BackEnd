@@ -1,12 +1,10 @@
 [
- {
-  "maMuaGiai": "_____",   //Phải copy mã thật bên bảng mùa giải đang tồn tại qua mới tạo mới dc
+{
+  "maMuaGiai": "___", // Dùng mã thật
   "diaDiem": "Sân Hàng Đẫy",
-  "ngayBatDau": "2025-11-15T19:00:00.000Z",
-  "thoiGian": "07:00",
-  "capDau": ["Hà Nội FC", "TP.HCM FC"],
-  "doiHinhId": "671f8a1b2c3d4e5f67890155",
-  "giaVe": 200000,
-  "soVeConLai": 1000
+  "ngayBatDau": "2025-11-15T12:00:00.000Z",
+  "thoiGian": "19:00",
+  "doiNha": "DB_HNFC",
+  "doiKhach": "DB_HCMFC"
 }
 ]

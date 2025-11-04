@@ -1,0 +1,12 @@
+{
+  "maDoiBong": "DB_HNFC",
+  "tenDoiBong": "Hà Nội FC",
+  "sanNha": "Sân Hàng Đẫy",
+  "logoUrl": "https://tse1.mm.bing.net/th/id/OIP.o1l10k_Ss4Or-ku5XIIEBQHaHe"
+},
+{
+  "maDoiBong": "DB_HCMFC",
+  "tenDoiBong": "TP.HCM FC",
+  "sanNha": "Sân Thống Nhất",
+  "logoUrl": "https://tse2.mm.bing.net/th/id/OIP._uBuhy8wO6cgtVcbQaaRpwHaEJ"
+}
