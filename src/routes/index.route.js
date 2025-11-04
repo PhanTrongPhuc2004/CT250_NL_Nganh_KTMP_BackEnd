@@ -15,6 +15,7 @@ const DonHangRoute = require("./DonHang.route");
 const giaiDauRouter = require('./giaidau.route');
 const muaGiaiRouter = require('./muagiai.route');
 const thongBaoRouter = require('./thongbao.route');
+const GioHangRouter = require('./GioHangRouter')
 
 function route(app) {
   app.use('/nguoihammo', nguoiHamMoRouter);
@@ -34,6 +35,7 @@ function route(app) {
   app.use('/giaidau', giaiDauRouter);
   app.use('/muagiai', muaGiaiRouter);
   app.use('/thongbao', thongBaoRouter);
+  app.use('/giohang', thongBaoRouter);
 }
 
 module.exports = route;
