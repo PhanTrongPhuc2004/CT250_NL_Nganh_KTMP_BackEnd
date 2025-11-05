@@ -7,7 +7,7 @@ class CauHinhVeController {
         try {
             const data = req.body;
             console.log('VT:', req.user.vaiTro);
-            console.log('Creating CauHinhVe with data:', data);
+            // console.log('Creating CauHinhVe with data:', data);
             const config = await cauHinhVeService.create(data);
             res.status(201).json({ message: 'Tạo cấu hình vé thành công', data: config });
         } catch (error) {
@@ -21,6 +21,7 @@ class CauHinhVeController {
             const list = await cauHinhVeService.getAll();
             res.json(list);
         } catch (error) {
+            console.error(error);
             res.status(500).json({ message: 'Lỗi server' });
         }
     }

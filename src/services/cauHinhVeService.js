@@ -8,24 +8,28 @@ class CauHinhVeService {
 
     async getAll() {
         return await CauHinhVe.find()
-            .populate('maTranDau', 'diaDiem ngayBatDau')
             .sort({ maTranDau: 1, khuVuc: 1, hangGhe: 1 });
     }
 
     async getByMa(maCauHinhVe) {
-        return await CauHinhVe.findOne({ maCauHinhVe }).populate('maTranDau');
+        return await CauHinhVe.findOne({ maCauHinhVe });
     }
 
     async getById(id) {
-        return await CauHinhVe.findById(id).populate('maTranDau');
+        return await CauHinhVe.findById(id);
     }
 
     async getByMaTranDau(maTranDau) {
-        return await CauHinhVe.find({ maTranDau }).sort({ khuVuc: 1, hangGhe: 1 });
+        return await CauHinhVe.find({ maTranDau })
+            .sort({ khuVuc: 1, hangGhe: 1 });
     }
 
     async updateByMa(maCauHinhVe, data) {
-        return await CauHinhVe.findOneAndUpdate({ maCauHinhVe }, data, { new: true });
+        return await CauHinhVe.findOneAndUpdate(
+            { maCauHinhVe },
+            data,
+            { new: true }
+        );
     }
 
     async updateById(id, data) {
@@ -40,7 +44,7 @@ class CauHinhVeService {
         return await CauHinhVe.findByIdAndDelete(id);
     }
 
-    // DÙNG TRONG MUA VÉ
+    // DÙNG TRONG MUA VÉ – GIẢM SỐ GHẾ CÒN LẠI
     async giamGheConLai(maCauHinhVe) {
         return await CauHinhVe.findOneAndUpdate(
             { maCauHinhVe, soGheConLai: { $gt: 0 } },

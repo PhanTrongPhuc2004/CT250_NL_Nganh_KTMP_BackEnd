@@ -7,25 +7,15 @@ class LichTapService {
   }
 
   async getAllLichTap() {
-    return await LichTapLuyen.find()
-      .populate('maDoiBong', 'tenDoiBong')
-      .populate('maTranDau', 'diaDiem ngayBatDau')
-      .populate('maMuaGiai', 'tenMuaGiai')
-      .sort({ ngayBatDau: 1 });
+    return await LichTapLuyen.find().sort({ ngayBatDau: 1 });
   }
 
   async getLichTapByMa(maLichTapLuyen) {
-    return await LichTapLuyen.findOne({ maLichTapLuyen })
-      .populate('maDoiBong')
-      .populate('maTranDau')
-      .populate('maMuaGiai');
+    return await LichTapLuyen.findOne({ maLichTapLuyen });
   }
 
   async getLichTapById(id) {
-    return await LichTapLuyen.findById(id)
-      .populate('maDoiBong')
-      .populate('maTranDau')
-      .populate('maMuaGiai');
+    return await LichTapLuyen.findById(id);
   }
 
   async updateLichTapByMa(maLichTapLuyen, data) {

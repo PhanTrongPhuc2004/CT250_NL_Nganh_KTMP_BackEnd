@@ -1,3 +1,4 @@
+// src/routes/index.route.js
 const nguoiDungRouter = require('./nguoiDung.route');
 const nguoiHamMoRouter = require('./nguoiHamMo.route');
 const cauthuRouter = require('./cauthuRouter');

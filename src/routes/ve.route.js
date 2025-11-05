@@ -3,35 +3,22 @@ const express = require('express');
 const router = express.Router();
 const VeController = require('../controller/VeController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const roleMiddleware = require('../middlewares/roleMiddleware');
 
-// [POST] /ve/mua - Mua vé
-router.post('/mua', authMiddleware, VeController.muaVe);
+// MUA VÉ – CHỈ NGƯỜI HÂM MỘ
+router.post('/mua', authMiddleware, roleMiddleware('nguoihammo'), VeController.muaVe);
 
-// [GET] /ve - Lấy tất cả vé (admin)
-router.get('/', authMiddleware, VeController.getAllVe);
+// ADMIN: QUẢN LÝ VÉ
+router.get('/', authMiddleware, roleMiddleware('admin'), VeController.getAllVe);
+router.get('/trandau/:maTranDau', authMiddleware, roleMiddleware('admin'), VeController.getVeByMaTranDau);
+router.put('/ma/:maVe', authMiddleware, roleMiddleware('admin'), VeController.updateVeByMa);
+router.put('/id/:id', authMiddleware, roleMiddleware('admin'), VeController.updateVeById);
+router.delete('/ma/:maVe', authMiddleware, roleMiddleware('admin'), VeController.deleteVeByMa);
+router.delete('/id/:id', authMiddleware, roleMiddleware('admin'), VeController.deleteVeById);
 
-// [GET] /ve/user - Lấy vé của user hiện tại
+// NGƯỜI DÙNG: XEM VÉ CỦA MÌNH
 router.get('/user', authMiddleware, VeController.getVeByUser);
-
-// [GET] /ve/ma/:maVe - Lấy theo mã vé
 router.get('/ma/:maVe', authMiddleware, VeController.getVeByMa);
-
-// [GET] /ve/id/:id - Lấy theo _id
 router.get('/id/:id', authMiddleware, VeController.getVeById);
-
-// [GET] /ve/trandau/:maTranDau - Lấy vé theo mã trận đấu
-router.get('/trandau/:maTranDau', authMiddleware, VeController.getVeByMaTranDau);
-
-// [PUT] /ve/ma/:maVe - Cập nhật theo mã
-router.put('/ma/:maVe', authMiddleware, VeController.updateVeByMa);
-
-// [PUT] /ve/id/:id - Cập nhật theo _id
-router.put('/id/:id', authMiddleware, VeController.updateVeById);
-
-// [DELETE] /ve/ma/:maVe - Xóa theo mã
-router.delete('/ma/:maVe', authMiddleware, VeController.deleteVeByMa);
-
-// [DELETE] /ve/id/:id - Xóa theo _id
-router.delete('/id/:id', authMiddleware, VeController.deleteVeById);
 
 module.exports = router;

@@ -18,6 +18,7 @@ class TranDauController {
       const list = await tranDauService.getAllTranDau();
       res.json(list);
     } catch (error) {
+      console.error(error);
       res.status(500).json({ message: 'Lỗi server' });
     }
   }

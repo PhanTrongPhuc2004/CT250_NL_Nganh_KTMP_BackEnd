@@ -14,6 +14,7 @@ db.connectDB();
 
 // Cấu hình middleware cho ứng dụng
 app.use('/data', express.static('data'));
+app.use('/test', express.static('public')); // Thêm dòng này để phục vụ tệp tĩnh từ thư mục "public"
 app.use(cors({ credentials: true, origin: 'http://localhost:3000' }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));

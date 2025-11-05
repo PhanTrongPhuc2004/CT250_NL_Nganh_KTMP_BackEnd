@@ -33,8 +33,15 @@ class VeController {
   }
 
   async getVeByUser(req, res) {
-    const list = await veService.getVeByUser(req.user._id);
-    res.json(list);
+    // console.log('Fetching tickets for user:', req.user._id);
+    try {
+      const list = await veService.getVeByUser(req.user._id);
+      if (!list) return res.status(404).json({ message: 'Không tìm thấy' });
+      res.json(list);
+    } catch (error) {
+      console.error(error);
+      res.status(500).json({ message: 'Lỗi server' });
+    }
   }
 
   async getVeByMa(req, res) {

@@ -13,9 +13,16 @@ router.post('/',
 );
 
 // [GET] /cauhinhve - Lấy tất cả cấu hình vé
+router.get('/',
+    authMiddleware,
+    roleMiddleware('admin'), // Nhiều role
+    CauHinhVeController.getAll
+);
+
+// [GET] /cauhinhve - Lấy cấu hình vé theo mã
 router.get('/ma/:ma',
     authMiddleware,
-    roleMiddleware('admin', 'quanly'), // Nhiều role
+    roleMiddleware('admin'), // Nhiều role
     CauHinhVeController.getByMa
 );
 
@@ -36,7 +43,7 @@ router.delete('/ma/:ma',
 // [GET] /cauhinhve/id/:id - Lấy cấu hình vé theo ID
 router.get('/id/:id',
     authMiddleware,
-    roleMiddleware('admin', 'quanly'),
+    roleMiddleware('admin'),
     CauHinhVeController.getById
 );
 
@@ -57,7 +64,7 @@ router.delete('/id/:id',
 // [GET] /cauhinhve/trandau/:maTranDau - Lấy cấu hình vé theo mã trận đấu Cho phép người hâm mộ xem (không cần admin)
 router.get('/trandau/:maTranDau',
     authMiddleware,
-    roleMiddleware('admin', 'quanly', 'nguoihammo'),
+    roleMiddleware('admin', 'nguoihammo'),
     CauHinhVeController.getByMaTranDau
 );
 

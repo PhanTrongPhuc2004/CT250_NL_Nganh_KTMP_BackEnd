@@ -1,37 +1,35 @@
-#!/usr/bin/env node
+// bin/www
+// #!/usr/bin / env node
 
-// Gọi các thư viện cần thiết
-var app = require('../app');
-var debug = require('debug')('clubmanagementbe:server');
-var http = require('http');
+const app = require('../app');
+const debug = require('debug')('clubmanagementbe:server');
+const http = require('http');
 
-// Lấy cổng từ môi trường và lưu vào ứng dụng
-var port = normalizePort(process.env.PORT || '5000'); // Nơi thay đổi Port
-app.set('port', port);
-
-// Tạo server HTTP
-var server = http.createServer(app);
-
-// KÍCH HOẠT SOCKET TRƯỚC KHI LISTEN
-require('../src/utils/socket')(server, app);
-
-// Lắng nghe cổng đã chỉ định
-server.listen(port);
-server.on('error', onError);
-server.on('listening', onListening);
-
-// Hàm chuẩn hóa cổng
-function normalizePort(val) {
-  var port = parseInt(val, 10);
+// === LẤY PORT TỪ MÔI TRƯỜNG ===
+const normalizePort = (val) => {
+  const port = parseInt(val, 10);
   if (isNaN(port)) return val;
   if (port >= 0) return port;
   return false;
-}
+};
 
-// Hàm xử lý lỗi khi khởi động server
-function onError(error) {
+const PORT = normalizePort(process.env.PORT || '5000'); // ĐÚNG: DÙNG HẰNG SỐ
+app.set('port', PORT);
+
+// === TẠO SERVER ===
+const server = http.createServer(app);
+
+// === GỌI ROUTE TRƯỚC ===
+require('../src/routes/index.route')(app);
+
+// === KHỞI TẠO SOCKET SAU ===
+require('../src/utils/socket')(server, app);
+
+// === LẮNG NGHE CỔNG ===
+server.listen(PORT);
+server.on('error', (error) => {
   if (error.syscall !== 'listen') throw error;
-  var bind = typeof port === 'string' ? 'Pipe ' + port : 'Port ' + port;
+  const bind = typeof PORT === 'string' ? 'Pipe ' + PORT : 'Port ' + PORT;
   switch (error.code) {
     case 'EACCES':
       console.error(bind + ' requires elevated privileges');
@@ -44,13 +42,12 @@ function onError(error) {
     default:
       throw error;
   }
-}
+});
 
-// Hàm thông báo khi server đã lắng nghe
-function onListening() {
-  var addr = server.address();
-  var bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
-  console.log('🚀 Server running on http://localhost:' + port);
-  console.log('🔌 Socket.IO running on ws://localhost:' + port + '/socket.io/');
+server.on('listening', () => {
+  const addr = server.address();
+  const bind = typeof addr === 'string' ? 'pipe ' + addr : 'port ' + addr.port;
+  console.log(`Server running on http://localhost:${addr.port}`);
+  console.log(`Socket.IO running on ws://localhost:${addr.port}`);
   debug('Listening on ' + bind);
-}
+});

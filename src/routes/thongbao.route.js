@@ -1,10 +1,16 @@
+// src/routes/thongbao.route.js
 const express = require('express');
 const router = express.Router();
-const ThongBaoController = require('../controller/ThongBaoController');
+const ThongBaoController = require('../controller/ThongBaoController'); // ĐÚNG: controller (không phải controllers)
 const authMiddleware = require('../middlewares/authMiddleware');
+const roleMiddleware = require('../middlewares/roleMiddleware');
 
 // Gửi thông báo (Admin/HLV)
-router.post('/', authMiddleware, ThongBaoController.guiThongBao);
+router.post('/',
+    authMiddleware,
+    roleMiddleware('admin', 'huanluyenvien'),
+    ThongBaoController.guiThongBao
+);
 
 // Lấy thông báo
 router.get('/gan-nhat', authMiddleware, ThongBaoController.layThongBaoGanNhat);

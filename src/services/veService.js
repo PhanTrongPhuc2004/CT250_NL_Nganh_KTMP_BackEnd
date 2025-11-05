@@ -7,7 +7,6 @@ class VeService {
     async muaVe(data, userId) {
         const { maTranDau, loaiVe, khuVuc, hangGhe } = data;
 
-        // 1. TÌM CẤU HÌNH VÉ
         const config = await CauHinhVe.findOne({
             maTranDau,
             loaiVe,
@@ -18,7 +17,6 @@ class VeService {
         if (!config) throw new Error('Không tìm thấy cấu hình vé');
         if (config.soGheConLai <= 0) throw new Error('Hết vé khu vực này');
 
-        // 2. TÌM GHẾ TRỐNG ĐẦU TIÊN
         const daBan = await Ve.find(
             { maTranDau, khuVuc, hangGhe },
             { soGhe: 1 }
@@ -36,7 +34,6 @@ class VeService {
 
         if (!soGhe) throw new Error('Không còn ghế trống');
 
-        // 3. TẠO VÉ
         const ve = await Ve.create({
             maTranDau,
             maNguoiDung: userId,
@@ -48,7 +45,6 @@ class VeService {
             trangThai: 'da_thanh_toan'
         });
 
-        // 4. GIẢM SỐ GHẾ CÒN LẠI
         await CauHinhVe.updateOne(
             { _id: config._id },
             { $inc: { soGheConLai: -1 } }
@@ -57,36 +53,25 @@ class VeService {
         return ve;
     }
 
-    // CÁC HÀM KHÁC GIỮ NGUYÊN
+    // KHÔNG DÙNG .populate()
     async getAllVe() {
-        return await Ve.find()
-            .populate('maNguoiDung', 'hoVaTen email')
-            .populate('maTranDau', 'diaDiem ngayBatDau doiNha doiKhach')
-            .sort({ ngayMua: -1 });
+        return await Ve.find().sort({ ngayMua: -1 });
     }
 
     async getVeByUser(userId) {
-        return await Ve.find({ maNguoiDung: userId })
-            .populate('maTranDau', 'diaDiem ngayBatDau')
-            .sort({ ngayMua: -1 });
+        return await Ve.find({ maNguoiDung: userId }).sort({ ngayMua: -1 });
     }
 
     async getVeByMa(maVe) {
-        return await Ve.findOne({ maVe })
-            .populate('maNguoiDung')
-            .populate('maTranDau');
+        return await Ve.findOne({ maVe });
     }
 
     async getVeById(id) {
-        return await Ve.findById(id)
-            .populate('maNguoiDung')
-            .populate('maTranDau');
+        return await Ve.findById(id);
     }
 
     async getVeByMaTranDau(maTranDau) {
-        return await Ve.find({ maTranDau })
-            .populate('maNguoiDung', 'hoVaTen')
-            .sort({ khuVuc: 1, hangGhe: 1, soGhe: 1 });
+        return await Ve.find({ maTranDau }).sort({ khuVuc: 1, hangGhe: 1, soGhe: 1 });
     }
 
     async updateVeByMa(maVe, data) {

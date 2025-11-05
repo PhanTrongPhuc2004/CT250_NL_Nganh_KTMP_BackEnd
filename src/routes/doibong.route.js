@@ -3,29 +3,15 @@ const express = require('express');
 const router = express.Router();
 const DoiBongController = require('../controller/DoiBongController');
 const authMiddleware = require('../middlewares/authMiddleware');
+const roleMiddleware = require('../middlewares/roleMiddleware');
 
-// [POST] /doibong - Tạo đội bóng
-router.post('/', authMiddleware, DoiBongController.createDoiBong);
-
-// [GET] /doibong - Lấy tất cả đội bóng
-router.get('/', DoiBongController.getAllDoiBong);
-
-// [GET] /doibong/ma/:maDoiBong - Lấy theo mã
-router.get('/ma/:maDoiBong', DoiBongController.getDoiBongByMa);
-
-// [GET] /doibong/id/:id - Lấy theo _id
-router.get('/id/:id', DoiBongController.getDoiBongById);
-
-// [PUT] /doibong/ma/:maDoiBong - Cập nhật theo mã
-router.put('/ma/:maDoiBong', authMiddleware, DoiBongController.updateDoiBongByMa);
-
-// [PUT] /doibong/id/:id - Cập nhật theo _id
-router.put('/id/:id', authMiddleware, DoiBongController.updateDoiBongById);
-
-// [DELETE] /doibong/ma/:maDoiBong - Xóa theo mã
-router.delete('/ma/:maDoiBong', authMiddleware, DoiBongController.deleteDoiBongByMa);
-
-// [DELETE] /doibong/id/:id - Xóa theo _id
-router.delete('/id/:id', authMiddleware, DoiBongController.deleteDoiBongById);
+router.post('/', authMiddleware, roleMiddleware('admin'), DoiBongController.createDoiBong);
+router.get('/', authMiddleware, DoiBongController.getAllDoiBong);
+router.get('/ma/:maDoiBong', authMiddleware, DoiBongController.getDoiBongByMa);
+router.get('/id/:id', authMiddleware, DoiBongController.getDoiBongById);
+router.put('/ma/:maDoiBong', authMiddleware, roleMiddleware('admin'), DoiBongController.updateDoiBongByMa);
+router.put('/id/:id', authMiddleware, roleMiddleware('admin'), DoiBongController.updateDoiBongById);
+router.delete('/ma/:maDoiBong', authMiddleware, roleMiddleware('admin'), DoiBongController.deleteDoiBongByMa);
+router.delete('/id/:id', authMiddleware, roleMiddleware('admin'), DoiBongController.deleteDoiBongById);
 
 module.exports = router;

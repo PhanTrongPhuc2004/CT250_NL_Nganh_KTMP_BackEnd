@@ -7,25 +7,15 @@ class TranDauService {
   }
 
   async getAllTranDau() {
-    return await TranDau.find()
-      .populate('doiNha', 'tenDoiBong logoUrl')
-      .populate('doiKhach', 'tenDoiBong logoUrl')
-      .populate('maMuaGiai', 'tenMuaGiai')
-      .sort({ ngayBatDau: 1 });
+    return await TranDau.find().sort({ ngayBatDau: 1 });
   }
 
   async getTranDauByMa(maTranDau) {
-    return await TranDau.findOne({ maTranDau })
-      .populate('doiNha', 'tenDoiBong logoUrl')
-      .populate('doiKhach', 'tenDoiBong logoUrl')
-      .populate('maMuaGiai');
+    return await TranDau.findOne({ maTranDau });
   }
 
   async getTranDauById(id) {
-    return await TranDau.findById(id)
-      .populate('doiNha', 'tenDoiBong logoUrl')
-      .populate('doiKhach', 'tenDoiBong logoUrl')
-      .populate('maMuaGiai');
+    return await TranDau.findById(id);
   }
 
   async updateTranDauByMa(maTranDau, data) {

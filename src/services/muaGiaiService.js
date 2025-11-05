@@ -7,15 +7,15 @@ class MuaGiaiService {
     }
 
     async getAllMuaGiai() {
-        return await MuaGiai.find().populate('maGiaiDau', 'tenGiaiDau').sort({ ngayBatDau: 1 });
+        return await MuaGiai.find().sort({ ngayBatDau: 1 });
     }
 
     async getMuaGiaiByMa(maMuaGiai) {
-        return await MuaGiai.findOne({ maMuaGiai }).populate('maGiaiDau');
+        return await MuaGiai.findOne({ maMuaGiai });
     }
 
     async getMuaGiaiById(id) {
-        return await MuaGiai.findById(id).populate('maGiaiDau');
+        return await MuaGiai.findById(id);
     }
 
     async updateMuaGiaiByMa(maMuaGiai, data) {

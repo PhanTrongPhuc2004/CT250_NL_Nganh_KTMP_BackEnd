@@ -1,43 +1,25 @@
-const { Server } = require('socket.io'); // ← BẮT BUỘC v4+
-const jwt = require('jsonwebtoken');
-const cookie = require('cookie');
+// src/utils/socket.js
+const socketIo = require('socket.io');
 
 module.exports = (server, app) => {
-    const io = new Server(server, {
-        cors: {
-            origin: true, // ← CHO PHÉP TẤT CẢ (Postman, FE, etc.)
-            methods: ["GET", "POST"],
-            credentials: true
-        }
+    const io = socketIo(server, {
+        cors: { origin: 'http://localhost:3000', credentials: true }
     });
 
-    io.use((socket, next) => {
-        const cookies = cookie.parse(socket.request.headers.cookie || '');
-        const token = cookies.token;
-        if (!token) return next(new Error('Không có token'));
-        try {
-            const decoded = jwt.verify(token, process.env.JWT_SECRET);
-            socket.user = decoded;
-            next();
-        } catch (err) {
-            next(new Error('Token không hợp lệ'));
-        }
-    });
+    app.set('io', io); // Gắn io vào app
 
     io.on('connection', (socket) => {
-        const userId = socket.user.maNguoiDung;
+        console.log('User connected:', socket.id);
 
-        // TỰ ĐỘNG JOIN – ĐẢM BẢO NHẬN THÔNG BÁO
-        socket.join(`user_${userId}`);
-        socket.join('public');
-
-        console.log(`User ${userId} connected (auto-joined rooms)`);
+        // JOIN ROOM KHI ĐĂNG NHẬP
+        socket.on('join', (maNguoiDung) => {
+            socket.join(`user_${maNguoiDung}`);
+            socket.join('public');
+            console.log(`User ${maNguoiDung} joined rooms`);
+        });
 
         socket.on('disconnect', () => {
-            console.log(`User ${userId} disconnected`);
+            console.log('User disconnected:', socket.id);
         });
     });
-
-    app.set('io', io);
-    return io;
 };
