@@ -6,8 +6,6 @@ class CauHinhVeController {
     async create(req, res) {
         try {
             const data = req.body;
-            console.log('VT:', req.user.vaiTro);
-            // console.log('Creating CauHinhVe with data:', data);
             const config = await cauHinhVeService.create(data);
             res.status(201).json({ message: 'Tạo cấu hình vé thành công', data: config });
         } catch (error) {
@@ -66,11 +64,31 @@ class CauHinhVeController {
         try {
             const { ma } = req.params;
             const data = req.body;
-            const updated = await cauHinhVeService.updateByMa(ma, data);
+
+            // LẤY DỮ LIỆU CŨ TRƯỚC KHI CẬP NHẬT
+            const oldConfig = await cauHinhVeService.getByMa(ma);
+            if (!oldConfig) return res.status(404).json({ message: 'Không tìm thấy' });
+
+            // TÍNH TỔNG GHẾ MỚI
+            const batDau = data.soGheBatDau ?? oldConfig.soGheBatDau;
+            const ketThuc = data.soGheKetThuc ?? oldConfig.soGheKetThuc;
+            const tongMoi = ketThuc - batDau + 1;
+
+            // ĐIỀU CHỈNH soGheConLai KHÔNG VƯỢT QUÁ tongMoi
+            const soGheConLai = Math.min(oldConfig.soGheConLai, tongMoi);
+
+            // GỌI SERVICE VỚI DỮ LIỆU ĐÃ ĐƯỢC XỬ LÝ
+            const updated = await cauHinhVeService.updateByMa(ma, {
+                ...data,
+                tongSoGhe: tongMoi,
+                soGheConLai: soGheConLai
+            });
+
             if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
             res.json({ message: 'Cập nhật thành công', data: updated });
         } catch (error) {
-            res.status(500).json({ message: 'Lỗi server' });
+            console.error('Lỗi cập nhật:', error);
+            res.status(500).json({ message: error.message || 'Lỗi server' });
         }
     }
 
@@ -79,11 +97,31 @@ class CauHinhVeController {
         try {
             const { id } = req.params;
             const data = req.body;
-            const updated = await cauHinhVeService.updateById(id, data);
+
+            // LẤY DỮ LIỆU CŨ TRƯỚC KHI CẬP NHẬT
+            const oldConfig = await cauHinhVeService.getById(id);
+            if (!oldConfig) return res.status(404).json({ message: 'Không tìm thấy' });
+
+            // TÍNH TỔNG GHẾ MỚI
+            const batDau = data.soGheBatDau ?? oldConfig.soGheBatDau;
+            const ketThuc = data.soGheKetThuc ?? oldConfig.soGheKetThuc;
+            const tongMoi = ketThuc - batDau + 1;
+
+            // ĐIỀU CHỈNH soGheConLai KHÔNG VƯỢT QUÁ tongMoi
+            const soGheConLai = Math.min(oldConfig.soGheConLai, tongMoi);
+
+            // GỌI SERVICE VỚI DỮ LIỆU ĐÃ ĐƯỢC XỬ LÝ
+            const updated = await cauHinhVeService.updateById(id, {
+                ...data,
+                tongSoGhe: tongMoi,
+                soGheConLai: soGheConLai
+            });
+
             if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
             res.json({ message: 'Cập nhật thành công', data: updated });
         } catch (error) {
-            res.status(500).json({ message: 'Lỗi server' });
+            console.error('Lỗi cập nhật:', error);
+            res.status(500).json({ message: error.message || 'Lỗi server' });
         }
     }
 

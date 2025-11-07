@@ -1,5 +1,6 @@
 // src/controller/VeController.js
 const veService = require('../services/veService');
+const TranDau = require('../services/tranDauService');
 const QRCode = require('qrcode');
 
 class VeController {
@@ -33,10 +34,9 @@ class VeController {
   }
 
   async getVeByUser(req, res) {
-    // console.log('Fetching tickets for user:', req.user._id);
     try {
       const list = await veService.getVeByUser(req.user._id);
-      if (!list) return res.status(404).json({ message: 'Không tìm thấy' });
+      if (!list || list.length === 0) return res.status(404).json({ message: 'Không có vé' });
       res.json(list);
     } catch (error) {
       console.error(error);

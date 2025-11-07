@@ -24,16 +24,21 @@ class CauHinhVeService {
             .sort({ khuVuc: 1, hangGhe: 1 });
     }
 
-    async updateByMa(maCauHinhVe, data) {
-        return await CauHinhVe.findOneAndUpdate(
-            { maCauHinhVe },
+    // Ví dụ trong service
+    async updateById(id, data) {
+        return await CauHinhVe.findByIdAndUpdate(
+            id,
             data,
-            { new: true }
+            { new: true, runValidators: true }
         );
     }
 
-    async updateById(id, data) {
-        return await CauHinhVe.findByIdAndUpdate(id, data, { new: true });
+    async updateByMa(ma, data) {
+        return await CauHinhVe.findOneAndUpdate(
+            { maCauHinhVe: ma },
+            data,
+            { new: true, runValidators: true }
+        );
     }
 
     async deleteByMa(maCauHinhVe) {

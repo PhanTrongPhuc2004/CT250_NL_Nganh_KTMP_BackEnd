@@ -33,12 +33,28 @@ CauHinhVeSchema.pre('save', function (next) {
     if (!this.maCauHinhVe) {
         this.maCauHinhVe = generateCode('CHV');
     }
+
     const batDau = this.soGheBatDau;
     const ketThuc = this.soGheKetThuc;
-    this.tongSoGhe = ketThuc - batDau + 1;
+    const tongMoi = ketThuc - batDau + 1;
+
+    this.tongSoGhe = tongMoi;
+
+    // Nếu là tạo mới
     if (this.isNew) {
-        this.soGheConLai = this.tongSoGhe;
+        this.soGheConLai = tongMoi;
     }
+    // Nếu là chỉnh sửa
+    else {
+        // LẤY GIÁ TRỊ CŨ TỪ DB (nếu có)
+        const oldTong = this._original ? this._original.tongSoGhe : this.tongSoGhe;
+        const oldConLai = this.soGheConLai || 0;
+
+        // Nếu tăng số ghế → giữ nguyên soGheConLai
+        // Nếu giảm số ghế → điều chỉnh soGheConLai không vượt quá tongMoi
+        this.soGheConLai = Math.min(oldConLai, tongMoi);
+    }
+
     next();
 });
 

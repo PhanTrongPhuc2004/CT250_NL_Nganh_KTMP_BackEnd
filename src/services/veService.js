@@ -1,6 +1,20 @@
 // src/services/veService.js
 const Ve = require('../models/Ve.model');
 const CauHinhVe = require('../models/CauHinhVe.model');
+const TranDau = require('../models/TranDau.model');
+const DoiBong = require('../models/DoiBong.model');
+const QRCode = require('qrcode');
+
+// HÀM FORMAT TRẠNG THÁI (THÊM MỚI)
+const formatStatus = (status) => {
+    const map = {
+        cho_thanh_toan: 'Chờ thanh toán',
+        da_thanh_toan: 'Đã thanh toán',
+        da_su_dung: 'Đã sử dụng',
+        da_huy: 'Đã hủy'
+    };
+    return map[status] || status;
+};
 
 class VeService {
     // MUA VÉ TỰ ĐỘNG
@@ -59,7 +73,46 @@ class VeService {
     }
 
     async getVeByUser(userId) {
-        return await Ve.find({ maNguoiDung: userId }).sort({ ngayMua: -1 });
+        const ves = await Ve.find({ maNguoiDung: userId }).lean();
+
+        // JOIN THỦ CÔNG: Lấy thông tin trận đấu
+        const result = await Promise.all(
+            ves.map(async (ve) => {
+                const tranDau = await TranDau.findOne({ maTranDau: ve.maTranDau }).lean();
+                if (!tranDau) return ve;
+
+                // JOIN đội bóng
+                const doiNha = await DoiBong.findOne({ maDoiBong: tranDau.doiNha }).lean();
+                const doiKhach = await DoiBong.findOne({ maDoiBong: tranDau.doiKhach }).lean();
+
+                let qrCode = ve.qrCode;
+                if (!qrCode) {
+                    const qrData = `
+    MÃ VÉ: ${ve.maVe}
+    TRẬN ĐẤU: ${doiNha?.tenDoiBong || 'N/A'} vs ${doiKhach?.tenDoiBong || 'N/A'}
+    THỜI GIAN: ${new Date(tranDau.ngayBatDau).toLocaleString('vi-VN')}
+    GHẾ: ${ve.khuVuc}${ve.hangGhe}-${ve.soGhe}
+    LOẠI VÉ: ${ve.loaiVe}
+    GIÁ: ${ve.giaVe.toLocaleString('vi-VN')}đ
+    TRẠNG THÁI: ${formatStatus(ve.trangThai)}
+  `.trim();
+
+                    qrCode = await QRCode.toDataURL(qrData, { width: 300 });
+                    await Ve.updateOne({ _id: ve._id }, { qrCode });
+                }
+
+                return {
+                    ...ve,
+                    doiNha: doiNha ? doiNha.tenDoiBong : 'Chưa xác định',
+                    doiKhach: doiKhach ? doiKhach.tenDoiBong : 'Chưa xác định',
+                    ngayBatDau: tranDau.ngayBatDau,
+                    sanDau: tranDau.diaDiem,
+                    qrCode
+                };
+            })
+        );
+
+        return result;
     }
 
     async getVeByMa(maVe) {
