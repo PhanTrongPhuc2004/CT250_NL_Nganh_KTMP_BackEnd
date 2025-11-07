@@ -47,6 +47,28 @@ const DonHangController = {
       res.status(500).json({ message: "Lỗi khi lấy tất cả đơn hàng!" });
     }
   },
+    // GET /donhang/thongke?option=daily|weekly|monthly
+  async thongKeDoanhThu(req, res) {
+    try {
+      const option = req.query.option || "daily";
+      const data = await DonHangService.thongKeDoanhThu(option);
+      res.json(data);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Lỗi khi thống kê doanh thu" });
+    }
+  },
+    // GET /donhang/thongke/sanpham
+  async thongKeTheoSanPham(req, res) {
+    try {
+      const data = await DonHangService.thongKeTheoSanPham();
+      res.json(data);
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Lỗi khi thống kê theo sản phẩm" });
+    }
+  },
+
 };
 
 module.exports = DonHangController;

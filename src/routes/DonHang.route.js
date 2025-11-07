@@ -8,10 +8,17 @@ router.post("/", DonHangController.taoDonHang);
 // Cập nhật trạng thái
 router.put("/:id", DonHangController.capNhatTrangThai);
 
-// Lấy đơn hàng của user theo tên đăng nhập
-router.get("/:tenDangNhap", DonHangController.layDonHangTheoUser);
+// Route cụ thể trước route dynamic
+router.get("/thongke", DonHangController.thongKeDoanhThu);
 
 // Lấy tất cả đơn hàng (admin)
 router.get("/", DonHangController.layTatCaDonHang);
+
+// Lấy đơn hàng của user theo tên đăng nhập (dynamic route cuối cùng)
+router.get("/:tenDangNhap", DonHangController.layDonHangTheoUser);
+
+// Route thống kê theo sản phẩm
+router.get("/thongke/sanpham", DonHangController.thongKeTheoSanPham);
+
 
 module.exports = router;
