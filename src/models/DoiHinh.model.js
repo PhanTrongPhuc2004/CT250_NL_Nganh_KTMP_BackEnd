@@ -1,16 +1,23 @@
 const { default: mongoose } = require('mongoose');
-
+const generateCode = require('../utils/generateCode');
 const Schema = require('mongoose').Schema;
 
 const DoiHinhSchema = new Schema({
-  doiHinh: {
+  tenDoiHinh: {
     type: String,
     required: true,
   },
-  cauLacBoId: {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: 'CauLacBo', // tham chiếu tới collection Lineup
-    required: true, // nếu cầu thủ nào cũng phải thuộc 1 đội hình
+
+  maDoiHinh: {
+    type: String,
+    required: false,
+    unique: true,
+    default: () => generateCode('DH'),
+  },
+  maDoiBong: {
+    type: String,
+    ref: 'DoiBong',
+    required: true,
   },
 });
 

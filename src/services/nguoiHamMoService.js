@@ -9,18 +9,17 @@ async function getAllNguoiHamMo() {
 }
 
 async function getNguoiHamMoById(id) {
-  return await NguoiHamMo.findByPk(id);
+  return await NguoiHamMo.findById(id);
 }
 
 async function updateNguoiHamMo(id, data) {
-  const nguoiHamMo = await NguoiHamMo.findByPk(id);
+  const nguoiHamMo = await NguoiHamMo.findByIdAndUpdate(id, data, { new: true });
   if (!nguoiHamMo) return null;
-  await nguoiHamMo.update(data);
   return nguoiHamMo;
 }
 
 async function deleteNguoiHamMo(id) {
-  const nguoiHamMo = await NguoiHamMo.findByPk(id);
+  const nguoiHamMo = await NguoiHamMo.findById(id);
   if (!nguoiHamMo) return null;
   await nguoiHamMo.destroy();
   return true;

@@ -14,27 +14,41 @@ const CauLacBoSchema = new mongoose.Schema({
     trim: true,
   },
   namThanhLap: {
-    type: Date,
+    type: Number, // năm thôi là đủ, không cần cả Date
     required: true,
   },
   diaChi: {
     type: String,
-    required: false,
     trim: true,
   },
   lienHe: {
-    type: String,
-    required: false,
-    trim: true,
+    email: { type: String, trim: true },
+    soDienThoai: { type: String, trim: true },
+    website: { type: String, trim: true },
   },
   moTa: {
     type: String,
-    required: false,
     trim: true,
+  },
+  slogan: {
+    type: String,
+  },
+  nhaTaiTro: {
+    type: Array,
+    default: [],
+  },
+  logo: {
+    type: String, // URL hình ảnh
+    trim: true,
+  },
+  sanNha: {
+    ten: { type: String, trim: true },
+    diaChi: { type: String, trim: true },
+    sucChua: { type: Number },
   },
 });
 
-// 🧩 Tự sinh mã CLB nếu chưa có
+// 🧩 Sinh mã CLB tự động
 CauLacBoSchema.pre('save', function (next) {
   if (!this.maCauLacBo) {
     this.maCauLacBo = generateCode('CLB');

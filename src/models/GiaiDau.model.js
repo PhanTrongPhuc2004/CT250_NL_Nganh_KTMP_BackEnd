@@ -2,31 +2,34 @@
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 
-const GiaiDauSchema = new mongoose.Schema({
+const GiaiDauSchema = new mongoose.Schema(
+  {
     maGiaiDau: {
-        type: String,
-        required: true,
-        unique: true,
-        default: () => generateCode('GD'),
+      type: String,
+      required: true,
+      unique: true,
+      default: () => generateCode('GD'),
     },
     tenGiaiDau: {
-        type: String,
-        required: true,
-        trim: true,
+      type: String,
+      required: true,
+      trim: true,
     },
-    namThanhLap: {  
-        type: Number,
-        required: true,
+    namThanhLap: {
+      type: Number,
+      required: false,
     },
     moTa: {
-        type: String,
-        trim: true,
+      type: String,
+      trim: true,
     },
-}, { timestamps: true });
+  },
+  { timestamps: true }
+);
 
 GiaiDauSchema.pre('save', function (next) {
-    if (!this.maGiaiDau) this.maGiaiDau = generateCode('GD');
-    next();
+  if (!this.maGiaiDau) this.maGiaiDau = generateCode('GD');
+  next();
 });
 
 module.exports = mongoose.model('GiaiDau', GiaiDauSchema);

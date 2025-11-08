@@ -2,6 +2,7 @@ const DoiHinh = require('../models/DoiHinh.model');
 const CauThu = require('../models/cauthu');
 
 const createDoiHinh = async (newDoiHinh) => {
+  console.log('tao doi hinh', newDoiHinh);
   try {
     const doiHinh = new DoiHinh(newDoiHinh);
     await doiHinh.save();
@@ -45,10 +46,8 @@ const getDetailDoiHinh = async (id) => {
     if (!doiHinh) {
       throw new Error('Không tìm thấy Đội hình!');
     }
-    // Tìm tất cả cầu thủ thuộc đội hình đó
-    const cauThus = await CauThu.find({ doiHinhId: id }).select();
-    // Trả về đối tượng đội hình kèm danh sách cầu thủ
-    return { ...doiHinh.toObject(), cauThus };
+    console.log(doiHinh);
+    return doiHinh;
   } catch (err) {
     console.error('Error getting detail DoiHinh:', err);
     throw new Error('Không thể lấy chi tiết Đội hình: ' + err.message);
@@ -63,10 +62,15 @@ const getAllDoiHinh = async () => {
     throw new Error('Không thể lấy danh sách Đội hình: ' + err.message);
   }
 };
+
+const getDoiHinhByMaDoiBong = async (maDoiBong) => {
+  return await DoiHinh.find({ maDoiBong });
+};
 module.exports = {
   createDoiHinh,
   updateDoiHinh,
   deleteDoiHinh,
   getDetailDoiHinh,
   getAllDoiHinh,
+  getDoiHinhByMaDoiBong,
 };

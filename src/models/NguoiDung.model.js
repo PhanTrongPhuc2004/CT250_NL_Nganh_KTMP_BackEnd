@@ -28,6 +28,10 @@ const NguoiDung = new Schema({
     type: String,
     default: 'nguoihammo',
   },
+  diaChi: {
+    type: String,
+    default: 'Khong',
+  },
 });
 
 // 🧩 Middleware tự sinh mã nếu chưa có

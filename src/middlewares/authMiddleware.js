@@ -3,9 +3,11 @@ const jwt = require('jsonwebtoken');
 const NguoiDung = require('../models/NguoiDung.model');
 const mongoose = require('mongoose');
 async function authMiddleware(req, res, next) {
+  console.log('goi authmiddleware');
   const token = req.cookies.token;
   if (!token) {
     return res.status(401).json({ message: 'Chưa đăng nhập' });
+    console.log('No token found');
   }
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);

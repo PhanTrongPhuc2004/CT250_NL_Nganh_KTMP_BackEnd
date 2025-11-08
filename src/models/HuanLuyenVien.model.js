@@ -11,16 +11,20 @@ const HuanLuyenVienSchema = new Schema({
   ngayGiaNhap: { type: Date },
   anhMinhHoa: { type: String },
   namSinh: { type: Number },
-  doiHinhId: {
-    type: mongoose.Schema.Types.ObjectId,
+  maDoiHinh: {
+    type: String,
     ref: 'DoiHinh', // tham chiếu tới collection Lineup
     required: true, // nếu cầu thủ nào cũng phải thuộc 1 đội hình
   },
   cauLacBoId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'CauLacBo', // tham chiếu tới collection Lineup
-      required: true, // nếu cầu thủ nào cũng phải thuộc 1 đội hình
-    },
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'CauLacBo', // tham chiếu tới collection Lineup
+    required: false, // nếu cầu thủ nào cũng phải thuộc 1 đội hình
+  },
+  phuTrach: {
+    type: String,
+    required: false,
+  },
 });
 
 // Kế thừa từ NguoiDung

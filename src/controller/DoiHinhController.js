@@ -2,6 +2,7 @@ const doiHinhService = require('../services/doiHinhService');
 
 class DoiHinhController {
   async createDoiHinh(req, res) {
+    console.log('tao doi hinh', req.body);
     try {
       const doiHinh = await doiHinhService.createDoiHinh(req.body);
       res.status(201).json(doiHinh);
@@ -59,14 +60,31 @@ class DoiHinhController {
   }
 
   async getDetailDoiHinh(req, res) {
+    console.log('get detail doi hinh');
     try {
       const { id } = req.params;
       const detailDoiHinh = await doiHinhService.getDetailDoiHinh(id);
+      console.log(detailDoiHinh);
       if (!detailDoiHinh) {
         console.log('khong tim thay doi hinh');
       } else res.status(200).json(detailDoiHinh);
     } catch (err) {
       console.log(err);
+    }
+  }
+
+  async getDoiHinhByMaDoiBong(req, res) {
+    console.log('lay sanh sach doi hinh');
+    const maDoiBong = req.params.maDoiBong;
+    try {
+      const doihinhs = await doiHinhService.getDoiHinhByMaDoiBong(maDoiBong);
+      if (!doihinhs) {
+        res.status(404).json('Không có đội hình');
+      }
+      console.log(doihinhs);
+      res.json(doihinhs);
+    } catch (error) {
+      console.log(error);
     }
   }
 }

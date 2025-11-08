@@ -9,9 +9,24 @@ router.post('/', authMiddleware, roleMiddleware('admin'), DoiBongController.crea
 router.get('/', authMiddleware, DoiBongController.getAllDoiBong);
 router.get('/ma/:maDoiBong', authMiddleware, DoiBongController.getDoiBongByMa);
 router.get('/id/:id', authMiddleware, DoiBongController.getDoiBongById);
-router.put('/ma/:maDoiBong', authMiddleware, roleMiddleware('admin'), DoiBongController.updateDoiBongByMa);
+router.put(
+  '/ma/:maDoiBong',
+  authMiddleware,
+  roleMiddleware('admin'),
+  DoiBongController.updateDoiBongByMa
+);
 router.put('/id/:id', authMiddleware, roleMiddleware('admin'), DoiBongController.updateDoiBongById);
-router.delete('/ma/:maDoiBong', authMiddleware, roleMiddleware('admin'), DoiBongController.deleteDoiBongByMa);
-router.delete('/id/:id', authMiddleware, roleMiddleware('admin'), DoiBongController.deleteDoiBongById);
+router.delete(
+  '/ma/:maDoiBong',
+  authMiddleware,
+  roleMiddleware('admin'),
+  DoiBongController.deleteDoiBongByMa
+);
+router.delete(
+  '/id/:id',
+  authMiddleware,
+  roleMiddleware('admin'),
+  DoiBongController.deleteDoiBongById
+);
 
 module.exports = router;

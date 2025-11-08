@@ -9,9 +9,25 @@ router.post('/', authMiddleware, roleMiddleware('admin'), GiaiDauController.crea
 router.get('/', authMiddleware, GiaiDauController.getAllGiaiDau);
 router.get('/ma/:maGiaiDau', authMiddleware, GiaiDauController.getGiaiDauByMa);
 router.get('/id/:id', authMiddleware, GiaiDauController.getGiaiDauById);
-router.put('/ma/:maGiaiDau', authMiddleware, roleMiddleware('admin'), GiaiDauController.updateGiaiDauByMa);
+router.put(
+  '/ma/:maGiaiDau',
+  authMiddleware,
+  roleMiddleware('admin'),
+  GiaiDauController.updateGiaiDauByMa
+);
 router.put('/id/:id', authMiddleware, roleMiddleware('admin'), GiaiDauController.updateGiaiDauById);
-router.delete('/ma/:maGiaiDau', authMiddleware, roleMiddleware('admin'), GiaiDauController.deleteGiaiDauByMa);
-router.delete('/id/:id', authMiddleware, roleMiddleware('admin'), GiaiDauController.deleteGiaiDauById);
+router.delete(
+  '/ma/:maGiaiDau',
+  authMiddleware,
+  roleMiddleware('admin'),
+  GiaiDauController.deleteGiaiDauByMa
+);
+router.delete(
+  '/id/:id',
+  authMiddleware,
+  roleMiddleware('admin'),
+  GiaiDauController.deleteGiaiDauById
+);
+router.get('/id/:id/muagiai', authMiddleware, GiaiDauController.getMuaGiaiByGiaiDauId);
 
 module.exports = router;

@@ -4,6 +4,7 @@ const LichTapLuyen = require('../models/TapLuyen.model');
 
 class TranDauController {
   async createTranDau(req, res) {
+    console.log('tao tran dau', req.body);
     try {
       const data = req.body;
       const tranDau = await tranDauService.createTranDau(data);

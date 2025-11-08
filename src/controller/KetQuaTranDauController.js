@@ -1,6 +1,6 @@
 const KetQuaTranDau = require('../models/KetQuaTranDau.model');
 const CauThu = require('../models/cauthu');
-
+const ketQuaTranDauService = require('../services/ketQuaTranDauService');
 class KetQuaTranDauController {
   async createKetQuaTranDau(req, res) {
     try {
@@ -32,10 +32,9 @@ class KetQuaTranDauController {
   }
 
   async updateKetQuaTranDau(req, res) {
+    console.log('goi ket qua tran dau', req.body);
     try {
-      const ketQuaTranDau = await KetQuaTranDau.findByIdAndUpdate(req.params.id, req.body, {
-        new: true,
-      });
+      const ketQuaTranDau = await ketQuaTranDauService.updateKetQuaTranDau(req.params.id, req.body);
       if (!ketQuaTranDau) {
         return res.status(404).json({ message: 'KetQuaTranDau not found' });
       }

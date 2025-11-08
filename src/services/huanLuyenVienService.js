@@ -17,14 +17,14 @@ const createHuanLuyenVien = async (data) => {
 
 // Cập nhật huấn luyện viên
 const updateHuanLuyenVien = async (id, data) => {
-  const hlv = await HuanLuyenVien.findByPk(id);
+  const hlv = await HuanLuyenVien.findById(id);
   if (!hlv) return null;
   return await hlv.update(data);
 };
 
 // Xóa huấn luyện viên
 const remove = async (id) => {
-  const hlv = await HuanLuyenVien.findByPk(id);
+  const hlv = await HuanLuyenVien.findById(id);
   if (!hlv) return null;
   await hlv.destroy();
   return true;

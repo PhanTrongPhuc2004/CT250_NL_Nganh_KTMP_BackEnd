@@ -12,14 +12,14 @@ const doiHinhRouter = require('./doiHinhRouter');
 const ketQuaTranDauRouter = require('./ketQuaTranDauRouter');
 const thongSoCauThuRouter = require('./thongSoCauThuRouter');
 const veRouter = require('./ve.route');
-const DonHangRoute = require("./DonHang.route");
+const DonHangRoute = require('./DonHang.route');
 const giaiDauRouter = require('./giaidau.route');
 const muaGiaiRouter = require('./muagiai.route');
 const thongBaoRouter = require('./thongbao.route');
-const GioHangRouter = require('./GioHangRouter')
-const doiBong = require('./doibong.route'); 
+const GioHangRouter = require('./GioHangRouter');
+const doiBong = require('./doibong.route');
 const cauHinhVeRouter = require('./cauhinhve.route');
-const Tintuc = require('./Tintuc.routes')
+const Tintuc = require('./Tintuc.routes');
 
 function route(app) {
   app.use('/nguoihammo', nguoiHamMoRouter);
@@ -35,14 +35,17 @@ function route(app) {
   app.use('/ketquatrandau', ketQuaTranDauRouter);
   app.use('/thongsocauthu', thongSoCauThuRouter);
   app.use('/ve', veRouter);
-  app.use("/donhang", DonHangRoute);
+  app.use('/donhang', DonHangRoute);
   app.use('/giaidau', giaiDauRouter);
   app.use('/muagiai', muaGiaiRouter);
   app.use('/thongbao', thongBaoRouter);
   app.use('/giohang', thongBaoRouter);
   app.use('/doibong', doiBong);
   app.use('/cauhinhve', cauHinhVeRouter);
+
   app.use('/tintuc', Tintuc);
+
+  app.use('/doihinh', doiHinhRouter);
 }
 
 module.exports = route;

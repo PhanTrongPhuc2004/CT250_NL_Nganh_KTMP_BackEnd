@@ -15,7 +15,6 @@ require('dotenv').config();
 class NguoiDungController {
   async register(req, res) {
     const vaiTro = req.body.vaiTro;
-    console.log(vaiTro);
     try {
       // Kiểm tra vai trò hợp lệ
       const allowedRoles = ['admin', 'nguoihammo', 'huanluyenvien', 'cauthu'];
@@ -48,6 +47,8 @@ class NguoiDungController {
         const newNguoiHamMo = await nguoiHamMoService.createNguoiHamMo(req.body);
         res.status(200).json({ message: 'Tạo nguòi hâm mộ thành công', data: newNguoiHamMo });
       }
+
+      console.log('tao nguoi dung moi');
     } catch (error) {
       console.error('ERROR when saving user:', error);
       res.status(500).json({ message: 'Lỗi server', error });
@@ -64,7 +65,7 @@ class NguoiDungController {
     const token = jwt.sign({ maNguoiDung: nguoidung.maNguoiDung }, process.env.JWT_SECRET, {
       expiresIn: '1h',
     });
-
+    console.log(token);
     res.cookie('token', token, {
       httpOnly: true,
       secure: false,
@@ -73,13 +74,13 @@ class NguoiDungController {
     });
 
     res.status(200).json({
-    message: 'Đăng nhập thành công',
-    user: {
-      _id: nguoidung._id,
-      tenDangNhap: nguoidung.tenDangNhap,
-      hoVaTen: nguoidung.hoVaTen,
-      vaiTro: nguoidung.vaiTro
-    },
+      message: 'Đăng nhập thành công',
+      user: {
+        _id: nguoidung._id,
+        tenDangNhap: nguoidung.tenDangNhap,
+        hoVaTen: nguoidung.hoVaTen,
+        vaiTro: nguoidung.vaiTro,
+      },
       token,
     });
   }
@@ -178,7 +179,6 @@ class NguoiDungController {
       console.log(err);
     }
   }
-  
 }
 
 module.exports = new NguoiDungController();
