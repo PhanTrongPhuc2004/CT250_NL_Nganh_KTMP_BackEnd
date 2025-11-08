@@ -87,6 +87,12 @@ class DoiHinhController {
       console.log(error);
     }
   }
+
+  async getDoiHinhByMaDoiBong(req, res) {
+    const { maDoiBong } = req.params;
+    const list = await DoiHinh.find({ maDoiBong });
+    res.json(list);
+  }
 }
 
 module.exports = new DoiHinhController();

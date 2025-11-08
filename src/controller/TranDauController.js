@@ -1,5 +1,6 @@
 // src/controller/TranDauController.js
 const tranDauService = require('../services/tranDauService');
+const TranDau = require('../models/TranDau.model');
 const LichTapLuyen = require('../models/TapLuyen.model');
 
 class TranDauController {
@@ -22,6 +23,12 @@ class TranDauController {
       console.error(error);
       res.status(500).json({ message: 'Lỗi server' });
     }
+  }
+  async getAllTranDau(req, res) {
+    const { maDoiHinh } = req.query;
+    const query = maDoiHinh ? { $or: [{ doiNha: maDoiHinh }, { doiKhach: maDoiHinh }] } : {};
+    const list = await TranDau.find(query).sort({ ngayBatDau: 1 });
+    res.json(list);
   }
 
   async getTranDauByMa(req, res) {
