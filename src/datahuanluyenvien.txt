@@ -1,5 +1,4 @@
-[
-  {
+{
     "hoVaTen": "Park Hang-seo",
     "email": "park@example.com",
     "tenDangNhap": "hlvpark",
@@ -12,39 +11,5 @@
     "ngayGiaNhap": "2022-01-01T00:00:00.000Z",
     "anhMinhHoa": "/public/data/huanluyenvien01.jpg",
     "namSinh": 1959,
-    "doiHinhId": "671e5a92f9d1b7f1c4b9a101",
-    "cauLacBoId": "671e5a92f9d1b7f1c4b9a201"
-  },
-   {
-    "hoVaTen": "Kim Sang-sic",
-    "email": "kim@example.com",
-    "tenDangNhap": "hlvkim",
-    "matKhau": "123456",
-    "vaiTro": "huanluyenvien",
-    "diaChi": "Busan, Hàn Quốc",
-    "namHanhNghe": "2005",
-    "cauLacBoCu": "Jeonbuk Hyundai Motors",
-    "quocTich": "Hàn Quốc",
-    "ngayGiaNhap": "2023-03-15T00:00:00.000Z",
-    "anhMinhHoa": "/public/data/huanluyenvien02.jpg",
-    "namSinh": 1976,
-    "doiHinhId": "671e5a92f9d1b7f1c4b9a102",
-    "cauLacBoId": "671e5a92f9d1b7f1c4b9a202"
-  },
-  {
-    "hoVaTen": "Philippe Troussier",
-    "email": "troussier@example.com",
-    "tenDangNhap": "hlvtroussier",
-    "matKhau": "123456",
-    "vaiTro": "huanluyenvien",
-    "diaChi": "Marseille, Pháp",
-    "namHanhNghe": "1983",
-    "cauLacBoCu": "Olympique de Marseille",
-    "quocTich": "Pháp",
-    "ngayGiaNhap": "2023-02-01T00:00:00.000Z",
-    "anhMinhHoa": "/public/data/huanluyenvien03.jpg",
-    "namSinh": 1955,
-    "doiHinhId": "671e5a92f9d1b7f1c4b9a103",
-    "cauLacBoId": "671e5a92f9d1b7f1c4b9a203"
+    "maDoiHinh": "DH1762567447235"
   }
-]
