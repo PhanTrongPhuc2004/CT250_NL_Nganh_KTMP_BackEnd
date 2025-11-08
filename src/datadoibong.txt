@@ -1,12 +1,15 @@
 {
-  "maDoiBong": "DB_HNFC",
+  "maDoiBong": "DB_HNFC_TRE",
   "tenDoiBong": "Hà Nội FC",
-  "sanNha": "Sân Hàng Đẫy",
-  "logoUrl": "https://tse1.mm.bing.net/th/id/OIP.o1l10k_Ss4Or-ku5XIIEBQHaHe"
-},
+  "sanNha": "Sân Hàng Đẫy"
+}
 {
-  "maDoiBong": "DB_HCMFC",
-  "tenDoiBong": "TP.HCM FC",
-  "sanNha": "Sân Thống Nhất",
-  "logoUrl": "https://tse2.mm.bing.net/th/id/OIP._uBuhy8wO6cgtVcbQaaRpwHaEJ"
+  "maDoiBong": "DB_HNFC_NAM",
+  "tenDoiBong": "Hà Nội FC",
+  "sanNha": "Sân Hàng Đẫy"
+}
+{
+  "maDoiBong": "DB_HNFC_NU",
+  "tenDoiBong": "Hà Nội FC",
+  "sanNha": "Sân Hàng Đẫy"
 }

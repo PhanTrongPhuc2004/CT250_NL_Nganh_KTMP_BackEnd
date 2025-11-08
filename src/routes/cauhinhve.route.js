@@ -64,7 +64,7 @@ router.delete('/id/:id',
 // [GET] /cauhinhve/trandau/:maTranDau - Lấy cấu hình vé theo mã trận đấu Cho phép người hâm mộ xem (không cần admin)
 router.get('/trandau/:maTranDau',
     authMiddleware,
-    roleMiddleware('admin', 'nguoihammo'),
+    // roleMiddleware('admin', 'nguoihammo'),
     CauHinhVeController.getByMaTranDau
 );
 

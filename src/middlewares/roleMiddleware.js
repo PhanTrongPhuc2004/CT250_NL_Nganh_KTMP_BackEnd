@@ -6,7 +6,7 @@
  * Dựa hoàn toàn vào req.user.vaiTro (đã có từ authMiddleware)
  */
 const roleMiddleware = (...allowedRoles) => {
-  console.log('goi rolemiddleware');
+  // console.log('goi rolemiddleware');
   return (req, res, next) => {
     // BƯỚC 1: Kiểm tra đăng nhập
     if (!req.user) {

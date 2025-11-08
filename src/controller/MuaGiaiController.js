@@ -1,4 +1,4 @@
-const muaGiaiService = require('../services/MuaGiaiService');
+const muaGiaiService = require('../services/muaGiaiService');
 const giaiDauService = require('../services/giaiDauService');
 
 class MuaGiaiController {

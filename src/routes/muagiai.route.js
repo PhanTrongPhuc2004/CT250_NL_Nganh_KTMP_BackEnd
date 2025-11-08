@@ -31,7 +31,7 @@ router.delete(
 router.get(
   '/ma/:maMuaGiai/trandau',
   authMiddleware,
-  roleMiddleware('admin'),
+  // roleMiddleware('admin',),
   MuaGiaiController.getTranDauByMaMuaGiai
 );
 module.exports = router;

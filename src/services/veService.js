@@ -74,40 +74,58 @@ class VeService {
     }
 
     async getVeByUser(userId) {
-        const ves = await Ve.find({ maNguoiDung: userId }).lean();
+        const ves = await Ve.find({ maNguoiDung: userId }).lean().sort({ ngayMua: -1 });
 
-        // JOIN THỦ CÔNG: Lấy thông tin trận đấu
         const result = await Promise.all(
             ves.map(async (ve) => {
-                const tranDau = await TranDau.findOne({ maTranDau: ve.maTranDau }).lean();
-                if (!tranDau) return ve;
-
-                // JOIN đội bóng
-                const doiNha = await DoiBong.findOne({ maDoiBong: tranDau.doiNha }).lean();
-                const doiKhach = await DoiBong.findOne({ maDoiBong: tranDau.doiKhach }).lean();
-
+                let doiNha = 'Chưa xác định';
+                let doiKhach = 'Chưa xác định';
+                let ngayBatDau = null;
+                let sanDau = 'Chưa xác định';
                 let qrCode = ve.qrCode;
+
+                // CHỈ JOIN TRẬN ĐẤU → KHÔNG JOIN ĐỘI BÓNG
+                const tranDau = await TranDau.findOne({ maTranDau: ve.maTranDau }).lean();
+
+                if (tranDau) {
+                    doiNha = tranDau.doiNha;     // ← Dùng MÃ đội nhà
+                    doiKhach = tranDau.doiKhach; // ← Dùng MÃ đội khách
+                    ngayBatDau = tranDau.ngayBatDau;
+                    sanDau = tranDau.diaDiem || 'Chưa xác định';
+                }
+
+                // SINH QR DỰA TRÊN MÃ ĐỘI (không cần tên)
                 if (!qrCode) {
                     const qrData = `
-    MÃ VÉ: ${ve.maVe}
-    TRẬN ĐẤU: ${doiNha?.tenDoiBong || 'N/A'} vs ${doiKhach?.tenDoiBong || 'N/A'}
-    THỜI GIAN: ${new Date(tranDau.ngayBatDau).toLocaleString('vi-VN')}
-    GHẾ: ${ve.khuVuc}${ve.hangGhe}-${ve.soGhe}
-    LOẠI VÉ: ${ve.loaiVe}
-    GIÁ: ${ve.giaVe.toLocaleString('vi-VN')}đ
-    TRẠNG THÁI: ${formatStatus(ve.trangThai)}
-  `.trim();
+MÃ VÉ: ${ve.maVe}
+TRẬN: ${doiNha} vs ${doiKhach}
+THỜI GIAN: ${ngayBatDau ? new Date(ngayBatDau).toLocaleString('vi-VN') : 'Chưa có'}
+SÂN: ${sanDau}
+GHẾ: ${ve.khuVuc}${ve.hangGhe}-${ve.soGhe}
+LOẠI: ${ve.loaiVe}
+GIÁ: ${ve.giaVe.toLocaleString()}đ
+TRẠNG THÁI: ${formatStatus(ve.trangThai)}
+                `.trim();
 
-                    qrCode = await QRCode.toDataURL(qrData, { width: 300 });
-                    await Ve.updateOne({ _id: ve._id }, { qrCode });
+                    try {
+                        qrCode = await QRCode.toDataURL(qrData, {
+                            width: 300,
+                            margin: 2,
+                            color: { dark: '#8B2C31', light: '#FFF' }
+                        });
+                        await Ve.updateOne({ _id: ve._id }, { qrCode });
+                    } catch (err) {
+                        console.error('Lỗi sinh QR:', err);
+                        qrCode = null;
+                    }
                 }
 
                 return {
                     ...ve,
-                    doiNha: doiNha ? doiNha.tenDoiBong : 'Chưa xác định',
-                    doiKhach: doiKhach ? doiKhach.tenDoiBong : 'Chưa xác định',
-                    ngayBatDau: tranDau.ngayBatDau,
-                    sanDau: tranDau.diaDiem,
+                    doiNha,     
+                    doiKhach,   
+                    ngayBatDau,
+                    sanDau,
                     qrCode
                 };
             })

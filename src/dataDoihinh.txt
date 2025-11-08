@@ -1,14 +1,14 @@
 [
   {
-    "doiHinh": "Đội A",
-    "cauLacBoId": "68ec9fbeb30242579d171395"
-  },
-  {
-    "doiHinh": "Đội B",
-    "cauLacBoId": "68ec9fbeb30242579d171395"
-  },
-  {
-    "doiHinh": "Đội C",
-    "cauLacBoId": "68ec9fbeb30242579d171395"
-  }
+  "tenDoiHinh": "Đôi hình 1", 
+  "maDoiBong": "DB_HNFC_NAM"
+},
+{
+  "tenDoiHinh": "Đôi hình 1", 
+  "maDoiBong": "DB_HNFC_NU"
+},
+{
+  "tenDoiHinh": "Đôi hình 1", 
+  "maDoiBong": "DB_HNFC_TRE"
+}
 ]
