@@ -39,12 +39,11 @@ function route(app) {
   app.use('/giaidau', giaiDauRouter);
   app.use('/muagiai', muaGiaiRouter);
   app.use('/thongbao', thongBaoRouter);
-  app.use('/giohang', thongBaoRouter);
+  app.use('/giohang', GioHangRouter);
   app.use('/doibong', doiBong);
   app.use('/cauhinhve', cauHinhVeRouter);
 
   app.use('/tintuc', Tintuc);
-
   app.use('/doihinh', doiHinhRouter);
 }
 

@@ -1,67 +1,52 @@
 const GioHang = require("../models/GioHang");
 
 class GioHangService {
-  // 🧾 Lấy giỏ hàng theo tên đăng nhập
-  async layGioHang(tenDangNhap) {
-    let gioHang = await GioHang.findOne({ tenDangNhap });
-    if (!gioHang) {
-      gioHang = new GioHang({ tenDangNhap, mucHangs: [] });
-      await gioHang.save();
-    }
-    return gioHang;
+  async getCartByUser(username) {
+    return await GioHang.findOne({ tenDangNhap: username });
   }
 
-  // ➕ Thêm sản phẩm vào giỏ hàng
-  async themVaoGio(tenDangNhap, sanPham) {
-    let gioHang = await GioHang.findOne({ tenDangNhap });
-    if (!gioHang) gioHang = new GioHang({ tenDangNhap, mucHangs: [] });
-
-    const tonTai = gioHang.mucHangs.find(
-      (mh) => mh.maSanPham.toString() === sanPham.maSanPham
-    );
-
-    if (tonTai) {
-      tonTai.soLuong += sanPham.soLuong;
+  async saveCart(username, cartItems) {
+    let gioHang = await GioHang.findOne({ tenDangNhap: username });
+    if (gioHang) {
+      gioHang.cartItems = cartItems;
     } else {
-      gioHang.mucHangs.push(sanPham);
+      gioHang = new GioHang({ tenDangNhap: username, cartItems });
+    }
+    return await gioHang.save();
+  }
+
+  async clearCart(username) {
+    return await GioHang.deleteOne({ tenDangNhap: username });
+  }
+
+  async addItem(username, newItem) {
+    let gioHang = await GioHang.findOne({ tenDangNhap: username });
+
+    if (!gioHang) {
+      gioHang = new GioHang({ tenDangNhap: username, cartItems: [newItem] });
+    } else {
+      const existing = gioHang.cartItems.find(
+        (item) => item.maSanPham.toString() === newItem.maSanPham
+      );
+
+      if (existing) {
+        existing.quantity += newItem.quantity;
+      } else {
+        gioHang.cartItems.push(newItem);
+      }
     }
 
-    await gioHang.save();
-    return gioHang;
+    return await gioHang.save();
   }
 
-  // 🗑️ Xóa 1 sản phẩm
-  async xoaMucHang(tenDangNhap, maSanPham) {
-    const gioHang = await GioHang.findOne({ tenDangNhap });
-    if (!gioHang) throw new Error("Không tìm thấy giỏ hàng");
+  async removeItem(username, maSanPham) {
+    const gioHang = await GioHang.findOne({ tenDangNhap: username });
+    if (!gioHang) return null;
 
-    gioHang.mucHangs = gioHang.mucHangs.filter(
-      (mh) => mh.maSanPham.toString() !== maSanPham
+    gioHang.cartItems = gioHang.cartItems.filter(
+      (item) => item.maSanPham.toString() !== maSanPham
     );
-
-    await gioHang.save();
-    return gioHang;
-  }
-
-  // 🔄 Cập nhật số lượng sản phẩm
-  async capNhatSoLuong(tenDangNhap, maSanPham, soLuong) {
-    const gioHang = await GioHang.findOne({ tenDangNhap });
-    if (!gioHang) throw new Error("Không tìm thấy giỏ hàng");
-
-    const mucHang = gioHang.mucHangs.find(
-      (mh) => mh.maSanPham.toString() === maSanPham
-    );
-    if (!mucHang) throw new Error("Không tìm thấy sản phẩm trong giỏ hàng");
-
-    mucHang.soLuong = soLuong;
-    await gioHang.save();
-    return gioHang;
-  }
-
-  // 🧹 Xóa toàn bộ giỏ hàng
-  async xoaTatCa(tenDangNhap) {
-    await GioHang.findOneAndUpdate({ tenDangNhap }, { mucHangs: [] });
-    return { message: "Đã xóa toàn bộ giỏ hàng" };
+    return await gioHang.save();
   }
 }
 
