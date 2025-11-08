@@ -69,6 +69,37 @@ async function filterByNationality(nationality) {
   return await Cauthu.find({ nationality });
 }
 
+const getCauThuByMaDoiHinh = async (maDoiHinh) => {
+  return await Cauthu.find({ maDoiHinh });
+};
+
+const updateDoiHinh = async (cauThuId, data) => {
+  return await Cauthu.findOneAndUpdate(
+    {
+      _id: cauThuId,
+    },
+    {
+      $set: data,
+    },
+    {
+      new: true,
+    }
+  );
+};
+
+const deleteDoiHinh = async (cauThuId, doiHinhId) => {
+  return await Cauthu.findOneAndUpdate(
+    {
+      _id: cauThuId,
+    },
+    {
+      $set: { maDoiHinh: null },
+    },
+    {
+      new: true,
+    }
+  );
+};
 module.exports = {
   getAllCauthus,
   getCauthuById,
@@ -78,4 +109,7 @@ module.exports = {
   searchCauthus,
   filterByPosition,
   filterByNationality,
+  getCauThuByMaDoiHinh,
+  updateDoiHinh,
+  deleteDoiHinh,
 };

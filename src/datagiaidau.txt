@@ -1,0 +1,5 @@
+{
+  "tenGiaiDau": "Ngoại Hạng Anh",
+  "namThanhLap": 2000,
+  "moTa": "Giải bóng đá chuyên nghiệp cao nhất nước Anh"
+}

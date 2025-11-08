@@ -1,5 +1,4 @@
-function genrateCode(startSymbol) {
+function generateCode(startSymbol) {
   return `${startSymbol}${Date.now()}`;
 }
-
-module.exports = genrateCode;
+module.exports = generateCode;

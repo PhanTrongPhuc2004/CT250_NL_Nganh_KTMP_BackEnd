@@ -1,36 +1,45 @@
+// src/services/muaGiaiService.js
 const MuaGiai = require('../models/MuaGiai.model');
+const TranDau = require('../models/TranDau.model');
+class MuaGiaiService {
+  async createMuaGiai(data) {
+    return await MuaGiai.create(data);
+  }
 
-// Tạo một mùa giải mới
-const createMuaGiai = async (data) => {
-  const muaGiai = new MuaGiai(data);
-  return await muaGiai.save();
-};
+  async getAllMuaGiai() {
+    return await MuaGiai.find().sort({ ngayBatDau: 1 });
+  }
 
-// Lấy tất cả các mùa giải
-const getAllMuaGiais = async () => {
-  // Sắp xếp để mùa giải mới nhất hiển thị đầu tiên
-  return await MuaGiai.find().sort({ namBatDau: -1 });
-};
+  async getMuaGiaiByMa(maGiaiDau) {
+    return await MuaGiai.findOne({ maGiaiDau });
+  }
 
-// Lấy thông tin mùa giải theo ID
-const getMuaGiaiById = async (id) => {
-  return await MuaGiai.findById(id);
-};
+  async getMuaGiaiById(id) {
+    return await MuaGiai.findById(id);
+  }
 
-// Cập nhật thông tin mùa giải theo ID
-const updateMuaGiai = async (id, data) => {
-  return await MuaGiai.findByIdAndUpdate(id, data, { new: true, runValidators: true });
-};
+  async updateMuaGiaiByMa(maMuaGiai, data) {
+    return await MuaGiai.findOneAndUpdate({ maMuaGiai }, data, { new: true });
+  }
 
-// Xóa mùa giải theo ID
-const deleteMuaGiai = async (id) => {
-  return await MuaGiai.findByIdAndDelete(id);
-};
+  async updateMuaGiaiById(id, data) {
+    return await MuaGiai.findByIdAndUpdate(id, data, { new: true });
+  }
 
-module.exports = {
-  createMuaGiai,
-  getAllMuaGiais,
-  getMuaGiaiById,
-  updateMuaGiai,
-  deleteMuaGiai,
-};
+  async deleteMuaGiaiByMa(maMuaGiai) {
+    return await MuaGiai.findOneAndDelete({ maMuaGiai });
+  }
+
+  async deleteMuaGiaiById(id) {
+    return await MuaGiai.findByIdAndDelete(id);
+  }
+  async getTranDauByMaMuaGiai(maMuaGiai) {
+    console.log('lay danh sach tran dau co ma mua giai', maMuaGiai);
+    return await TranDau.find({ maMuaGiai });
+  }
+  async getMuaGiaiByMaGiaiDau(maGiaiDau) {
+    return await MuaGiai.find({ maGiaiDau });
+  }
+}
+
+module.exports = new MuaGiaiService();

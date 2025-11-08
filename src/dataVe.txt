@@ -1,0 +1,7 @@
+{
+  "maTranDau": "___",
+  "maNguoiDung": "6900b92fb95ff4eadb468efe",
+  "loaiVe": "VIP",
+  "khuVuc": "A",
+  "hangGhe": "5",
+}

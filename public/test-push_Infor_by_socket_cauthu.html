@@ -1,0 +1,64 @@
+<!-- http://localhost:5000/test/test-push_Infor_by_socket_cauthu.html -->
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Test Cầu thủ</title>
+    <script src="https://cdn.socket.io/4.7.2/socket.io.min.js"></script>
+    <style>
+        body {
+            font-family: Arial;
+            padding: 20px;
+            background: #fff3e0;
+        }
+
+        .log {
+            padding: 12px;
+            margin: 8px 0;
+            border-radius: 8px;
+        }
+
+        .congkhai {
+            background: #ffccbc;
+            border-left: 5px solid #e64a19;
+        }
+
+        .noibo {
+            background: #c8e6c9;
+            border-left: 5px solid #388e3c;
+        }
+
+        .success {
+            background: #e8f5e9;
+        }
+    </style>
+</head>
+
+<body>
+    <h1>CẦU THỦ (ND002)</h1>
+    <div id="logs"></div>
+
+    <script>
+        const TOKEN = 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJtYU5ndW9pRHVuZyI6Ik5EMTc2MTY1NTAyNDgxMiIsImlhdCI6MTc2MjM2MDU2MSwiZXhwIjoxNzYyMzY0MTYxfQ.DP76gpVsxh4LT_j9X_sl6K04ZGTBk6qFWwI1UwdFPW0'; // DÁN TOKEN CẦU THỦ
+        const MA_NGUOI_DUNG = 'ND002';
+
+        const socket = io('http://localhost:5000', { auth: { token: TOKEN } });
+        const logs = document.getElementById('logs');
+
+        const addLog = (msg, type = '') => {
+            const div = document.createElement('div');
+            div.className = `log ${type}`;
+            div.innerHTML = `<b>${new Date().toLocaleTimeString()}:</b> ${msg}`;
+            logs.appendChild(div);
+            logs.scrollTop = logs.scrollHeight;
+        };
+
+        socket.emit('join', MA_NGUOI_DUNG);
+
+        socket.on('connect', () => addLog('Kết nối thành công!', 'success'));
+        socket.on('thongBaoMoiCongKhai', (tb) => addLog(`CÔNG KHAI: ${tb.tieuDe}`, 'congkhai'));
+        socket.on('thongBaoMoiNoiBo', (tb) => addLog(`NỘI BỘ: ${tb.tieuDe}`, 'noibo'));
+    </script>
+</body>
+
+</html>

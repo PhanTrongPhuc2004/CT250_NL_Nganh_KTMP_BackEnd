@@ -13,9 +13,10 @@ const getAdminById = async (id) => {
 };
 
 const updateAdmin = async (id, updateData) => {
-  const admin = await Admin.findById(id);
+  console.log('update', updateData);
+  const admin = await Admin.findByIdAndUpdate(id, updateData, { new: true });
+
   if (!admin) return null;
-  await admin.update(updateData);
   return admin;
 };
 

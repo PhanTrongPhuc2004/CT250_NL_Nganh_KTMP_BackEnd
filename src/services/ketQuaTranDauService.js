@@ -39,6 +39,7 @@ const updateKetQuaTranDau = async (id, updateData) => {
   try {
     const updatedKetQuaTranDau = await KetQuaTranDau.findByIdAndUpdate(id, updateData, {
       new: true,
+      upsert: true, // nếu chưa có -> tạo mới luôn
     });
     if (!updatedKetQuaTranDau) {
       throw new Error('KetQuaTranDau not found');

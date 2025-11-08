@@ -1,53 +1,38 @@
+// src/services/giaiDauService.js
 const GiaiDau = require('../models/GiaiDau.model');
-const TranDau = require('../models/TranDau.model');
-// 🟢 Tạo một giải đấu mới
-const createGiaiDau = async (data) => {
-  const giaiDau = new GiaiDau(data);
-  return await giaiDau.save();
-};
 
-// 🟢 Lấy tất cả các giải đấu (populate đúng trường muaGiaiId)
-const getAllGiaiDaus = async () => {
-  return await GiaiDau.find()
-    .populate('muaGiaiId') // ✅ đúng với schema
-    .sort({ tenGiaiDau: 1 });
-};
+class GiaiDauService {
+  async createGiaiDau(data) {
+    return await GiaiDau.create(data);
+  }
 
-// 🟢 Lấy thông tin giải đấu theo ID
-const getGiaiDauById = async (id) => {
-  return await GiaiDau.findById(id).populate('muaGiaiId');
-};
+  async getAllGiaiDau() {
+    return await GiaiDau.find().sort({ createdAt: -1 });
+  }
 
-// 🟢 Cập nhật thông tin giải đấu
-const updateGiaiDau = async (id, data) => {
-  return await GiaiDau.findByIdAndUpdate(id, data, {
-    new: true,
-    runValidators: true,
-  });
-};
+  async getGiaiDauByMa(maGiaiDau) {
+    return await GiaiDau.findOne({ maGiaiDau });
+  }
 
-// 🟢 Xóa giải đấu theo ID
-const deleteGiaiDau = async (id) => {
-  return await GiaiDau.findByIdAndDelete(id);
-};
+  async getGiaiDauById(id) {
+    return await GiaiDau.findById(id);
+  }
 
-const getMatchesByGiaiDauId = async (giaiDauId) => {
-  const trandau = await TranDau.find({ giaiDauId });
-  console.log('giai dau id', giaiDauId);
-  console.log('trandau service', trandau);
-  return trandau;
-};
+  async updateGiaiDauByMa(maGiaiDau, data) {
+    return await GiaiDau.findOneAndUpdate({ maGiaiDau }, data, { new: true });
+  }
 
-const getGiaiDausByMuaGiaiId = async (muaGiaiId) => {
-  return await GiaiDau.find({ muaGiaiId }).sort({ tenGiaiDau: 1 });
-};
+  async updateGiaiDauById(id, data) {
+    return await GiaiDau.findByIdAndUpdate(id, data, { new: true });
+  }
 
-module.exports = {
-  createGiaiDau,
-  getAllGiaiDaus,
-  getGiaiDauById,
-  updateGiaiDau,
-  deleteGiaiDau,
-  getMatchesByGiaiDauId,
-  getGiaiDausByMuaGiaiId,
-};
+  async deleteGiaiDauByMa(maGiaiDau) {
+    return await GiaiDau.findOneAndDelete({ maGiaiDau });
+  }
+
+  async deleteGiaiDauById(id) {
+    return await GiaiDau.findByIdAndDelete(id);
+  }
+}
+
+module.exports = new GiaiDauService();

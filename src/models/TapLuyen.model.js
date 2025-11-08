@@ -1,50 +1,38 @@
+// src/models/LichTapLuyen.model.js
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 
-const LichTapLuyenSchema = new mongoose.Schema(
-  {
-    maLichTapLuyen: {
-      type: String,
-      required: true,
-      unique: true,
-      default: () => generateCode('LTL'),
-    },
-    diaDiem: {
-      type: String,
-      required: true,
-      trim: true,
-    },
-    thoiGianTapLuyen: {
-      type: String, // dạng "07:30" hoặc "18:00"
-      required: true,
-      trim: true,
-    },
-    ngayDienRa: {
-      type: Date,
-      required: true,
-    },
-    noiDung: {
-      type: String,
-      required: false,
-      trim: true,
-    },
-    tranDauId: {
-      type: mongoose.Schema.Types.ObjectId,
-      ref: 'TranDau', // tham chiếu đến model TranDau
-      required: true,
-    },
+const LichTapLuyenSchema = new mongoose.Schema({
+  maLichTapLuyen: {
+    type: String,
+    required: true,
+    unique: true,
+    default: () => generateCode('LTL'),
   },
-  {
-    timestamps: true, // tự động thêm createdAt & updatedAt
-  }
-);
+  maMuaGiai: {
+    type: String,
+    ref: 'MuaGiai',
+    required: true,
+  },
+  maDoiBong: { 
+    type: String,
+    ref: 'DoiBong',
+    required: true,
+  },
+  maTranDau: {
+    type: String,
+    ref: 'TranDau',
+    required: true,
+  },
+  diaDiem: { type: String, required: true, trim: true },
+  ngayBatDau: { type: Date, required: true },
+  thoiGian: { type: String, required: true, trim: true },
+  noiDung: { type: String, trim: true },
+}, { timestamps: true });
 
-// 🧩 Tự sinh mã nếu chưa có
 LichTapLuyenSchema.pre('save', function (next) {
-  if (!this.maLichTapLuyen) {
-    this.maLichTapLuyen = generateCode('LTL');
-  }
+  if (!this.maLichTapLuyen) this.maLichTapLuyen = generateCode('LTL');
   next();
 });
 
-module.exports = mongoose.models.LichTapLuyen || mongoose.model('TapLuyen', LichTapLuyenSchema);
+module.exports = mongoose.model('LichTapLuyen', LichTapLuyenSchema);

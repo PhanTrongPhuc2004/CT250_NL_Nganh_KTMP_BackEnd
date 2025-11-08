@@ -1,16 +1,12 @@
 [
-  {
-    "diaDiem": "Sân Quận 1",
-    "thoiGianTapLuyen": "16:30",
-    "ngayDienRa": "2025-10-17T00:00:00.000Z",
-    "noiDung": "Khởi động chiến thuật phòng ngự phản công",
-    "tranDauId": "68eca683f8bb466ad2ef8dec"
-  },
-  {
-    "diaDiem": "Sân Quận 1",
-    "thoiGianTapLuyen": "17:00",
-    "ngayDienRa": "2025-10-18T00:00:00.000Z",
-    "noiDung": "Luyện đá phạt góc và tình huống cố định",
-    "tranDauId": "68eca683f8bb466ad2ef8dec"
-  }
+{
+  "maMuaGiai": "___",
+  "maDoiBong": "DB_HNFC",
+  "maTranDau": "___",
+  "diaDiem": "Sân tập CLB Hà Nội",
+  "ngayBatDau": "2025-11-13T00:00:00.000Z",
+  "thoiGian": "06:00 - 10:00",
+  "noiDung": "Tập chiến thuật phòng ngự"
+}
+
 ]

@@ -1,45 +1,38 @@
-const HopDong = require("../models/hopdong");
+const HopDong = require("../models/HopDong");
 
-/**
- * Tạo hợp đồng mới
- */
-async function createHopDong(data) {
-  const hopdong = new HopDong(data);
-  return await hopdong.save();
-}
+const HopDongService = {
+  async getAll() {
+    return await HopDong.find().sort({ createdAt: -1 });
+  },
 
-/**
- * Lấy danh sách tất cả hợp đồng
- */
-async function getAllHopDong() {
-  return await HopDong.find().sort({ createdAt: -1 });
-}
+  async getById(id) {
+    return await HopDong.findById(id);
+  },
 
-/**
- * Lấy chi tiết hợp đồng theo ID
- */
-async function getHopDongById(id) {
-  return await HopDong.findById(id);
-}
+  async create(data) {
+    // Kiểm tra trùng mã hợp đồng
+    const existed = await HopDong.findOne({ maHopDong: data.maHopDong });
+    if (existed) throw new Error("Mã hợp đồng đã tồn tại!");
+    
+    const hopDong = new HopDong(data);
+    return await hopDong.save();
+  },
 
-/**
- * Cập nhật hợp đồng theo ID
- */
-async function updateHopDong(id, data) {
-  return await HopDong.findByIdAndUpdate(id, data, { new: true });
-}
+  async update(id, data) {
+    const hopDong = await HopDong.findByIdAndUpdate(id, data, { new: true });
+    if (!hopDong) throw new Error("Không tìm thấy hợp đồng!");
+    return hopDong;
+  },
 
-/**
- * Xóa hợp đồng theo ID
- */
-async function deleteHopDong(id) {
-  return await HopDong.findByIdAndDelete(id);
-}
+  async delete(id) {
+    const hopDong = await HopDong.findByIdAndDelete(id);
+    if (!hopDong) throw new Error("Không tìm thấy hợp đồng để xóa!");
+    return hopDong;
+  },
 
-module.exports = {
-  createHopDong,
-  getAllHopDong,
-  getHopDongById,
-  updateHopDong,
-  deleteHopDong,
+  async getByStatus(trangThai) {
+    return await HopDong.find({ trangThai });
+  },
 };
+
+module.exports = HopDongService;

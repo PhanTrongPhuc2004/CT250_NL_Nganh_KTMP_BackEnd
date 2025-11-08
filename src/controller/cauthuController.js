@@ -1,10 +1,17 @@
-const cauthuService = require("../services/cauthuService");
+const cauthuService = require('../services/cauthuService');
 
 // GET /api/cauthus
 exports.getAllCauthus = async (req, res) => {
+  const maDoiHinh = req.query.maDoiHinh;
+  console.log(maDoiHinh);
   try {
-    const cauthus = await cauthuService.getAllCauthus();
-    res.json(cauthus);
+    if (maDoiHinh) {
+      const cauthus = await cauthuService.getCauThuByMaDoiHinh(maDoiHinh);
+      res.json(cauthus);
+    } else {
+      const cauthus = await cauthuService.getAllCauthus();
+      res.json(cauthus);
+    }
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -14,7 +21,7 @@ exports.getAllCauthus = async (req, res) => {
 exports.getCauthuById = async (req, res) => {
   try {
     const cauthu = await cauthuService.getCauthuById(req.params.id);
-    if (!cauthu) return res.status(404).json({ message: "Cầu thủ không tồn tại" });
+    if (!cauthu) return res.status(404).json({ message: 'Cầu thủ không tồn tại' });
     res.json(cauthu);
   } catch (err) {
     res.status(500).json({ error: err.message });
@@ -25,7 +32,7 @@ exports.getCauthuById = async (req, res) => {
 exports.createCauthu = async (req, res) => {
   try {
     const created = await cauthuService.createCauthu(req.body);
-    res.status(201).json({ message: "Đã tạo cầu thủ mới", cauthu: created });
+    res.status(201).json({ message: 'Đã tạo cầu thủ mới', cauthu: created });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -35,8 +42,8 @@ exports.createCauthu = async (req, res) => {
 exports.updateCauthu = async (req, res) => {
   try {
     const updated = await cauthuService.updateCauthu(req.params.id, req.body);
-    if (!updated) return res.status(404).json({ message: "Không tìm thấy cầu thủ để cập nhật" });
-    res.json({ message: "Đã cập nhật cầu thủ", cauthu: updated });
+    if (!updated) return res.status(404).json({ message: 'Không tìm thấy cầu thủ để cập nhật' });
+    res.json({ message: 'Đã cập nhật cầu thủ', cauthu: updated });
   } catch (err) {
     res.status(400).json({ error: err.message });
   }
@@ -46,8 +53,8 @@ exports.updateCauthu = async (req, res) => {
 exports.deleteCauthu = async (req, res) => {
   try {
     const deleted = await cauthuService.deleteCauthu(req.params.id);
-    if (!deleted) return res.status(404).json({ message: "Không tìm thấy cầu thủ để xóa" });
-    res.json({ message: "Đã xóa cầu thủ thành công" });
+    if (!deleted) return res.status(404).json({ message: 'Không tìm thấy cầu thủ để xóa' });
+    res.json({ message: 'Đã xóa cầu thủ thành công' });
   } catch (err) {
     res.status(500).json({ error: err.message });
   }
@@ -56,7 +63,7 @@ exports.deleteCauthu = async (req, res) => {
 // GET /api/cauthus/search?keyword=...
 exports.searchCauthus = async (req, res) => {
   try {
-    const keyword = req.query.keyword || "";
+    const keyword = req.query.keyword || '';
     const results = await cauthuService.searchCauthus(keyword);
     res.json(results);
   } catch (err) {
@@ -83,5 +90,30 @@ exports.filterByNationality = async (req, res) => {
     res.json(results);
   } catch (err) {
     res.status(500).json({ error: err.message });
+  }
+};
+
+exports.updateDoiHinh = async (req, res) => {
+  console.log('cap nhat doi hinh cho cau thu', req.body);
+  try {
+    const cauThuId = req.params.id;
+    const cauthuUpdate = await cauthuService.updateDoiHinh(cauThuId, req.body);
+    if (!cauthuUpdate) {
+      console.log('cap nhat khong thanh cong');
+    }
+    res.json(cauthuUpdate);
+  } catch (error) {
+    console.log(error);
+  }
+};
+
+exports.deleteDoiHinh = async (req, res) => {
+  try {
+    const cauThuId = req.params.cauthuId;
+    const doiHinhId = req.params.doiHinhId;
+    const cauthuUpdate = await cauthuService.deleteDoiHinh(cauThuId, doiHinhId);
+    res.json(cauthuUpdate);
+  } catch (error) {
+    console.log(error);
   }
 };

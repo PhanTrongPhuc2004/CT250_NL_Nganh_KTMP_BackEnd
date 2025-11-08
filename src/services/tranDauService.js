@@ -1,35 +1,38 @@
+// src/services/tranDauService.js
 const TranDau = require('../models/TranDau.model');
 
-// Create
-async function createTranDau(data) {
-  const tranDau = new TranDau(data);
-  return await tranDau.save();
+class TranDauService {
+  async createTranDau(data) {
+    return await TranDau.create(data);
+  }
+
+  async getAllTranDau() {
+    return await TranDau.find().sort({ ngayBatDau: 1 });
+  }
+
+  async getTranDauByMa(maTranDau) {
+    return await TranDau.findOne({ maTranDau });
+  }
+
+  async getTranDauById(id) {
+    return await TranDau.findById(id);
+  }
+
+  async updateTranDauByMa(maTranDau, data) {
+    return await TranDau.findOneAndUpdate({ maTranDau }, data, { new: true });
+  }
+
+  async updateTranDauById(id, data) {
+    return await TranDau.findByIdAndUpdate(id, data, { new: true });
+  }
+
+  async deleteTranDauByMa(maTranDau) {
+    return await TranDau.findOneAndDelete({ maTranDau });
+  }
+
+  async deleteTranDauById(id) {
+    return await TranDau.findByIdAndDelete(id);
+  }
 }
 
-// Read all
-async function getAllTranDaus() {
-  return await TranDau.find();
-}
-
-// Read by id
-async function getTranDauById(id) {
-  return await TranDau.findById(id);
-}
-
-// Update
-async function updateTranDau(id, data) {
-  return await TranDau.findByIdAndUpdate(id, data, { new: true });
-}
-
-// Delete
-async function deleteTranDau(id) {
-  return await TranDau.findByIdAndDelete(id);
-}
-
-module.exports = {
-  createTranDau,
-  getAllTranDaus,
-  getTranDauById,
-  updateTranDau,
-  deleteTranDau,
-};
+module.exports = new TranDauService();

@@ -35,4 +35,40 @@
     "moTa": "Khăn choàng cổ màu đỏ, in khẩu hiệu cổ vũ đội tuyển Việt Nam.",
    "anhMinhHoa": "public/data/qua06.jpg"
   }
+    {
+    "tenQuaLuuNiem": "Bình nước thể thao đội tuyển",
+    "gia": 150000,
+    "moTa": "Bình nước inox cao cấp, in logo đội tuyển và tên cầu thủ yêu thích.",
+    "anhMinhHoa": "public/data/qua07.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Túi thể thao đội bóng",
+    "gia": 320000,
+    "moTa": "Túi thể thao vải dù chống nước, in logo câu lạc bộ và màu sắc chủ đạo.",
+    "anhMinhHoa": "public/data/qua08.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Áo khoác cổ động viên",
+    "gia": 450000,
+    "moTa": "Áo khoác gió chống nắng, in khẩu hiệu cổ vũ đội tuyển Việt Nam.",
+    "anhMinhHoa": "public/data/qua09.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Huy hiệu đội tuyển quốc gia",
+    "gia": 60000,
+    "moTa": "Huy hiệu nhỏ bằng kim loại, mạ vàng, in hình cờ Việt Nam và biểu tượng đội tuyển.",
+    "anhMinhHoa": "public/data/qua10.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Poster cầu thủ nổi tiếng",
+    "gia": 80000,
+    "moTa": "Poster khổ lớn in hình cầu thủ và huấn luyện viên yêu thích, giấy cán bóng cao cấp.",
+    "anhMinhHoa": "public/data/qua11.jpg"
+  },
+  {
+    "tenQuaLuuNiem": "Vòng tay cổ vũ",
+    "gia": 40000,
+    "moTa": "Vòng tay cao su dẻo, in khẩu hiệu và màu sắc đội tuyển quốc gia.",
+    "anhMinhHoa": "public/data/qua12.jpg"
+  }
 ]

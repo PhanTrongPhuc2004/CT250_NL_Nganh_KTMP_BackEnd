@@ -1,79 +1,38 @@
-const TapLuyen = require('../models/TapLuyen.model');
+// src/services/tapLuyenService.js
+const LichTapLuyen = require('../models/TapLuyen.model');
 
-// Service để tạo mới một buổi tập luyện
-const createTapLuyen = async (tapLuyenData) => {
-  try {
-    const newTapLuyen = new TapLuyen(tapLuyenData);
-    await newTapLuyen.save();
-    return newTapLuyen;
-  } catch (error) {
-    throw new Error('Error creating tap luyen: ' + error.message);
+class LichTapService {
+  async createLichTap(data) {
+    return await LichTapLuyen.create(data);
   }
-};
 
-// Service để lấy tất cả các buổi tập luyện
-const getAllTapLuyen = async () => {
-  try {
-    const tapLuyenList = await TapLuyen.find();
-    return tapLuyenList;
-  } catch (error) {
-    throw new Error('Error getting all tap luyen: ' + error.message);
+  async getAllLichTap() {
+    return await LichTapLuyen.find().sort({ ngayBatDau: 1 });
   }
-};
 
-// Service để lấy một buổi tập luyện theo ID
-const getTapLuyenById = async (tapLuyenId) => {
-  try {
-    const tapLuyen = await TapLuyen.findById(tapLuyenId);
-    if (!tapLuyen) {
-      throw new Error('Tap luyen not found');
-    }
-    return tapLuyen;
-  } catch (error) {
-    throw new Error('Error getting tap luyen by ID: ' + error.message);
+  async getLichTapByMa(maLichTapLuyen) {
+    return await LichTapLuyen.findOne({ maLichTapLuyen });
   }
-};
 
-// Service để cập nhật một buổi tập luyện
-const updateTapLuyen = async (tapLuyenId, updateData) => {
-  try {
-    const updatedTapLuyen = await TapLuyen.findByIdAndUpdate(tapLuyenId, updateData, { new: true });
-    if (!updatedTapLuyen) {
-      throw new Error('Tap luyen not found');
-    }
-    return updatedTapLuyen;
-  } catch (error) {
-    throw new Error('Error updating tap luyen: ' + error.message);
+  async getLichTapById(id) {
+    return await LichTapLuyen.findById(id);
   }
-};
 
-// Service để xóa một buổi tập luyện
-const deleteTapLuyen = async (tapLuyenId) => {
-  try {
-    const deletedTapLuyen = await TapLuyen.findByIdAndDelete(tapLuyenId);
-    if (!deletedTapLuyen) {
-      throw new Error('Tap luyen not found');
-    }
-    return deletedTapLuyen;
-  } catch (error) {
-    throw new Error('Error deleting tap luyen: ' + error.message);
+  async updateLichTapByMa(maLichTapLuyen, data) {
+    return await LichTapLuyen.findOneAndUpdate({ maLichTapLuyen }, data, { new: true });
   }
-};
-//get lich tap theo id tran dau
-const getLichTapByTranDauId = async (tranDauId) => {
-  try {
-    const lichTap = await TapLuyen.find({ tranDauId: tranDauId });
-    return lichTap;
-  } catch (error) {
-    throw new Error('Error getting lich tap by tran dau ID: ' + error.message);
+
+  async updateLichTapById(id, data) {
+    return await LichTapLuyen.findByIdAndUpdate(id, data, { new: true });
   }
-};
-module.exports = {
-  createTapLuyen,
-  getAllTapLuyen,
-  getTapLuyenById,
-  updateTapLuyen,
-  deleteTapLuyen,
-  getLichTapByTranDauId,
-};
-//
+
+  async deleteLichTapByMa(maLichTapLuyen) {
+    return await LichTapLuyen.findOneAndDelete({ maLichTapLuyen });
+  }
+
+  async deleteLichTapById(id) {
+    return await LichTapLuyen.findByIdAndDelete(id);
+  }
+}
+
+module.exports = new LichTapService();

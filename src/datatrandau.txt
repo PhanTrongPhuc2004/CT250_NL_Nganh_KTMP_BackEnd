@@ -1,32 +1,10 @@
 [
-  {
-    "diaDiem": "Sân vận động Mỹ Đình, Hà Nội",
-    "ngayDienRa": "2025-10-20",
-    "capDau": ["Hà Nội FC", "HAGL"],
-    "thoiGianDienRa": "19:30"
-  },
-  {
-    "diaDiem": "Sân Thống Nhất, TP. HCM",
-    "ngayDienRa": "2025-10-25",
-    "capDau": ["TP. HCM", "Bình Dương"],
-    "thoiGianDienRa": "18:00"
-  },
-  {
-    "diaDiem": "Sân Lạch Tray, Hải Phòng",
-    "ngayDienRa": "2025-11-01",
-    "capDau": ["Hải Phòng", "Than Quảng Ninh"],
-    "thoiGianDienRa": "17:00"
-  },
-  {
-    "diaDiem": "Sân Cẩm Phả, Quảng Ninh",
-    "ngayDienRa": "2025-11-05",
-    "capDau": ["Than Quảng Ninh", "Nam Định"],
-    "thoiGianDienRa": "20:00"
-  },
-  {
-    "diaDiem": "Sân Hòa Xuân, Đà Nẵng",
-    "ngayDienRa": "2025-11-10",
-    "capDau": ["SHB Đà Nẵng", "SLNA"],
-    "thoiGianDienRa": "19:00"
-  }
+{
+  "maMuaGiai": "___", // Dùng mã thật
+  "diaDiem": "Sân Hàng Đẫy",
+  "ngayBatDau": "2025-11-15T12:00:00.000Z",
+  "thoiGian": "19:00",
+  "doiNha": "DB_HNFC",
+  "doiKhach": "DB_HCMFC"
+}
 ]

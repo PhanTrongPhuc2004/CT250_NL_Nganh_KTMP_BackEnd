@@ -65,8 +65,8 @@ const cauthuSchema = new mongoose.Schema({
     type: String, // lưu đường dẫn ảnh hoặc URL
     required: false,
   },
-  doiHinhId: {
-    type: mongoose.Schema.Types.ObjectId,
+  maDoiHinh: {
+    type: String,
     ref: 'DoiHinh', // tham chiếu tới collection Lineup
     required: true, // nếu cầu thủ nào cũng phải thuộc 1 đội hình
   },
