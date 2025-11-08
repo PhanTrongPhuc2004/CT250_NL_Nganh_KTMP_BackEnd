@@ -7,7 +7,7 @@ const DoiBongSchema = new mongoose.Schema(
       type: String,
       required: true,
       unique: true,
-      default: generateCode('DB'),
+      default: () => generateCode('DB'),
     },
     gioiTinh:{
       type: String,
@@ -24,7 +24,7 @@ const DoiBongSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    logoURL:{
+    anhMinhHoa:{
       type: String,
       required: false,
       trim: true,

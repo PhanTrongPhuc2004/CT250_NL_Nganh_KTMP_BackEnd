@@ -3,6 +3,7 @@ const doiBongService = require('../services/doiBongService');
 
 class DoiBongController {
     async createDoiBong(req, res) {
+        console.log('tao doi bong', req.body);
         try {
             const data = req.body;
             const doiBong = await doiBongService.createDoiBong(data);
