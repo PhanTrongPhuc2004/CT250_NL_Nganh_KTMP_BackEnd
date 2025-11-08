@@ -1,3 +1,4 @@
+// src/models/DoiHinh.model.js
 const { default: mongoose } = require('mongoose');
 const generateCode = require('../utils/generateCode');
 const Schema = require('mongoose').Schema;

@@ -19,9 +19,8 @@ const DoiBongSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    logoUrl: {
-      type: String,
-      trim: true,
+    namThanhLap: {
+      type: Number,
     },
   },
   { timestamps: true }

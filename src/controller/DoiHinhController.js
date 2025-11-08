@@ -1,4 +1,5 @@
 const doiHinhService = require('../services/doiHinhService');
+const DoiHinh = require('../models/DoiHinh.model');
 
 class DoiHinhController {
   async createDoiHinh(req, res) {
@@ -86,6 +87,12 @@ class DoiHinhController {
     } catch (error) {
       console.log(error);
     }
+  }
+
+  async getDoiHinhByMaDoiBong(req, res) {
+    const { maDoiBong } = req.params;
+    const list = await DoiHinh.find({ maDoiBong });
+    res.json(list);
   }
 }
 
