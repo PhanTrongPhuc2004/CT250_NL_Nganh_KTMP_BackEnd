@@ -1,4 +1,5 @@
 const doiHinhService = require('../services/doiHinhService');
+const DoiHinh = require('../models/DoiHinh.model');
 
 class DoiHinhController {
   async createDoiHinh(req, res) {
