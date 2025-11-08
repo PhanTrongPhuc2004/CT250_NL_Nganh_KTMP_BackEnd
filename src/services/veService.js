@@ -48,6 +48,7 @@ class VeService {
 
         if (!soGhe) throw new Error('Không còn ghế trống');
 
+        // CHỈ LƯU maTranDau → ĐỦ ĐỂ JOIN SAU NÀY
         const ve = await Ve.create({
             maTranDau,
             maNguoiDung: userId,

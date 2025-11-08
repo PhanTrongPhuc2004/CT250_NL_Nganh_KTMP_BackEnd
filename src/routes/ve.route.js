@@ -21,4 +21,8 @@ router.get('/user', authMiddleware, VeController.getVeByUser);
 router.get('/ma/:maVe', authMiddleware, VeController.getVeByMa);
 router.get('/id/:id', authMiddleware, VeController.getVeById);
 
+// THỐNG KÊ DOANH THU VÉ (MỚI)
+router.get('/thongke', authMiddleware, roleMiddleware('admin'), VeController.thongKeDoanhThu);
+router.get('/thongke/top', authMiddleware, roleMiddleware('admin'), VeController.topMatches);
+
 module.exports = router;
