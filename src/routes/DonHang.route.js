@@ -20,5 +20,7 @@ router.get("/:tenDangNhap", DonHangController.layDonHangTheoUser);
 // Route thống kê theo sản phẩm
 router.get("/thongke/sanpham", DonHangController.thongKeTheoSanPham);
 
+router.delete("/:id", DonHangController.xoaDonHang);
+
 
 module.exports = router;
