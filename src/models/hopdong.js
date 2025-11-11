@@ -3,7 +3,7 @@ const mongoose = require("mongoose");
 const HopDongSchema = new mongoose.Schema({
   // Thông tin chung
   maHopDong: { type: String, required: true, unique: true },
-  tenDangNhap: { type: String, required: true }, // người tạo/quản lý hợp đồng
+  tenDangNhap: { type: String}, // người tạo/quản lý hợp đồng
 
   // Thông tin cầu thủ
   tenCauThu: { type: String, required: true },
