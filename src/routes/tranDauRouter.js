@@ -9,11 +9,26 @@ router.post('/', authMiddleware, roleMiddleware('admin'), TranDauController.crea
 router.get('/', authMiddleware, TranDauController.getAllTranDau);
 router.get('/ma/:maTranDau', authMiddleware, TranDauController.getTranDauByMa);
 router.get('/id/:id', authMiddleware, TranDauController.getTranDauById);
-router.put('/ma/:maTranDau', authMiddleware, roleMiddleware('admin'), TranDauController.updateTranDauByMa);
+router.put(
+  '/ma/:maTranDau',
+  authMiddleware,
+  roleMiddleware('admin'),
+  TranDauController.updateTranDauByMa
+);
 router.put('/id/:id', authMiddleware, roleMiddleware('admin'), TranDauController.updateTranDauById);
-router.delete('/ma/:maTranDau', authMiddleware, roleMiddleware('admin'), TranDauController.deleteTranDauByMa);
-router.delete('/id/:id', authMiddleware, roleMiddleware('admin'), TranDauController.deleteTranDauById);
-
+router.delete(
+  '/ma/:maTranDau',
+  authMiddleware,
+  roleMiddleware('admin'),
+  TranDauController.deleteTranDauByMa
+);
+router.delete(
+  '/id/:id',
+  authMiddleware,
+  roleMiddleware('admin'),
+  TranDauController.deleteTranDauById
+);
+router.get('/cauthu/:maNguoiDung', authMiddleware, TranDauController.getTranDaubyMaCauThu);
 router.get('/:maTranDau/lichtap', authMiddleware, TranDauController.getLichTapByMaTranDau);
 router.get('/:maTranDau/full', authMiddleware, TranDauController.getFullTranDau);
 

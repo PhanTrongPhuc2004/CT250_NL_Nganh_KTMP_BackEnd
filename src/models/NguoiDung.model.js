@@ -32,6 +32,10 @@ const NguoiDung = new Schema({
     type: String,
     default: 'Khong',
   },
+  refreshToken: {
+    type: String,
+    default: '',
+  },
 });
 
 // 🧩 Middleware tự sinh mã nếu chưa có

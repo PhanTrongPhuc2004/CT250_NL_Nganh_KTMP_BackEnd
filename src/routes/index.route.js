@@ -29,7 +29,7 @@ function route(app) {
   app.use('/qualuuniem', qualuuniemRouter);
   app.use('/caulacbo', CauLacBoController);
   app.use('/trandau', tranDauRouter);
-  app.use('/tapluyen', tapLuyenRouter);
+  app.use('/lichtapluyen', tapLuyenRouter);
   app.use('/doihinh', doiHinhRouter);
   app.use('/ketquatrandau', ketQuaTranDauRouter);
   app.use('/thongsocauthu', thongSoCauThuRouter);
