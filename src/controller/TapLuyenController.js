@@ -49,6 +49,7 @@ class LichTapLuyenController {
           maDoiHinh: data.maDoiHinh,
           loai: 'lich_tap', // Thêm loại để phân biệt
           timestamp: new Date().toISOString(),
+          type: 'system',
         });
 
         console.log(`📤 Đã gửi thông báo lịch tập đến ${roomName}`);
