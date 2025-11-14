@@ -1,5 +1,5 @@
 const mongoose = require('mongoose');
-// const generateCode = require('../utils/generateCode'); // Nếu bạn đã có file generateCode.js
+const generateCode = require('../utils/generateCode'); // Nếu bạn đã có file generateCode.js
 
 const TintucSchema = new mongoose.Schema(
   {
