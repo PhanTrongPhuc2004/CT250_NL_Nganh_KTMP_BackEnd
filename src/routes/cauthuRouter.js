@@ -9,6 +9,7 @@ router.put('/:id', cauthuController.updateCauthu);
 router.delete('/:id', cauthuController.deleteCauthu);
 router.patch('/:id', cauthuController.updateDoiHinh);
 router.delete('/:cauthuId/doiHinh/:doiHinhId', cauthuController.deleteDoiHinh);
+router.get('/doibong/ma/:maDoiBong', cauthuController.getCauThuByMaDoiBong)
 // Tìm kiếm và lọc
 router.get('/search/query', cauthuController.searchCauthus);
 router.get('/filter/position/:position', cauthuController.filterByPosition);

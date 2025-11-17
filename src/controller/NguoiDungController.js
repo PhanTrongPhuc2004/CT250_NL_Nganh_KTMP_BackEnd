@@ -73,7 +73,7 @@ class NguoiDungController {
           vaiTro: nguoidung.vaiTro,
         },
         process.env.JWT_SECRET,
-        { expiresIn: '1m' } // 15 phút
+        { expiresIn: '15m' } // 15 phút
       );
 
       const refreshToken = jwt.sign(
@@ -97,7 +97,7 @@ class NguoiDungController {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 1 * 60 * 1000, // ✅ 15 phút
+        maxAge: 15 * 60 * 1000, // ✅ 15 phút
       });
 
       res.cookie('refreshToken', refreshToken, {
@@ -153,7 +153,7 @@ class NguoiDungController {
           vaiTro: nguoidung.vaiTro,
         },
         process.env.JWT_SECRET,
-        { expiresIn: '1m' }
+        { expiresIn: '15m' }
       );
 
       // SET COOKIE MỚI
@@ -161,7 +161,7 @@ class NguoiDungController {
         httpOnly: true,
         secure: process.env.NODE_ENV === 'production',
         sameSite: 'lax',
-        maxAge: 1 * 60 * 1000,
+        maxAge: 15 * 60 * 1000,
       });
 
       res.json({

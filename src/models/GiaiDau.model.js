@@ -23,6 +23,10 @@ const GiaiDauSchema = new mongoose.Schema(
       type: String,
       trim: true,
     },
+    anhMinhHoa:{
+      type: String,
+      trim: true,
+    }
   },
   { timestamps: true }
 );

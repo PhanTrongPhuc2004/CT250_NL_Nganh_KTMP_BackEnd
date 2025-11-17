@@ -47,6 +47,7 @@ const TranDauSchema = new mongoose.Schema(
       enum: ['chua_bat_dau', 'dang_dien_ra', 'ket_thuc'],
       default: 'chua_bat_dau', // THÊM DEFAULT
     },
+    anhMinhHoa: { type: String, trim: true },
   },
   { timestamps: true }
 );

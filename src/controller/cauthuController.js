@@ -1,4 +1,5 @@
 const cauthuService = require('../services/cauthuService');
+const doiHinhService = require('../services/doiHinhService');
 
 // GET /api/cauthus
 exports.getAllCauthus = async (req, res) => {
@@ -16,6 +17,30 @@ exports.getAllCauthus = async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 };
+
+// GET /cauthu/doibong/ma/:maDoiBong
+exports.getCauThuByMaDoiBong = async (req, res) => {
+  const maDoiBong = req.params.maDoiBong;
+  console.log(maDoiBong);
+  try {
+    const doiHinhs = await doiHinhService.getDoiHinhByMaDoiBong(maDoiBong);
+
+    const promises = doiHinhs.map(doiHinh => 
+        cauthuService.getCauThuByMaDoiHinh(doiHinh.maDoiHinh)
+    );
+
+    const results = await Promise.all(promises);
+
+    // flat de bien mang da chieu thanh mang 1 chieu
+    const allCauThus = results.flat();
+    console.log(allCauThus);
+    res.status(200).json(allCauThus);
+
+  } catch (error) {
+    console.log(error);
+  }
+}
+
 
 // GET /api/cauthus/:id
 exports.getCauthuById = async (req, res) => {

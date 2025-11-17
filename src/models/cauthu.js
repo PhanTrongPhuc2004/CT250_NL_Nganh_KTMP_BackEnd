@@ -11,6 +11,11 @@ const cauthuSchema = new mongoose.Schema({
     type: Date, // Ngày tháng năm sinh
     required: true,
   },
+  gioiTinh:{
+    type: String,
+    required: true,
+    enum: ['Nam', 'Nữ'],
+  },
   chieuCao: {
     type: Number, // chiều cao (cm)
     required: false,
