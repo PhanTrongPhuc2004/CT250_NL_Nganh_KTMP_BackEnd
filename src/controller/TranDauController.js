@@ -25,6 +25,28 @@ class TranDauController {
         }))
       );
 
+      /* TẠO THÔNG BÁO TRONG DATABASE */
+      const thongBaoData = {
+        tieuDe: 'Bạn có trận đấu mới!',
+        noiDung: `Bạn đã được thêm vào trận đấu ${tranDau.doiNha} vs ${tranDau.doiKhach}, diễn ra ngày ${tranDau.ngayBatDau} vào lúc ${tranDau.thoiGian} tại ${tranDau.diaDiem || 'sân tập'}`,
+        loai: 'tranDau',
+        maNguoiGui: req.user?.maNguoiDung || 'system', // Thay bằng mã người gửi thực tế
+        isPublic: false,
+        loaiNguoiNhan: 'noiBo',
+        guiChoTatCa: false,
+        maDoiHinh: data.maDoiHinh,
+        danhSachNhan: cauThus.map(cauThu => ({
+          maNguoiNhan: cauThu.maNguoiDung,
+          daDoc: false
+        }))
+      };
+      console.log(thongBaoData)
+      // Lưu thông báo vào database
+      const ThongBao = require('../models/ThongBao.model'); // Import model
+      const thongBao = await ThongBao.create(thongBaoData);
+      
+      console.log(`✅ Đã tạo thông báo trong database: ${thongBao.maThongBao}`);
+
       /*Gui thong bao ve cho cau thu */
       cauThus.forEach((cauThu) => {
         const roomName = `user_${cauThu.maNguoiDung}`;
@@ -34,10 +56,11 @@ class TranDauController {
         console.log(`🎯 Room ${roomName}: ${room ? `CÓ ${room.size} người` : 'KHÔNG có ai'}`);
 
         io.to(roomName).emit('notification', {
-          title: 'Bạn có trận đấu mới!',
-          message: `Bạn đã được thêm vào trận đấu ${tranDau.doiNha} vs ${tranDau.doiKhach}, diễn ra ngày ${tranDau.ngayBatDau} vào lúc ${tranDau.thoiGian}`,
+          title: thongBao.tieuDe,
+          message: thongBao.noiDung,
           maTranDau: tranDau.maTranDau,
           maDoiHinh: data.maDoiHinh,
+          maThongBao: thongBao.maThongBao, // Thêm mã thông báo
           timestamp: new Date().toISOString(),
         });
 
@@ -49,6 +72,7 @@ class TranDauController {
       res.status(201).json({
         message: 'Tạo trận đấu thành công',
         data: tranDau,
+        thongBao: thongBao.maThongBao,
         notifiedPlayers: cauThus.length,
       });
     } catch (error) {
