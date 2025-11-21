@@ -1,5 +1,7 @@
+const cauthu = require('../models/cauthu');
 const cauthuService = require('../services/cauthuService');
 const doiHinhService = require('../services/doiHinhService');
+const tranDauService = require('../services/tranDauService');
 
 // GET /api/cauthus
 exports.getAllCauthus = async (req, res) => {
@@ -142,3 +144,16 @@ exports.deleteDoiHinh = async (req, res) => {
     console.log(error);
   }
 };
+
+
+exports.getCauThuByTranDauId = async (req, res) => {
+  console.log('goi den day ');
+  try {
+    const tranDauId = req.params.tranDauId;
+    const trandau = await tranDauService.getTranDauById(tranDauId)
+    const cauthus = await cauthu.find({maDoiHinh: trandau.maDoiHinh})
+    res.json(cauthus);
+  } catch (error) {
+    console.log(error);
+  }
+}

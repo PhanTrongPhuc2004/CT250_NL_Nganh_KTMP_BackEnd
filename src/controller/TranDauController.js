@@ -12,14 +12,14 @@ class TranDauController {
       const data = req.body;
       const tranDau = await tranDauService.createTranDau(data);
       const io = req.app.get('io');
-      const cauThus = await NguoiDung.find({ maDoiHinh: data.maDoiHinh });
-
-      console.log(`📢 Tìm thấy ${cauThus.length} cầu thủ trong đội hình ${data.maDoiHinh}`);
+      const nguoiDungs = await NguoiDung.find({ maDoiHinh: data.maDoiHinh });
+      
+      console.log(`📢 Tìm thấy ${nguoiDungs.length} cầu thủ trong đội hình ${data.maDoiHinh}`);
 
       // ✅ KIỂM TRA: In ra danh sách cầu thủ
       console.log(
         '👥 Danh sách cầu thủ:',
-        cauThus.map((c) => ({
+        nguoiDungs.map((c) => ({
           maNguoiDung: c.maNguoiDung,
           tenDangNhap: c.tenDangNhap,
         }))
@@ -35,7 +35,7 @@ class TranDauController {
         loaiNguoiNhan: 'noiBo',
         guiChoTatCa: false,
         maDoiHinh: data.maDoiHinh,
-        danhSachNhan: cauThus.map(cauThu => ({
+        danhSachNhan: nguoiDungs.map(cauThu => ({
           maNguoiNhan: cauThu.maNguoiDung,
           daDoc: false
         }))
@@ -48,7 +48,7 @@ class TranDauController {
       console.log(`✅ Đã tạo thông báo trong database: ${thongBao.maThongBao}`);
 
       /*Gui thong bao ve cho cau thu */
-      cauThus.forEach((cauThu) => {
+      nguoiDungs.forEach((cauThu) => {
         const roomName = `user_${cauThu.maNguoiDung}`;
 
         // ✅ DEBUG: Kiểm tra room có tồn tại không
@@ -73,7 +73,7 @@ class TranDauController {
         message: 'Tạo trận đấu thành công',
         data: tranDau,
         thongBao: thongBao.maThongBao,
-        notifiedPlayers: cauThus.length,
+        notifiedPlayers: nguoiDungs.length,
       });
     } catch (error) {
       console.error('❌ Lỗi tạo trận đấu:', error);

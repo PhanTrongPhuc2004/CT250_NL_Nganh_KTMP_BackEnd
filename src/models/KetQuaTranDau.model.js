@@ -9,6 +9,10 @@ const KetQuaTranDauSchema = new Schema(
       required: true,
       unique: true,
     },
+    ketQua: {
+      type: String,
+      required: true,
+    },
     tiSo: {
       type: String, // Đổi từ Array thành String (ví dụ: "2-1")
       required: true,

@@ -4,7 +4,6 @@ const NguoiDung = require('./NguoiDung.model');
 const { Schema } = mongoose;
 
 const HuanLuyenVienSchema = new Schema({
-  diaChi: { type: String },
   namHanhNghe: { type: String },
   cauLacBoCu: { type: String },
   quocTich: { type: String },
