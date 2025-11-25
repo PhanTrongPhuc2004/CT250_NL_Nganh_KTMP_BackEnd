@@ -6,7 +6,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const roleMiddleware = require('../middlewares/roleMiddleware');
 
 router.post('/', authMiddleware, roleMiddleware('admin'), TranDauController.createTranDau);
-router.get('/', authMiddleware, TranDauController.getAllTranDau);
+router.get('/',  TranDauController.getAllTranDau);
 router.get('/ma/:maTranDau', authMiddleware, TranDauController.getTranDauByMa);
 router.get('/id/:id', authMiddleware, TranDauController.getTranDauById);
 router.put(

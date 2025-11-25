@@ -20,7 +20,7 @@ class KetQuaTranDauController {
     }
   }
 
-  async getKetQuaTranDauById(req, res) {
+  async getKetQuaTranDauByMa(req, res) {
     console.log('🚀 ===== BẮT ĐẦU getKetQuaTranDauById =====');
 
     try {

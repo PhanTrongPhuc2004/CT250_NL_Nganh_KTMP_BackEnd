@@ -8,6 +8,10 @@ const NguoiDung = new Schema({
     unique: true, // mã người dùng phải duy nhất
     default: () => generateCode('ND'),
   },
+  anhMinhHoa:{
+    type: String,
+    default: 'https://res.cloudinary.com/dq2t6s6jk/image/upload/v1696118283/default-avatar_qxgnby.png',
+  },
   hoVaTen: {
     type: String,
     required: true,

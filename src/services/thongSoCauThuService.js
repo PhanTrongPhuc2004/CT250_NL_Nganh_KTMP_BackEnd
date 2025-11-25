@@ -37,15 +37,19 @@ const getThongSoCauThuById = async (id) => {
 // Update ThongSoCauThu by ID
 const updateThongSoCauThu = async (id, data) => {
   try {
-    const updatedThongSoCauThu = await ThongSoCauThu.findByIdAndUpdate(id, data, { new: true });
-    if (!updatedThongSoCauThu) {
-      throw new Error('ThongSoCauThu not found');
-    }
+    const updatedThongSoCauThu = await ThongSoCauThu.findByIdAndUpdate(
+      id,
+      data,
+      { new: true, upsert: true } // ← thêm upsert
+    );
+
     return updatedThongSoCauThu;
+
   } catch (error) {
-    throw new Error('Error updating ThongSoCauThu: ' + error.message);
+    throw new Error('Error updating/creating ThongSoCauThu: ' + error.message);
   }
 };
+
 
 // Delete ThongSoCauThu by ID
 const deleteThongSoCauThu = async (id) => {

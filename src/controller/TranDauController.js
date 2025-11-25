@@ -5,6 +5,7 @@ const LichTapLuyen = require('../models/TapLuyen.model');
 const NguoiDung = require('../models/NguoiDung.model');
 const DoiHinhController = require('./DoiHinhController');
 const DoiHinh = require('../models/DoiHinh.model');
+const CauThu = require('../models/cauthu');
 class TranDauController {
   async createTranDau(req, res) {
     console.log('📥 Tao tran dau:', req.body);
@@ -191,10 +192,14 @@ class TranDauController {
     console.log('goi den day ');
     try {
       const { maNguoiDung } = req.params;
-      const cauThu = await NguoiDung.findOne({ maNguoiDung: maNguoiDung });
-      const doiHinh = await DoiHinh.findOne({ maDoiHinh: cauThu.maDoiHinh });
-      const tranDau = await TranDau.find({ maDoiHinh: doiHinh.maDoiHinh });
-      res.json(tranDau);
+      const nguoiDung = await NguoiDung.findOne({ maNguoiDung: maNguoiDung });
+      const doiHinh = await DoiHinh.findOne({ maDoiHinh: nguoiDung.maDoiHinh });
+      if (nguoiDung.vaiTro !== 'admin'){
+
+        const tranDau = await TranDau.find({ maDoiHinh: doiHinh.maDoiHinh });
+        res.json(tranDau);
+      }
+      else return res.status(403).json({ message: 'Khong phai cau thu' });
     } catch (error) {
       console.log(error);
     }
