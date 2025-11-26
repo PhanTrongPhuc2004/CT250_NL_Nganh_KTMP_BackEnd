@@ -35,18 +35,43 @@ const getKetQuaTranDauById = async (id) => {
 };
 
 // Update a KetQuaTranDau by ID
-const updateKetQuaTranDau = async (id, updateData) => {
+const updateKetQuaTranDauByMaTranDau = async (maTranDau, updateData) => {
+  console.log('🔧 ===== [Service] BẮT ĐẦU updateKetQuaTranDauByMaTranDau =====');
+  console.log('🎯 MaTranDau nhận được:', maTranDau);
+  console.log('📝 UpdateData nhận được:', JSON.stringify(updateData, null, 2));
+
   try {
-    const updatedKetQuaTranDau = await KetQuaTranDau.findByIdAndUpdate(id, updateData, {
-      new: true,
-      upsert: true, // nếu chưa có -> tạo mới luôn
-    });
+    // Tạo filter object
+    const filter = { maTranDau: maTranDau };
+    console.log('🔍 Filter object:', filter);
+
+    // Thực hiện update
+    console.log('🔄 Đang thực hiện findOneAndUpdate...');
+    const updatedKetQuaTranDau = await KetQuaTranDau.findOneAndUpdate(
+      filter, // ✅ OBJECT filter
+      updateData,
+      {
+        new: true,
+        upsert: true,
+        runValidators: true,
+      }
+    );
+
+    console.log('✅ [Service] Kết quả findOneAndUpdate:', updatedKetQuaTranDau);
+
     if (!updatedKetQuaTranDau) {
+      console.error('❌ [Service] Không tìm thấy KetQuaTranDau');
       throw new Error('KetQuaTranDau not found');
     }
+
+    console.log('🎉 [Service] Cập nhật thành công');
     return updatedKetQuaTranDau;
   } catch (error) {
+    console.error('💥 [Service] Lỗi:', error);
+    console.error('📋 [Service] Error stack:', error.stack);
     throw new Error('Error updating KetQuaTranDau: ' + error.message);
+  } finally {
+    console.log('🏁 ===== [Service] KẾT THÚC updateKetQuaTranDauByMaTranDau =====\n');
   }
 };
 
@@ -67,6 +92,6 @@ module.exports = {
   getAllKetQuaTranDau,
   createKetQuaTranDau,
   getKetQuaTranDauById,
-  updateKetQuaTranDau,
+  updateKetQuaTranDauByMaTranDau,
   deleteKetQuaTranDau,
 };

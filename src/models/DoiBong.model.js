@@ -9,6 +9,11 @@ const DoiBongSchema = new mongoose.Schema(
       unique: true,
       default: generateCode('DB'),
     },
+    gioiTinh:{
+      type: String,
+      required: false,
+      enum: ['Nam', 'Nữ'],
+    },
     tenDoiBong: {
       type: String,
       required: true,

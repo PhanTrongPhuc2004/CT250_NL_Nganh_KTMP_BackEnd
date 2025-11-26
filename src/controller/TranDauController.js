@@ -2,15 +2,82 @@
 const tranDauService = require('../services/tranDauService');
 const TranDau = require('../models/TranDau.model');
 const LichTapLuyen = require('../models/TapLuyen.model');
-
+const NguoiDung = require('../models/NguoiDung.model');
+const DoiHinhController = require('./DoiHinhController');
+const DoiHinh = require('../models/DoiHinh.model');
+const CauThu = require('../models/cauthu');
 class TranDauController {
   async createTranDau(req, res) {
-    console.log('tao tran dau', req.body);
+    console.log('📥 Tao tran dau:', req.body);
     try {
       const data = req.body;
       const tranDau = await tranDauService.createTranDau(data);
-      res.status(201).json({ message: 'Tạo trận đấu thành công', data: tranDau });
+      const io = req.app.get('io');
+      const nguoiDungs = await NguoiDung.find({ maDoiHinh: data.maDoiHinh });
+      
+      console.log(`📢 Tìm thấy ${nguoiDungs.length} cầu thủ trong đội hình ${data.maDoiHinh}`);
+
+      // ✅ KIỂM TRA: In ra danh sách cầu thủ
+      console.log(
+        '👥 Danh sách cầu thủ:',
+        nguoiDungs.map((c) => ({
+          maNguoiDung: c.maNguoiDung,
+          tenDangNhap: c.tenDangNhap,
+        }))
+      );
+
+      /* TẠO THÔNG BÁO TRONG DATABASE */
+      const thongBaoData = {
+        tieuDe: 'Bạn có trận đấu mới!',
+        noiDung: `Bạn đã được thêm vào trận đấu ${tranDau.doiNha} vs ${tranDau.doiKhach}, diễn ra ngày ${tranDau.ngayBatDau} vào lúc ${tranDau.thoiGian} tại ${tranDau.diaDiem || 'sân tập'}`,
+        loai: 'tranDau',
+        maNguoiGui: req.user?.maNguoiDung || 'system', // Thay bằng mã người gửi thực tế
+        isPublic: false,
+        loaiNguoiNhan: 'noiBo',
+        guiChoTatCa: false,
+        maDoiHinh: data.maDoiHinh,
+        danhSachNhan: nguoiDungs.map(cauThu => ({
+          maNguoiNhan: cauThu.maNguoiDung,
+          daDoc: false
+        }))
+      };
+      console.log(thongBaoData)
+      // Lưu thông báo vào database
+      const ThongBao = require('../models/ThongBao.model'); // Import model
+      const thongBao = await ThongBao.create(thongBaoData);
+      
+      console.log(`✅ Đã tạo thông báo trong database: ${thongBao.maThongBao}`);
+
+      /*Gui thong bao ve cho cau thu */
+      nguoiDungs.forEach((cauThu) => {
+        const roomName = `user_${cauThu.maNguoiDung}`;
+
+        // ✅ DEBUG: Kiểm tra room có tồn tại không
+        const room = io.sockets.adapter.rooms.get(roomName);
+        console.log(`🎯 Room ${roomName}: ${room ? `CÓ ${room.size} người` : 'KHÔNG có ai'}`);
+
+        io.to(roomName).emit('notification', {
+          title: thongBao.tieuDe,
+          message: thongBao.noiDung,
+          maTranDau: tranDau.maTranDau,
+          maDoiHinh: data.maDoiHinh,
+          maThongBao: thongBao.maThongBao, // Thêm mã thông báo
+          timestamp: new Date().toISOString(),
+        });
+
+        console.log(`📤 Đã emit đến ${roomName}`);
+      });
+
+      console.log('✅ Đã gửi thông báo đến tất cả cầu thủ');
+
+      res.status(201).json({
+        message: 'Tạo trận đấu thành công',
+        data: tranDau,
+        thongBao: thongBao.maThongBao,
+        notifiedPlayers: nguoiDungs.length,
+      });
     } catch (error) {
+      console.error('❌ Lỗi tạo trận đấu:', error);
       res.status(400).json({ message: error.message });
     }
   }
@@ -118,6 +185,22 @@ class TranDauController {
       res.json({ ...tranDau.toObject(), lichTapLuyen: lichTap });
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
+  async getTranDaubyMaCauThu(req, res) {
+    console.log('goi den day ');
+    try {
+      const { maNguoiDung } = req.params;
+      const nguoiDung = await NguoiDung.findOne({ maNguoiDung: maNguoiDung });
+      const doiHinh = await DoiHinh.findOne({ maDoiHinh: nguoiDung.maDoiHinh });
+      if (nguoiDung.vaiTro !== 'admin'){
+
+        const tranDau = await TranDau.find({ maDoiHinh: doiHinh.maDoiHinh });
+        res.json(tranDau);
+      }
+      else return res.status(403).json({ message: 'Khong phai cau thu' });
+    } catch (error) {
+      console.log(error);
     }
   }
 }

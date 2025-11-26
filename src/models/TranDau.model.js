@@ -1,44 +1,72 @@
 // src/models/TranDau.model.js
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
+
+const createStatusMatch = (ngayBatDau, thoiGian) => {
+  const today = new Date();
+
+  // Tạo đối tượng ngày giờ bắt đầu từ ngàyBatDau và thoiGian
+  const [gio, phut] = thoiGian.split(':').map(Number);
+  const ngayGioBatDau = new Date(ngayBatDau);
+  ngayGioBatDau.setHours(gio, phut, 0, 0);
+
+  // Tính thời gian kết thúc (giả sử trận đấu kéo dài 2 tiếng)
+  const ngayGioKetThuc = new Date(ngayGioBatDau);
+  ngayGioKetThuc.setHours(ngayGioKetThuc.getHours() + 2);
+
+  if (today < ngayGioBatDau) return 'chua_bat_dau';
+  if (today >= ngayGioBatDau && today <= ngayGioKetThuc) return 'dang_dien_ra';
+  return 'ket_thuc';
+};
+
 const TranDauSchema = new mongoose.Schema(
   {
     maTranDau: {
       type: String,
+      default: () => generateCode('TD'),
       required: true,
       unique: true,
-      default: () => generateCode('TD'),
     },
     maMuaGiai: {
       type: String,
       ref: 'MuaGiai',
       required: true,
     },
-
     diaDiem: { type: String, required: true, trim: true },
     ngayBatDau: { type: Date, required: true },
     thoiGian: { type: String, required: true, trim: true },
     maDoiHinh: {
       type: String,
       ref: 'DoiHinh',
-      required: true, // Lưu mã đội hình của bảng đội hình
+      required: true,
     },
-    status: {
+    doiNha: { type: String, ref: 'DoiBong', required: true },
+    doiKhach: { type: String, ref: 'DoiBong', required: true },
+    trangThai: {
       type: String,
-      enum: ['upcoming', 'ongoing', 'completed'],
-      default: 'upcoming',
+      enum: ['chua_bat_dau', 'dang_dien_ra', 'ket_thuc'],
+      default: 'chua_bat_dau', // THÊM DEFAULT
     },
-    // ĐỘI NHÀ & ĐỘI KHÁCH
-    doiNha: { type: String, ref: 'DoiBong', required: true }, // Dùng mã đội bóng này để đưa lên vé luôn, không truy xuất để lấy tên
-    doiKhach: { type: String, ref: 'DoiBong', required: true }, // Dùng mã đội bóng này để đưa lên vé luôn, không truy xuất để lấy tên
-
+    anhMinhHoa: { type: String, trim: true },
   },
   { timestamps: true }
 );
 
-// TỰ ĐỘNG TẠO MÃ TRẬN ĐẤU
+// SỬA PRE-SAVE HOOK
 TranDauSchema.pre('save', function (next) {
-  if (!this.maTranDau) this.maTranDau = generateCode('TD');
+  // 1. Tạo mã trận đấu nếu chưa có
+  if (!this.maTranDau) {
+    this.maTranDau = generateCode('TD');
+  }
+
+  // 2. CHỈ tính trạng thái tự động khi:
+  // - Document mới được tạo (isNew)
+  // - VÀ trạng thái chưa được set thủ công (vẫn là giá trị mặc định)
+  if (this.trangThai !== 'ket_thuc' && this.ngayBatDau && this.thoiGian) {
+    const calculatedStatus = createStatusMatch(this.ngayBatDau, this.thoiGian);
+    this.trangThai = calculatedStatus;
+  }
+
   next();
 });
 

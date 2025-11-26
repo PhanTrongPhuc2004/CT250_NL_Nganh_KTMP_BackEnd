@@ -12,6 +12,6 @@ nguoiDungRouter.get('/me', authMiddleware, NguoiDungController.getMe);
 nguoiDungRouter.put('/capnhat/:id', NguoiDungController.updateUser);
 nguoiDungRouter.get('/vaitro', NguoiDungController.getUserByRole);
 nguoiDungRouter.get('/:id', NguoiDungController.getUserById);
-
+nguoiDungRouter.post('/refresh-token', NguoiDungController.refreshToken);
 nguoiDungRouter.get('/vaitro', NguoiDungController.getUserByRole);
 module.exports = nguoiDungRouter;

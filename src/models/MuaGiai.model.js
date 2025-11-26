@@ -26,7 +26,11 @@ const MuaGiaiSchema = new mongoose.Schema(
     },
     ngayKetThuc: {
       type: Date,
-      required: true,
+      required: true, 
+    },
+    anhMinhHoa: {
+      type: String,
+      trim: true,
     },
   },
   { timestamps: true }

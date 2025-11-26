@@ -10,6 +10,7 @@ const adminService = require('../services/adminService');
 const cauThuService = require('../services/cauthuService');
 const huanLuyenVienService = require('../services/huanLuyenVienService');
 const nguoiHamMoService = require('../services/nguoiHamMoService');
+const { generateTokens } = require('../utils/auth');
 require('dotenv').config();
 
 class NguoiDungController {
@@ -54,47 +55,152 @@ class NguoiDungController {
       res.status(500).json({ message: 'Lỗi server', error });
     }
   }
+  // controllers/NguoiDungController.js - Hàm login
   async login(req, res) {
-    const { tenDangNhap, matKhau } = req.body;
-    // Thêm logic xác thực người dùng ở đây
-    const nguoidung = await NguoiDung.findOne({ tenDangNhap, matKhau });
-    if (!nguoidung) {
-      return res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
+    try {
+      const { tenDangNhap, matKhau } = req.body;
+
+      const nguoidung = await NguoiDung.findOne({ tenDangNhap, matKhau });
+      if (!nguoidung) {
+        return res.status(401).json({ message: 'Tên đăng nhập hoặc mật khẩu không đúng' });
+      }
+
+      // ✅ SỬA: Tạo tokens với payload đầy đủ
+      const accessToken = jwt.sign(
+        {
+          maNguoiDung: nguoidung.maNguoiDung,
+          tenDangNhap: nguoidung.tenDangNhap,
+          vaiTro: nguoidung.vaiTro,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '15m' } // 15 phút
+      );
+
+      const refreshToken = jwt.sign(
+        {
+          maNguoiDung: nguoidung.maNguoiDung,
+          tenDangNhap: nguoidung.tenDangNhap, // ✅ THÊM: Để dùng khi refresh
+          vaiTro: nguoidung.vaiTro, // ✅ THÊM: Để dùng khi refresh
+          type: 'refresh',
+        },
+        process.env.JWT_REFRESH_SECRET,
+        { expiresIn: '7d' } // 7 ngày
+      );
+
+      // Lưu refreshToken vào database
+      await NguoiDung.findByIdAndUpdate(nguoidung._id, {
+        refreshToken: refreshToken,
+      });
+
+      // ✅ SỬA: SET COOKIES với thời gian đúng
+      res.cookie('accessToken', accessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 15 * 60 * 1000, // ✅ 15 phút
+      });
+
+      res.cookie('refreshToken', refreshToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 7 * 24 * 60 * 60 * 1000, // 7 ngày
+      });
+
+      // ✅ SỬA: Không trả về accessToken (bảo mật hơn)
+      res.status(200).json({
+        message: 'Đăng nhập thành công',
+        user: {
+          _id: nguoidung._id,
+          tenDangNhap: nguoidung.tenDangNhap,
+          hoVaTen: nguoidung.hoVaTen,
+          vaiTro: nguoidung.vaiTro,
+          maDoiHinh: nguoidung.maDoiHinh, // ✅ THÊM: Quan trọng cho frontend
+        },
+        // ❌ BỎ: accessToken (đã có trong httpOnly cookie)
+      });
+    } catch (error) {
+      console.error('Lỗi đăng nhập:', error);
+      res.status(500).json({ message: 'Lỗi server' });
     }
-
-    const token = jwt.sign({ maNguoiDung: nguoidung.maNguoiDung }, process.env.JWT_SECRET, {
-      expiresIn: '1h',
-    });
-    console.log(token);
-    res.cookie('token', token, {
-      httpOnly: true,
-      secure: false,
-      sameSite: 'lax',
-      maxAge: 3600000,
-    });
-
-    res.status(200).json({
-      message: 'Đăng nhập thành công',
-      user: {
-        _id: nguoidung._id,
-        tenDangNhap: nguoidung.tenDangNhap,
-        hoVaTen: nguoidung.hoVaTen,
-        vaiTro: nguoidung.vaiTro,
-      },
-      token,
-    });
   }
 
+  // Hàm refresh token
+  async refreshToken(req, res) {
+    try {
+      const refreshToken = req.cookies.refreshToken;
+
+      if (!refreshToken) {
+        return res.status(401).json({ message: 'Refresh token không tồn tại' });
+      }
+
+      const decoded = jwt.verify(refreshToken, process.env.JWT_REFRESH_SECRET);
+
+      const nguoidung = await NguoiDung.findOne({
+        maNguoiDung: decoded.maNguoiDung,
+        refreshToken: refreshToken,
+      });
+
+      if (!nguoidung) {
+        return res.status(401).json({ message: 'Refresh token không hợp lệ' });
+      }
+
+      // Tạo access token mới
+      const newAccessToken = jwt.sign(
+        {
+          maNguoiDung: nguoidung.maNguoiDung,
+          tenDangNhap: nguoidung.tenDangNhap,
+          vaiTro: nguoidung.vaiTro,
+        },
+        process.env.JWT_SECRET,
+        { expiresIn: '15m' }
+      );
+
+      // SET COOKIE MỚI
+      res.cookie('accessToken', newAccessToken, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === 'production',
+        sameSite: 'lax',
+        maxAge: 15 * 60 * 1000,
+      });
+
+      res.json({
+        accessToken: newAccessToken,
+        message: 'Token mới đã được tạo',
+      });
+    } catch (error) {
+      console.error('Lỗi refresh token:', error);
+      return res.status(403).json({ message: 'Refresh token không hợp lệ' });
+    }
+  }
   check(req, res) {
-    if (req.cookies && req.cookies.token) {
+    if (req.cookies && req.cookies.accessToken) {
       res.json({ message: 'Đã đăng nhập', user: req.user });
     } else {
       res.status(401).json({ message: 'Chưa đăng nhập' });
     }
   }
-  logout(req, res) {
-    res.clearCookie('token');
-    res.status(200).json({ message: 'Đăng xuất thành công' });
+  async logout(req, res) {
+    const refreshToken = req.cookies.refreshToken;
+
+    // Xóa refresh token khỏi database
+    if (refreshToken) {
+      const decoded = jwt.decode(refreshToken);
+      if (decoded && decoded.maNguoiDung) {
+        await NguoiDung.findOneAndUpdate(
+          { maNguoiDung: decoded.maNguoiDung },
+          {
+            refreshToken: null,
+          }
+        );
+      }
+    }
+
+    // Xóa cookies
+    res.clearCookie('accessToken');
+    res.clearCookie('refreshToken');
+
+    res.json({ message: 'Đăng xuất thành công' });
   }
 
   async getAllUsers(req, res) {

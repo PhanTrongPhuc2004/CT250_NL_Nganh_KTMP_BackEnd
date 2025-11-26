@@ -68,6 +68,16 @@ const DonHangController = {
       res.status(500).json({ message: "Lỗi khi thống kê theo sản phẩm" });
     }
   },
+    async xoaDonHang(req, res) {
+    try {
+      const deleted = await DonHangService.xoaDonHang(req.params.id);
+      if (!deleted) return res.status(404).json({ message: "Không tìm thấy đơn hàng!" });
+      res.json({ message: "Đã xóa đơn hàng!" });
+    } catch (err) {
+      console.error(err);
+      res.status(500).json({ message: "Lỗi khi xóa đơn hàng!" });
+    }
+  },
 
 };
 

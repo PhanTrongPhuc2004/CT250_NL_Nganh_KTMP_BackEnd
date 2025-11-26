@@ -17,6 +17,11 @@ const DonHangService = {
     return await DonHang.find().sort({ date: -1 });
   },
 
+  async xoaDonHang(id) {
+    const deleted = await DonHang.findByIdAndDelete(id);
+    return deleted;
+  },
+
   // Cập nhật trạng thái đơn hàng
   async capNhatTrangThai(id, status) {
     return await DonHang.findByIdAndUpdate(id, { status }, { new: true });

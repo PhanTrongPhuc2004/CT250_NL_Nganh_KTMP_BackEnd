@@ -1,15 +1,19 @@
 const mongoose = require("mongoose");
 
-const MucHangSchema = new mongoose.Schema({
+const GioHangItemSchema = new mongoose.Schema({
   maSanPham: { type: mongoose.Schema.Types.ObjectId, ref: "QuaLuuNiem", required: true },
   tenQuaLuuNiem: { type: String, required: true },
   gia: { type: Number, required: true },
-  soLuong: { type: Number, default: 1, min: 1 },
+  quantity: { type: Number, required: true, min: 1 },
+  anhMinhHoa: { type: String },
 });
 
-const GioHangSchema = new mongoose.Schema({
-  tenDangNhap: { type: String, required: true, unique: true },
-  mucHangs: [MucHangSchema],
-});
+const GioHangSchema = new mongoose.Schema(
+  {
+    tenDangNhap: { type: String, required: true, unique: true },
+    cartItems: [GioHangItemSchema],
+  },
+  { timestamps: true }
+);
 
 module.exports = mongoose.model("GioHang", GioHangSchema);

@@ -29,7 +29,7 @@ function route(app) {
   app.use('/qualuuniem', qualuuniemRouter);
   app.use('/caulacbo', CauLacBoController);
   app.use('/trandau', tranDauRouter);
-  app.use('/tapluyen', tapLuyenRouter);
+  app.use('/lichtapluyen', tapLuyenRouter);
   app.use('/doihinh', doiHinhRouter);
   app.use('/ketquatrandau', ketQuaTranDauRouter);
   app.use('/thongsocauthu', thongSoCauThuRouter);
@@ -39,12 +39,11 @@ function route(app) {
   app.use('/giaidau', giaiDauRouter);
   app.use('/muagiai', muaGiaiRouter);
   app.use('/thongbao', thongBaoRouter);
-  app.use('/giohang', thongBaoRouter);
+  app.use('/giohang', GioHangRouter);
   app.use('/doibong', doiBong);
   app.use('/cauhinhve', cauHinhVeRouter);
 
   app.use('/tintuc', Tintuc);
-
   app.use('/doihinh', doiHinhRouter);
 }
 

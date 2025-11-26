@@ -19,8 +19,16 @@ const createHuanLuyenVien = async (data) => {
 const updateHuanLuyenVien = async (id, data) => {
   const hlv = await HuanLuyenVien.findById(id);
   if (!hlv) return null;
-  return await hlv.update(data);
+
+  // cập nhật field
+  hlv.set(data);
+
+  // lưu lại
+  await hlv.save();
+
+  return hlv;
 };
+
 
 // Xóa huấn luyện viên
 const remove = async (id) => {

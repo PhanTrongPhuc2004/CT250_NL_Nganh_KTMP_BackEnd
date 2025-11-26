@@ -27,13 +27,13 @@ const ThongSoCauThu = new Schema(
       type: String, // Text => String
       required: false, // Có thể không bắt buộc
     },
-    cauThuId: {
-      type: mongoose.Schema.Types.ObjectId,
+    maCauThu: {
+      type: String,
       ref: 'CauThu', // liên kết đến bảng cầu thủ
       required: true,
     },
-    tranDauId: {
-      type: mongoose.Schema.Types.ObjectId,
+    maTranDau: {
+      type: String,
       ref: 'TranDau', // để biết thông số của trận nào
       required: true,
     },

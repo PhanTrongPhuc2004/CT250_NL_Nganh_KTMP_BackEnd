@@ -2,14 +2,15 @@ const mongoose = require('mongoose');
 const NguoiDung = require('./NguoiDung.model');
 // Định nghĩa schema cho Cầu thủ
 const cauthuSchema = new mongoose.Schema({
-  diaChi: {
-    type: String,
-    required: false, // có thể không bắt buộc
-    trim: true,
-  },
+  
   namSinh: {
     type: Date, // Ngày tháng năm sinh
     required: true,
+  },
+  gioiTinh:{
+    type: String,
+    required: true,
+    enum: ['Nam', 'Nữ'],
   },
   chieuCao: {
     type: Number, // chiều cao (cm)
@@ -61,10 +62,7 @@ const cauthuSchema = new mongoose.Schema({
     type: Date,
     default: Date.now, // ngày gia nhập
   },
-  anhMinhHoa: {
-    type: String, // lưu đường dẫn ảnh hoặc URL
-    required: false,
-  },
+  
   maDoiHinh: {
     type: String,
     ref: 'DoiHinh', // tham chiếu tới collection Lineup
