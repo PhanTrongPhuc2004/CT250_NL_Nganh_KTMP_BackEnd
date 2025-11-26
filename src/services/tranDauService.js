@@ -1,4 +1,5 @@
 // src/services/tranDauService.js
+const TranDau = require('../models/TranDau.model');
 class TranDauService {
   async getAllTranDau() {
     return await TranDau.find().sort({ ngayBatDau: 1 });

@@ -24,9 +24,11 @@ const DoiBongSchema = new mongoose.Schema(
       required: true,
       trim: true,
     },
-    namThanhLap: {
-      type: Number,
-    },
+    logoURL:{
+      type: String,
+      required: false,
+      trim: true,
+    }
   },
   { timestamps: true }
 );
