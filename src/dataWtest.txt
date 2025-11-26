@@ -1,0 +1,15 @@
+{
+  "tenQuaLuuNiem": "Cúp lưu niệm vô địch",
+  "gia": 120000,
+  "moTa": "Cúp lưu niệm mô phỏng hình dáng chiếc cúp vô địch, chất liệu nhựa cứng mạ vàng, phù hợp trưng bày hoặc làm quà tặng cổ vũ.",
+  "anhMinhHoa": "public/data/qua.jpg"
+}
+
+  {
+    "maTinTuc": "TT009",
+    "title": "Áp lực nặng nề mà cầu thủ MU phải gánh chịu",
+    "desc": " Áp lực nặng nề mà cầu thủ MU phải gánh chịu đã được cựu ngôi sao của họ làm rõ.",
+    "image": "https://image.plo.vn/w850/Uploaded/2025/yqjvzdjwp/2025_11_23/ap-luc-nang-ne-ma-cau-thu-mu-phai-ganh-chiu-4441-7306.jpg.webp",
+    "link": "https://plo.vn/ap-luc-nang-ne-ma-cau-thu-mu-phai-ganh-chiu-post882996.html",
+    "source": "plo.vn"
+  }
