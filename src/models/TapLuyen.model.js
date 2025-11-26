@@ -13,20 +13,20 @@ const LichTapLuyenSchema = new mongoose.Schema(
     maTranDau: {
       type: String,
       ref: 'TranDau',
+      required: false,
+    },
+    maDoiHinh: {
+      type: String,                    // ĐỔI THÀNH String
+      ref: 'DoiHinh',
       required: true,
     },
-
     diaDiem: { type: String, required: true, trim: true },
     ngayBatDau: { type: Date, required: true },
     thoiGian: { type: String, required: true, trim: true },
     noiDung: { type: String, trim: true },
+    ghiChu: { type: String, trim: true },
   },
   { timestamps: true }
 );
-
-LichTapLuyenSchema.pre('save', function (next) {
-  if (!this.maLichTapLuyen) this.maLichTapLuyen = generateCode('LTL');
-  next();
-});
 
 module.exports = mongoose.model('LichTapLuyen', LichTapLuyenSchema);

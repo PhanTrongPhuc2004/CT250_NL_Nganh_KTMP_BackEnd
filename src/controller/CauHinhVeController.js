@@ -65,62 +65,86 @@ class CauHinhVeController {
             const { ma } = req.params;
             const data = req.body;
 
-            // LẤY DỮ LIỆU CŨ TRƯỚC KHI CẬP NHẬT
             const oldConfig = await cauHinhVeService.getByMa(ma);
-            if (!oldConfig) return res.status(404).json({ message: 'Không tìm thấy' });
+            if (!oldConfig) return res.status(404).json({ message: 'Không tìm thấy cấu hình vé' });
 
-            // TÍNH TỔNG GHẾ MỚI
             const batDau = data.soGheBatDau ?? oldConfig.soGheBatDau;
             const ketThuc = data.soGheKetThuc ?? oldConfig.soGheKetThuc;
+
+            if (batDau > ketThuc) {
+                return res.status(400).json({ message: 'Số ghế bắt đầu phải nhỏ hơn hoặc bằng số ghế kết thúc' });
+            }
+
             const tongMoi = ketThuc - batDau + 1;
 
-            // ĐIỀU CHỈNH soGheConLai KHÔNG VƯỢT QUÁ tongMoi
-            const soGheConLai = Math.min(oldConfig.soGheConLai, tongMoi);
+            // BƯỚC 1: Tính số ghế đã bán (temp)
+            const daBan = oldConfig.tongSoGhe - oldConfig.soGheConLai;
 
-            // GỌI SERVICE VỚI DỮ LIỆU ĐÃ ĐƯỢC XỬ LÝ
+            // BƯỚC 2: Tính số ghế còn lại mới = tổng mới - số đã bán
+            let soGheConLaiMoi = tongMoi - daBan;
+
+            // BƯỚC 3: Đảm bảo không âm (nếu tổng mới < đã bán → full)
+            soGheConLaiMoi = Math.max(0, soGheConLaiMoi);
+
             const updated = await cauHinhVeService.updateByMa(ma, {
                 ...data,
+                soGheBatDau: batDau,
+                soGheKetThuc: ketThuc,
                 tongSoGhe: tongMoi,
-                soGheConLai: soGheConLai
+                soGheConLai: soGheConLaiMoi
             });
 
-            if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
-            res.json({ message: 'Cập nhật thành công', data: updated });
+            res.json({
+                message: 'Cập nhật cấu hình vé thành công',
+                data: updated
+            });
         } catch (error) {
-            console.error('Lỗi cập nhật:', error);
+            console.error('Lỗi cập nhật cấu hình vé:', error);
             res.status(500).json({ message: error.message || 'Lỗi server' });
         }
     }
 
-    // UPDATE BY ID
+    // UPDATE BY ID (dùng cho frontend - chính là cái bạn đang dùng)
     async updateById(req, res) {
         try {
             const { id } = req.params;
             const data = req.body;
 
-            // LẤY DỮ LIỆU CŨ TRƯỚC KHI CẬP NHẬT
             const oldConfig = await cauHinhVeService.getById(id);
-            if (!oldConfig) return res.status(404).json({ message: 'Không tìm thấy' });
+            if (!oldConfig) return res.status(404).json({ message: 'Không tìm thấy cấu hình vé' });
 
-            // TÍNH TỔNG GHẾ MỚI
             const batDau = data.soGheBatDau ?? oldConfig.soGheBatDau;
             const ketThuc = data.soGheKetThuc ?? oldConfig.soGheKetThuc;
+
+            if (batDau > ketThuc) {
+                return res.status(400).json({ message: 'Số ghế bắt đầu phải nhỏ hơn hoặc bằng số ghế kết thúc' });
+            }
+
             const tongMoi = ketThuc - batDau + 1;
 
-            // ĐIỀU CHỈNH soGheConLai KHÔNG VƯỢT QUÁ tongMoi
-            const soGheConLai = Math.min(oldConfig.soGheConLai, tongMoi);
+            // BƯỚC 1: Tính số ghế đã bán từ dữ liệu cũ
+            const daBan = oldConfig.tongSoGhe - oldConfig.soGheConLai;
 
-            // GỌI SERVICE VỚI DỮ LIỆU ĐÃ ĐƯỢC XỬ LÝ
+            // BƯỚC 2: Áp dụng số đã bán vào tổng mới
+            let soGheConLaiMoi = tongMoi - daBan;
+
+            // BƯỚC 3: Không cho âm → nếu tổng mới nhỏ hơn số đã bán → còn lại = 0 (hết vé)
+            soGheConLaiMoi = Math.max(0, soGheConLaiMoi);
+
             const updated = await cauHinhVeService.updateById(id, {
                 ...data,
+                soGheBatDau: batDau,
+                soGheKetThuc: ketThuc,
                 tongSoGhe: tongMoi,
-                soGheConLai: soGheConLai
+                soGheConLai: soGheConLaiMoi
             });
 
-            if (!updated) return res.status(404).json({ message: 'Không tìm thấy' });
-            res.json({ message: 'Cập nhật thành công', data: updated });
+            res.json({
+                message: 'Cập nhật cấu hình vé thành công',
+                data: updated
+            });
         } catch (error) {
-            console.error('Lỗi cập nhật:', error);
+            console.error('Lỗi cập nhật cấu hình vé:', error);
             res.status(500).json({ message: error.message || 'Lỗi server' });
         }
     }

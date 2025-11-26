@@ -6,7 +6,7 @@ const tranDauService = require('../services/tranDauService');
 // GET /api/cauthus
 exports.getAllCauthus = async (req, res) => {
   const maDoiHinh = req.query.maDoiHinh;
-  console.log(maDoiHinh);
+  // console.log(maDoiHinh);
   try {
     if (maDoiHinh) {
       const cauthus = await cauthuService.getCauThuByMaDoiHinh(maDoiHinh);

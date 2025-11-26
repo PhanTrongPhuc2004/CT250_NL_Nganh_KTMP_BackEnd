@@ -6,7 +6,7 @@ const MuaGiai = require('../models/MuaGiai.model');
 const QRCode = require('qrcode');
 
 class VeController {
-  // === CRUD VÉ ===
+  // === MUA VÉ ===
   muaVe = async (req, res) => {
     try {
       const { maTranDau, loaiVe, khuVuc, hangGhe } = req.body;
@@ -27,7 +27,35 @@ class VeController {
       res.status(400).json({ message: error.message });
     }
   };
+  muaNhieuVe = async (req, res) => {
+    try {
+      const { maTranDau, maCauHinhVe, soLuong } = req.body;
+      const userId = req.user._id;
 
+      if (!maTranDau || !maCauHinhVe || !soLuong || soLuong < 1 || soLuong > 10) {
+        return res.status(400).json({ message: "Dữ liệu không hợp lệ" });
+      }
+
+      // Gọi service xử lý mua nhiều
+      const result = await veService.muaNhieuVe({
+        maTranDau,
+        maCauHinhVe,
+        soLuong,
+        userId
+      });
+
+      res.json({
+        message: `Mua thành công ${soLuong} vé!`,
+        data: result
+      });
+
+    } catch (error) {
+      console.error("Lỗi mua nhiều vé:", error);
+      res.status(400).json({ message: error.message || "Không thể mua vé" });
+    }
+  };
+
+  // === CRUD VÉ (ADMIN & USER) ===
   getAllVe = async (req, res) => {
     const list = await veService.getAllVe();
     res.json(list);
@@ -85,20 +113,17 @@ class VeController {
     res.json({ message: 'Xóa thành công' });
   };
 
-  // === THỐNG KÊ DOANH THU ===
+  // === THỐNG KÊ DOANH THU CHÍNH ===
   async thongKeDoanhThu(req, res) {
     try {
       const { maGiaiDau, maMuaGiai, maTranDau, range } = req.query;
-      console.log("Thống kê với:", { maGiaiDau, maMuaGiai, maTranDau, range });
-      // Điều kiện lọc cơ bản
-      const matchStage = { trangThai: 'da_thanh_toan' }; // Chỉ tính vé đã thanh toán
 
-      // Lọc theo trận đấu nếu có
+      const matchStage = { trangThai: 'da_thanh_toan' };
+
       if (maTranDau) {
         matchStage.maTranDau = maTranDau;
       }
 
-      // Nếu có mùa giải → lấy danh sách trận đấu thuộc mùa đó
       if (maMuaGiai && !maTranDau) {
         const tranDauList = await TranDau.find({ maMuaGiai }).select('maTranDau');
         const maTranDauList = tranDauList.map(t => t.maTranDau);
@@ -109,11 +134,9 @@ class VeController {
         }
       }
 
-      // Nếu có giải đấu → lấy tất cả mùa + trận của giải đó
       if (maGiaiDau && !maMuaGiai && !maTranDau) {
-        const tranDauList = await TranDau.find()
-          .populate('maMuaGiai', 'maGiaiDau')
-          .then(tranDaus => tranDaus.filter(t => t.maMuaGiai?.maGiaiDau === maGiaiDau));
+        const muaGiaiList = await MuaGiai.find({ maGiaiDau }).select('_id');
+        const tranDauList = await TranDau.find({ maMuaGiai: { $in: muaGiaiList.map(m => m._id) } }).select('maTranDau');
         const maTranDauList = tranDauList.map(t => t.maTranDau);
         if (maTranDauList.length > 0) {
           matchStage.maTranDau = { $in: maTranDauList };
@@ -122,30 +145,25 @@ class VeController {
         }
       }
 
-      // Xác định khoảng thời gian
+      // Lọc thời gian
       let dateFilter = {};
       if (range === 'daily') {
-        const today = new Date();
-        today.setHours(0, 0, 0, 0);
+        const today = new Date(); today.setHours(0, 0, 0, 0);
         dateFilter = { $gte: today };
       } else if (range === 'weekly') {
-        const startOfWeek = new Date();
-        startOfWeek.setHours(0, 0, 0, 0);
-        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Thứ 2
-        dateFilter = { $gte: startOfWeek };
+        const start = new Date(); start.setHours(0, 0, 0, 0);
+        start.setDate(start.getDate() - start.getDay() + 1);
+        dateFilter = { $gte: start };
       } else if (range === 'monthly') {
-        const startOfMonth = new Date();
-        startOfMonth.setHours(0, 0, 0, 0);
-        startOfMonth.setDate(1);
-        dateFilter = { $gte: startOfMonth };
+        const start = new Date(); start.setHours(0, 0, 0, 0); start.setDate(1);
+        dateFilter = { $gte: start };
       }
-
       if (Object.keys(dateFilter).length > 0) {
         matchStage.ngayMua = dateFilter;
       }
 
-      // === THỐNG KÊ THEO THỜI GIAN (từ 01/11/2025) ===
-      const timeSeries = await Ve.aggregate([
+      // === DOANH THU THEO NGÀY ===
+      const timeSeriesRaw = await Ve.aggregate([
         { $match: matchStage },
         {
           $group: {
@@ -156,24 +174,17 @@ class VeController {
         { $sort: { _id: 1 } }
       ]);
 
-      // ĐỔI TỪ 01/01/2025 → 01/11/2025
-      const startDate = new Date("2025-11-01");  // ← CHỈNH DÒNG NÀY
-      const today = new Date();
-      today.setHours(23, 59, 59, 999);
-
-      const dateMap = new Map(timeSeries.map(item => [item._id, item.value]));
-      const fullTimeSeries = [];
+      const dateMap = new Map(timeSeriesRaw.map(d => [d._id, d.value]));
+      const startDate = new Date("2025-11-01");
+      const today = new Date(); today.setHours(23, 59, 59, 999);
+      const timeSeries = [];
 
       for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
-        const dateStr = d.toLocaleDateString("vi-VN");
-        fullTimeSeries.push({
-          date: dateStr,
-          label: dateStr,
-          value: dateMap.get(dateStr) || 0
-        });
+        const key = d.toLocaleDateString("vi-VN");
+        timeSeries.push({ date: key, value: dateMap.get(key) || 0 });
       }
 
-      // === THỐNG KÊ THEO LOẠI VÉ ===
+      // === THEO LOẠI VÉ ===
       const byLoaiVe = await Ve.aggregate([
         { $match: matchStage },
         {
@@ -184,7 +195,7 @@ class VeController {
             as: 'cauhinh'
           }
         },
-        { $unwind: '$cauhinh' },
+        { $unwind: { path: '$cauhinh', preserveNullAndEmptyArrays: true } },
         {
           $group: {
             _id: '$cauhinh.loaiVe',
@@ -203,30 +214,31 @@ class VeController {
       ]);
 
       res.json({
-        timeSeries: fullTimeSeries,
-        byLoaiVe: byLoaiVe.length > 0 ? byLoaiVe : []
+        timeSeries,
+        byLoaiVe
       });
 
     } catch (error) {
-      console.error("Lỗi thống kê doanh thu vé:", error);
-      res.status(500).json({ message: "Lỗi server", error: error.message });
+      console.error("Lỗi thống kê doanh thu:", error);
+      res.status(500).json({ message: "Lỗi server" });
     }
   }
 
-  // Top 5 trận đấu doanh thu cao
-  async topMatches(req, res) {
+  // TOP 5 TRẬN ĐẤU DOANH THU CAO NHẤT TRONG MÙA GIẢI (ĐÃ SỬA ĐÚNG!)
+  async topMatchesInMuaGiai(req, res) {
     try {
+      const { maMuaGiai } = req.query;
+
+      const matchStage = { trangThai: 'da_thanh_toan' };
+
+      if (maMuaGiai) {
+        const tranDauList = await TranDau.find({ maMuaGiai }).select('maTranDau');
+        if (tranDauList.length === 0) return res.json([]);
+        matchStage.maTranDau = { $in: tranDauList.map(t => t.maTranDau) };
+      }
+
       const result = await Ve.aggregate([
-        { $match: { trangThai: 'da_thanh_toan' } },
-        {
-          $lookup: {
-            from: 'cauhinhves',
-            localField: 'maCauHinhVe',
-            foreignField: 'maCauHinhVe',
-            as: 'cauhinh'
-          }
-        },
-        { $unwind: '$cauhinh' },
+        { $match: matchStage },
         {
           $lookup: {
             from: 'trandaus',
@@ -238,9 +250,18 @@ class VeController {
         { $unwind: '$trandau' },
         {
           $group: {
-            _id: { maTranDau: '$maTranDau', loaiVe: '$cauhinh.loaiVe' },
-            tranDau: { $first: { $concat: ['$trandau.doiNha', ' vs ', '$trandau.doiKhach'] } },
-            loaiVe: { $first: '$cauhinh.loaiVe' },
+            _id: '$maTranDau',
+            tranDau: {
+              $first: {
+                $concat: [
+                  { $ifNull: ['$trandau.doiNha.tenDoiBong', '$trandau.doiNha'] },
+                  ' vs ',
+                  { $ifNull: ['$trandau.doiKhach.tenDoiBong', '$trandau.doiKhach'] }
+                ]
+              }
+            },
+            ngayBatDau: { $first: '$trandau.ngayBatDau' },
+            sanVanDong: { $first: '$trandau.diaDiem' },
             soVe: { $sum: 1 },
             doanhThu: { $sum: '$giaVe' }
           }
@@ -251,7 +272,8 @@ class VeController {
           $project: {
             _id: 0,
             tranDau: 1,
-            loaiVe: 1,
+            ngayBatDau: 1,
+            sanVanDong: 1,
             soVe: 1,
             doanhThu: 1
           }
@@ -260,9 +282,13 @@ class VeController {
 
       res.json(result);
     } catch (error) {
-      console.error("Lỗi top trận:", error);
+      console.error("Lỗi top trận đấu:", error);
       res.status(500).json([]);
     }
+  }
+
+  async topMatches(req, res) {
+    await this.topMatchesInMuaGiai(req, res);
   }
 }
 

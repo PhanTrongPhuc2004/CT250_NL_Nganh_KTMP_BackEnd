@@ -3,66 +3,96 @@ const lichTapService = require('../services/tapLuyenService');
 const TranDau = require('../models/TranDau.model');
 const NguoiDung = require('../models/NguoiDung.model');
 const CauThu = require('../models/cauthu');
+const DoiHinh = require('../models/DoiHinh.model');
 const { formatDate } = require('../utils/function/formatFunction');
 
 class LichTapLuyenController {
   async createLichTap(req, res) {
-    console.log('tao lich tap', req.body);
-    const data = req.body;
+    console.log('Tạo lịch tập:', req.body);
+    const { maTranDau, maDoiHinh: maDoiHinhFromBody, ...data } = req.body;
     const io = req.app.get('io');
 
     try {
-      // Tạo lịch tập trước
-      const lich = await lichTapService.createLichTap(data);
+      let finalMaDoiHinh = maDoiHinhFromBody;
 
-      // Lấy thông tin lịch tập vừa tạo
+      if (!finalMaDoiHinh && maTranDau) {
+        const tranDau = await TranDau.findOne({ maTranDau });
+        if (!tranDau) throw new Error("Không tìm thấy trận đấu");
+        finalMaDoiHinh = tranDau.maDoiHinh;
+      }
+
+      if (!finalMaDoiHinh) {
+        return res.status(400).json({ message: "Thiếu mã đội hình" });
+      }
+
+      const lich = await lichTapService.createLichTap({
+        ...data,
+        maTranDau,
+        maDoiHinh: finalMaDoiHinh,
+      });
+
       const lichTap = await lichTapService.getLichTapById(lich._id);
-      const tranDau = await TranDau.findOne({ maTranDau: data.maTranDau });
+      const cauThus = await CauThu.find({ maDoiHinh: finalMaDoiHinh });
+      const doiHinh = await DoiHinh.findOne({ maDoiHinh: finalMaDoiHinh });
 
-      // Tìm các cầu thủ trong đội hình
-      const cauThus = await CauThu.find({ maDoiHinh: tranDau.maDoiHinh });
+      const tieuDe = "Bạn có lịch tập luyện mới!";
+      const noiDung = `Buổi tập vào lúc ${lichTap.thoiGian} ngày ${formatDate(lichTap.ngayBatDau)} tại ${lichTap.diaDiem || 'sân tập'}${lichTap.noiDung ? `\nNội dung: ${lichTap.noiDung}` : ''}`;
 
-      console.log(`📢 Tìm thấy ${cauThus.length} cầu thủ trong đội hình ${data.maDoiHinh}`);
-
-      // ✅ KIỂM TRA: In ra danh sách cầu thủ
-      console.log(
-        '👥 Danh sách cầu thủ:',
-        cauThus.map((c) => ({
-          maNguoiDung: c.maNguoiDung,
-          tenDangNhap: c.tenDangNhap,
+      // SỬA TẠI ĐÂY: DÙNG 'tapLuyen' THAY VÌ 'lich_tap'
+      const ThongBao = require('../models/ThongBao.model');
+      const thongBao = await ThongBao.create({
+        tieuDe,
+        noiDung,
+        loai: 'tapLuyen',  // ĐÚNG THEO ENUM TRONG MODEL
+        maNguoiGui: req.user?.maNguoiDung || 'system',
+        isPublic: false,
+        loaiNguoiNhan: 'noiBo',
+        guiChoTatCa: false,
+        maDoiHinh: finalMaDoiHinh,
+        danhSachNhan: cauThus.map(ct => ({
+          maNguoiNhan: ct.maNguoiDung,
+          daDoc: false
         }))
-      );
+      });
 
-      /* Gửi thông báo về cho cầu thủ */
+      console.log(`Đã tạo thông báo lịch tập: ${thongBao.maThongBao}`);
+
+      // Gửi qua Socket.IO
       cauThus.forEach((cauThu) => {
         const roomName = `user_${cauThu.maNguoiDung}`;
-
-        // ✅ DEBUG: Kiểm tra room có tồn tại không
-        const room = io.sockets.adapter.rooms.get(roomName);
-        console.log(`🎯 Room ${roomName}: ${room ? `CÓ ${room.size} người` : 'KHÔNG có ai'}`);
-
-        // SỬA: Thông báo về lịch tập thay vì trận đấu
         io.to(roomName).emit('notification', {
-          title: '📅 Bạn có lịch tập mới!',
-          message: `Bạn có buổi tập vào lúc ${lichTap.thoiGian} ngày ${formatDate(lichTap.ngayBatDau)} tại ${lichTap.diaDiem || 'sân tập'}`,
-          maLichTap: lichTap.maLichTap || lichTap._id,
-          maDoiHinh: data.maDoiHinh,
-          loai: 'lich_tap', // Thêm loại để phân biệt
+          title: tieuDe,
+          message: noiDung,
+          maLichTap: lichTap._id,
+          maDoiHinh: finalMaDoiHinh,
+          maThongBao: thongBao.maThongBao,
+          loai: 'tapLuyen',  // Cũng sửa ở đây cho đồng bộ
           timestamp: new Date().toISOString(),
-          type: 'system',
+          type: 'system'
         });
-
-        console.log(`📤 Đã gửi thông báo lịch tập đến ${roomName}`);
       });
+
+      // Thông báo cho HLV (nếu đang online)
+      if (req.user?.maDoiHinh === finalMaDoiHinh) {
+        io.to(`user_${req.user.maNguoiDung}`).emit('notification', {
+          title: "Đã tạo lịch tập thành công!",
+          message: `Đã gửi lịch tập đến ${cauThus.length} cầu thủ đội ${doiHinh?.tenDoiHinh || ''}`,
+          loai: 'tapLuyen',
+          timestamp: new Date().toISOString(),
+          type: 'success'
+        });
+      }
 
       res.status(201).json({
         message: 'Tạo lịch tập thành công',
         data: lich,
-        thongBao: `Đã gửi thông báo đến ${cauThus.length} cầu thủ`,
+        thongBao: thongBao.maThongBao,
+        notifiedPlayers: cauThus.length,
       });
+
     } catch (error) {
-      console.error('❌ Lỗi khi tạo lịch tập:', error);
-      res.status(400).json({ message: error.message });
+      console.error('Lỗi tạo lịch tập:', error);
+      res.status(400).json({ message: error.message || 'Lỗi server' });
     }
   }
 
@@ -140,6 +170,22 @@ class LichTapLuyenController {
       res.json({ message: 'Xóa thành công' });
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
+  // Trong class LichTapLuyenController
+  async getLichTapByCurrentDoiHinh(req, res) {
+    try {
+      const maDoiHinh = req.user.maDoiHinh; // Lấy từ token đã decode
+      // console.log(maDoiHinh)
+      if (!maDoiHinh) {
+        return res.status(400).json({ message: "Bạn chưa thuộc đội hình nào" });
+      }
+
+      const list = await lichTapService.getLichTapByDoiHinh(maDoiHinh);
+      res.json(list);
+    } catch (error) {
+      console.error("Lỗi lấy lịch tập theo đội hình:", error);
+      res.status(500).json({ message: "Lỗi server" });
     }
   }
 }

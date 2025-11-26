@@ -44,7 +44,6 @@ function route(app) {
   app.use('/cauhinhve', cauHinhVeRouter);
 
   app.use('/tintuc', Tintuc);
-  app.use('/doihinh', doiHinhRouter);
 }
 
 module.exports = route;

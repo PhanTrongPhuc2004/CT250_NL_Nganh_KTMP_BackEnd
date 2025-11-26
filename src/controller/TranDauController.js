@@ -203,6 +203,23 @@ class TranDauController {
       console.log(error);
     }
   }
+  async getTranDauByDoiHinh(req, res) {
+    try {
+      const { maDoiHinh } = req.params;
+
+      const list = await TranDau.find({ maDoiHinh })
+        .populate('doiNha', 'tenDoiHinh')      // Lấy tên đội nhà
+        .populate('doiKhach', 'tenDoiHinh')    // Lấy tên đội khách
+        .sort({ ngayBatDau: 1 })
+        .lean();
+
+      console.log(`Tìm thấy ${list.length} trận đấu cho đội ${maDoiHinh}`);
+      res.json(list);
+    } catch (error) {
+      console.error('Lỗi lấy trận theo maDoiHinh:', error);
+      res.status(500).json({ message: 'Lỗi server' });
+    }
+  }
 }
 
 module.exports = new TranDauController();

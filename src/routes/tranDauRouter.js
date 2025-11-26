@@ -9,6 +9,7 @@ router.post('/', authMiddleware, roleMiddleware('admin'), TranDauController.crea
 router.get('/',  TranDauController.getAllTranDau);
 router.get('/ma/:maTranDau', authMiddleware, TranDauController.getTranDauByMa);
 router.get('/id/:id', authMiddleware, TranDauController.getTranDauById);
+router.get('/doihinh/:maDoiHinh', TranDauController.getTranDauByDoiHinh);
 router.put(
   '/ma/:maTranDau',
   authMiddleware,

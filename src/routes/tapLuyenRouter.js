@@ -13,5 +13,6 @@ router.put('/ma/:maLichTapLuyen', authMiddleware, roleMiddleware('admin', 'huanl
 router.put('/id/:id', authMiddleware, roleMiddleware('admin', 'huanluyenvien'), LichTapLuyenController.updateLichTapById);
 router.delete('/ma/:maLichTapLuyen', authMiddleware, roleMiddleware('admin', 'huanluyenvien'), LichTapLuyenController.deleteLichTapByMa);
 router.delete('/id/:id', authMiddleware, roleMiddleware('admin', 'huanluyenvien'), LichTapLuyenController.deleteLichTapById);
+router.get('/doihinh', authMiddleware, LichTapLuyenController.getLichTapByCurrentDoiHinh);
 
 module.exports = router;

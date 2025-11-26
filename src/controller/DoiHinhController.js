@@ -82,7 +82,7 @@ class DoiHinhController {
       if (!doihinhs) {
         res.status(404).json('Không có đội hình');
       }
-      console.log(doihinhs);
+      // console.log(doihinhs);
       res.json(doihinhs);
     } catch (error) {
       console.log(error);

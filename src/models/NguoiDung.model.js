@@ -1,3 +1,4 @@
+// src/models/NguoiDung.model.js
 const mongoose = require('mongoose');
 const generateCode = require('../utils/generateCode');
 const Schema = mongoose.Schema;

@@ -68,7 +68,74 @@ class VeService {
 
         return ve;
     }
+    async muaNhieuVe({ maTranDau, maCauHinhVe, soLuong, userId }) {
+        // FIX: Tìm bằng _id HOẶC maCauHinhVe (hỗ trợ cả 2 kiểu gửi từ frontend)
+        const config = await CauHinhVe.findOne({
+            $or: [
+                { _id: maCauHinhVe },                    // nếu frontend gửi ObjectId (chuẩn)
+                { maCauHinhVe: maCauHinhVe }             // nếu frontend gửi string maCauHinhVe
+            ],
+            maTranDau
+        });
 
+        if (!config) {
+            throw new Error("Không tìm thấy cấu hình vé cho trận đấu này");
+        }
+
+        if (config.soGheConLai < soLuong) {
+            throw new Error(`Chỉ còn ${config.soGheConLai} vé, không đủ ${soLuong} vé yêu cầu`);
+        }
+
+        // Lấy danh sách ghế đã bán
+        const daBan = await Ve.find(
+            { maTranDau, maCauHinhVe: config.maCauHinhVe || config._id },
+            { soGhe: 1 }
+        ).lean();
+
+        const daBanSet = new Set(daBan.map(v => parseInt(v.soGhe)));
+        const gheMoi = [];
+
+        for (let i = config.soGheBatDau; i <= config.soGheKetThuc; i++) {
+            if (!daBanSet.has(i)) {
+                gheMoi.push(i);
+                if (gheMoi.length === soLuong) break;
+            }
+        }
+
+        if (gheMoi.length < soLuong) {
+            throw new Error("Không đủ ghế trống (có thể đã bị người khác đặt)");
+        }
+
+        // Tạo vé
+        const veMoi = [];
+        for (const soGhe of gheMoi) {
+            const ve = await Ve.create({
+                maTranDau,
+                maNguoiDung: userId,
+                maCauHinhVe: config._id, // luôn lưu ObjectId
+                loaiVe: config.loaiVe,
+                khuVuc: config.khuVuc,
+                hangGhe: config.hangGhe,
+                soGhe: soGhe.toString(),
+                giaVe: config.giaVe,
+                trangThai: 'da_thanh_toan'
+            });
+
+            // Tạo QR code
+            const qrData = `VÉ: ${ve.maVe}\nGHẾ: ${config.khuVuc}${config.hangGhe}-${soGhe}\nGIÁ: ${config.giaVe.toLocaleString()}₫`;
+            const qrCode = await QRCode.toDataURL(qrData);
+            await Ve.findByIdAndUpdate(ve._id, { qrCode });
+
+            veMoi.push(ve);
+        }
+
+        // Cập nhật số ghế còn lại
+        await CauHinhVe.findByIdAndUpdate(config._id, {
+            $inc: { soGheConLai: -soLuong }
+        });
+
+        return veMoi;
+    }
     // KHÔNG DÙNG .populate()
     async getAllVe() {
         return await Ve.find().sort({ ngayMua: -1 });
