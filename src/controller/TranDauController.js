@@ -15,20 +15,19 @@ class TranDauController {
     }
   }
 
+  // CHỈ GIỮ LẠI 1 HÀM getAllTranDau → HỖ TRỢ LỌC THEO maDoiHinh
   async getAllTranDau(req, res) {
     try {
-      const list = await tranDauService.getAllTranDau();
+      const { maDoiHinh } = req.query;
+      const query = maDoiHinh
+        ? { $or: [{ doiNha: maDoiHinh }, { doiKhach: maDoiHinh }] }
+        : {};
+      const list = await TranDau.find(query).sort({ ngayBatDau: 1 });
       res.json(list);
     } catch (error) {
       console.error(error);
       res.status(500).json({ message: 'Lỗi server' });
     }
-  }
-  async getAllTranDau(req, res) {
-    const { maDoiHinh } = req.query;
-    const query = maDoiHinh ? { $or: [{ doiNha: maDoiHinh }, { doiKhach: maDoiHinh }] } : {};
-    const list = await TranDau.find(query).sort({ ngayBatDau: 1 });
-    res.json(list);
   }
 
   async getTranDauByMa(req, res) {
@@ -102,7 +101,7 @@ class TranDauController {
   async getLichTapByMaTranDau(req, res) {
     try {
       const { maTranDau } = req.params;
-      const lichList = await LichTapLuyen.find({ maTranDau }).populate('maDoiBong', 'tenDoiBong');
+      const lichList = await LichTapLuyen.find({ maTranDau }).populate('maDoiHinh', 'tenDoiHinh');
       res.json(lichList);
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server' });
@@ -115,7 +114,7 @@ class TranDauController {
       const tranDau = await tranDauService.getTranDauByMa(maTranDau);
       if (!tranDau) return res.status(404).json({ message: 'Không tìm thấy' });
 
-      const lichTap = await LichTapLuyen.find({ maTranDau }).populate('maDoiBong', 'tenDoiBong');
+      const lichTap = await LichTapLuyen.find({ maTranDau }).populate('maDoiHinh', 'tenDoiHinh');
       res.json({ ...tranDau.toObject(), lichTapLuyen: lichTap });
     } catch (error) {
       res.status(500).json({ message: 'Lỗi server' });

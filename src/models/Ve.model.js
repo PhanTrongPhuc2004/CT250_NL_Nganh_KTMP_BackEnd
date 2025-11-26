@@ -19,11 +19,17 @@ const VeSchema = new mongoose.Schema({
         ref: 'NguoiDung',
     },
 
-    // THÊM MỚI
+    // THÊM DÒNG NÀY – BẮT BUỘC PHẢI CÓ
+    maCauHinhVe: {
+        type: String,
+        ref: 'CauHinhVe',
+        required: true
+    },
+
     loaiVe: { type: String, enum: ['VIP', 'Thuong', 'KhuyenMai'], default: 'Thuong' },
-    khuVuc: { type: String, required: true },     // A, B, C...
-    hangGhe: { type: String, required: true },    // 1, 2, 3...
-    soGhe: { type: String, required: true },      // 12, 13...
+    khuVuc: { type: String, required: true },
+    hangGhe: { type: String, required: true },
+    soGhe: { type: String, required: true },
     giaVe: { type: Number, required: true },
     trangThai: {
         type: String,
@@ -31,13 +37,7 @@ const VeSchema = new mongoose.Schema({
         default: 'cho_thanh_toan'
     },
     ngayMua: { type: Date, default: Date.now },
-
-    // XÓA: soLuong, gia, status, qrCode → chuyển sang controller nếu cần
+    qrCode: { type: String }
 }, { timestamps: true });
-
-VeSchema.pre('save', function (next) {
-    if (!this.maVe) this.maVe = generateCode('VE');
-    next();
-});
 
 module.exports = mongoose.model('Ve', VeSchema);

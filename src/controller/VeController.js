@@ -86,135 +86,184 @@ class VeController {
   };
 
   // === THỐNG KÊ DOANH THU ===
-  thongKeDoanhThu = async (req, res) => {
+  async thongKeDoanhThu(req, res) {
     try {
       const { maGiaiDau, maMuaGiai, maTranDau, range } = req.query;
-      let validMaTranDau = [];
+      console.log("Thống kê với:", { maGiaiDau, maMuaGiai, maTranDau, range });
+      // Điều kiện lọc cơ bản
+      const matchStage = { trangThai: 'da_thanh_toan' }; // Chỉ tính vé đã thanh toán
 
+      // Lọc theo trận đấu nếu có
       if (maTranDau) {
-        validMaTranDau = [maTranDau];
-      } else if (maMuaGiai) {
-        const list = await TranDau.find({ maMuaGiai }).select('maTranDau');
-        validMaTranDau = list.map(t => t.maTranDau);
-      } else if (maGiaiDau) {
-        const muaList = await MuaGiai.find({ maGiaiDau }).select('maMuaGiai');
-        const maMuaList = muaList.map(m => m.maMuaGiai);
-        const tranList = await TranDau.find({ maMuaGiai: { $in: maMuaList } }).select('maTranDau');
-        validMaTranDau = tranList.map(t => t.maTranDau);
-      } else {
-        const list = await TranDau.find().select('maTranDau');
-        validMaTranDau = list.map(t => t.maTranDau);
+        matchStage.maTranDau = maTranDau;
       }
 
-      if (!validMaTranDau.length) {
-        return res.json({ timeSeries: [], byLoaiVe: [] });
+      // Nếu có mùa giải → lấy danh sách trận đấu thuộc mùa đó
+      if (maMuaGiai && !maTranDau) {
+        const tranDauList = await TranDau.find({ maMuaGiai }).select('maTranDau');
+        const maTranDauList = tranDauList.map(t => t.maTranDau);
+        if (maTranDauList.length > 0) {
+          matchStage.maTranDau = { $in: maTranDauList };
+        } else {
+          return res.json({ timeSeries: [], byLoaiVe: [] });
+        }
       }
 
-      const match = { trangThai: 'da_thanh_toan', maTranDau: { $in: validMaTranDau } };
-
-      if (range && range !== 'all') {
-        const now = new Date();
-        let start;
-        if (range === 'daily') start = new Date(now.getFullYear(), now.getMonth(), now.getDate());
-        else if (range === 'weekly') {
-          const day = now.getDay();
-          start = new Date(now);
-          start.setDate(now.getDate() - (day === 0 ? 6 : day - 1));
-          start.setHours(0, 0, 0, 0);
-        } else if (range === 'monthly') start = new Date(now.getFullYear(), now.getMonth(), 1);
-        match.ngayMua = { $gte: start };
+      // Nếu có giải đấu → lấy tất cả mùa + trận của giải đó
+      if (maGiaiDau && !maMuaGiai && !maTranDau) {
+        const tranDauList = await TranDau.find()
+          .populate('maMuaGiai', 'maGiaiDau')
+          .then(tranDaus => tranDaus.filter(t => t.maMuaGiai?.maGiaiDau === maGiaiDau));
+        const maTranDauList = tranDauList.map(t => t.maTranDau);
+        if (maTranDauList.length > 0) {
+          matchStage.maTranDau = { $in: maTranDauList };
+        } else {
+          return res.json({ timeSeries: [], byLoaiVe: [] });
+        }
       }
 
-      const veList = await Ve.find(match).lean();
-      const timeSeries = this.groupByTime(veList, range || 'daily');
-      const byLoaiVe = veList.reduce((acc, ve) => {
-        const k = ve.loaiVe || 'Khác';
-        if (!acc[k]) acc[k] = { loaiVe: k, soVe: 0, doanhThu: 0 };
-        acc[k].soVe++;
-        acc[k].doanhThu += Number(ve.giaVe) || 0;
-        return acc;
-      }, {});
+      // Xác định khoảng thời gian
+      let dateFilter = {};
+      if (range === 'daily') {
+        const today = new Date();
+        today.setHours(0, 0, 0, 0);
+        dateFilter = { $gte: today };
+      } else if (range === 'weekly') {
+        const startOfWeek = new Date();
+        startOfWeek.setHours(0, 0, 0, 0);
+        startOfWeek.setDate(startOfWeek.getDate() - startOfWeek.getDay() + 1); // Thứ 2
+        dateFilter = { $gte: startOfWeek };
+      } else if (range === 'monthly') {
+        const startOfMonth = new Date();
+        startOfMonth.setHours(0, 0, 0, 0);
+        startOfMonth.setDate(1);
+        dateFilter = { $gte: startOfMonth };
+      }
 
-      res.json({
-        timeSeries: Object.values(timeSeries),
-        byLoaiVe: Object.values(byLoaiVe)
-      });
-    } catch (err) {
-      console.error("Lỗi thống kê vé:", err.message, err.stack);
-      res.status(500).json({ message: 'Lỗi server', error: err.message });
-    }
-  };
+      if (Object.keys(dateFilter).length > 0) {
+        matchStage.ngayMua = dateFilter;
+      }
 
-  // === TOP MATCHES ===
-  topMatches = async (req, res) => {
-    try {
-      const top = await Ve.aggregate([
-        { $match: { trangThai: 'da_thanh_toan' } },
+      // === THỐNG KÊ THEO THỜI GIAN (từ 01/11/2025) ===
+      const timeSeries = await Ve.aggregate([
+        { $match: matchStage },
         {
           $group: {
-            _id: { maTranDau: "$maTranDau", loaiVe: "$loaiVe" },
-            soVe: { $sum: 1 },
-            doanhThu: { $sum: "$giaVe" }
+            _id: { $dateToString: { format: "%d/%m/%Y", date: "$ngayMua" } },
+            value: { $sum: "$giaVe" }
           }
         },
+        { $sort: { _id: 1 } }
+      ]);
+
+      // ĐỔI TỪ 01/01/2025 → 01/11/2025
+      const startDate = new Date("2025-11-01");  // ← CHỈNH DÒNG NÀY
+      const today = new Date();
+      today.setHours(23, 59, 59, 999);
+
+      const dateMap = new Map(timeSeries.map(item => [item._id, item.value]));
+      const fullTimeSeries = [];
+
+      for (let d = new Date(startDate); d <= today; d.setDate(d.getDate() + 1)) {
+        const dateStr = d.toLocaleDateString("vi-VN");
+        fullTimeSeries.push({
+          date: dateStr,
+          label: dateStr,
+          value: dateMap.get(dateStr) || 0
+        });
+      }
+
+      // === THỐNG KÊ THEO LOẠI VÉ ===
+      const byLoaiVe = await Ve.aggregate([
+        { $match: matchStage },
         {
           $lookup: {
-            from: 'trandau',
-            localField: '_id.maTranDau',
-            foreignField: 'maTranDau',
-            as: 'tran'
+            from: 'cauhinhves',
+            localField: 'maCauHinhVe',
+            foreignField: 'maCauHinhVe',
+            as: 'cauhinh'
           }
         },
-        { $unwind: { path: '$tran', preserveNullAndEmptyArrays: true } },
+        { $unwind: '$cauhinh' },
+        {
+          $group: {
+            _id: '$cauhinh.loaiVe',
+            soVe: { $sum: 1 },
+            doanhThu: { $sum: '$giaVe' }
+          }
+        },
         {
           $project: {
-            tranDau: {
-              $cond: [
-                { $gt: ['$tran', null] },
-                { $concat: ['$tran.doiNha', ' vs ', '$tran.doiKhach'] },
-                'Không xác định'
-              ]
-            },
-            loaiVe: '$_id.loaiVe',
+            loaiVe: '$_id',
             soVe: 1,
-            doanhThu: 1
+            doanhThu: 1,
+            _id: 0
+          }
+        }
+      ]);
+
+      res.json({
+        timeSeries: fullTimeSeries,
+        byLoaiVe: byLoaiVe.length > 0 ? byLoaiVe : []
+      });
+
+    } catch (error) {
+      console.error("Lỗi thống kê doanh thu vé:", error);
+      res.status(500).json({ message: "Lỗi server", error: error.message });
+    }
+  }
+
+  // Top 5 trận đấu doanh thu cao
+  async topMatches(req, res) {
+    try {
+      const result = await Ve.aggregate([
+        { $match: { trangThai: 'da_thanh_toan' } },
+        {
+          $lookup: {
+            from: 'cauhinhves',
+            localField: 'maCauHinhVe',
+            foreignField: 'maCauHinhVe',
+            as: 'cauhinh'
+          }
+        },
+        { $unwind: '$cauhinh' },
+        {
+          $lookup: {
+            from: 'trandaus',
+            localField: 'maTranDau',
+            foreignField: 'maTranDau',
+            as: 'trandau'
+          }
+        },
+        { $unwind: '$trandau' },
+        {
+          $group: {
+            _id: { maTranDau: '$maTranDau', loaiVe: '$cauhinh.loaiVe' },
+            tranDau: { $first: { $concat: ['$trandau.doiNha', ' vs ', '$trandau.doiKhach'] } },
+            loaiVe: { $first: '$cauhinh.loaiVe' },
+            soVe: { $sum: 1 },
+            doanhThu: { $sum: '$giaVe' }
           }
         },
         { $sort: { doanhThu: -1 } },
-        { $limit: 5 }
+        { $limit: 5 },
+        {
+          $project: {
+            _id: 0,
+            tranDau: 1,
+            loaiVe: 1,
+            soVe: 1,
+            doanhThu: 1
+          }
+        }
       ]);
 
-      res.json(top);
-    } catch (err) {
-      console.error("Lỗi top matches:", err.message);
-      res.status(500).json({ message: 'Lỗi server', error: err.message });
+      res.json(result);
+    } catch (error) {
+      console.error("Lỗi top trận:", error);
+      res.status(500).json([]);
     }
-  };
-
-  // === HELPER ===
-  groupByTime = (veList, range) => {
-    const groups = {};
-    veList.forEach(ve => {
-      const d = new Date(ve.ngayMua);
-      if (isNaN(d)) return;
-      let key;
-      if (range === 'daily') key = d.toLocaleDateString('vi-VN');
-      else if (range === 'weekly') key = `Tuần ${this.getWeekNumber(d)}/${d.getFullYear()}`;
-      else if (range === 'monthly') key = `${d.getMonth() + 1}/${d.getFullYear()}`;
-      else key = d.toLocaleDateString('vi-VN');
-      if (!groups[key]) groups[key] = { label: key, value: 0 };
-      groups[key].value += Number(ve.giaVe) || 0;
-    });
-    return groups;
-  };
-
-  getWeekNumber = (d) => {
-    const date = new Date(Date.UTC(d.getFullYear(), d.getMonth(), d.getDate()));
-    const dayNum = date.getUTCDay() || 7;
-    date.setUTCDate(date.getUTCDate() + 4 - dayNum);
-    const yearStart = new Date(Date.UTC(d.getFullYear(), 0, 1));
-    return Math.ceil((((date - yearStart) / 86400000) + 1) / 7);
-  };
+  }
 }
 
 module.exports = new VeController();

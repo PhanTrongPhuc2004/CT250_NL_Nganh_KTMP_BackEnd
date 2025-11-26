@@ -1,4 +1,4 @@
-// src/routes/trandau.route.js
+// src/routes/tranDauRouter.js
 const express = require('express');
 const router = express.Router();
 const TranDauController = require('../controller/TranDauController');
@@ -6,7 +6,7 @@ const authMiddleware = require('../middlewares/authMiddleware');
 const roleMiddleware = require('../middlewares/roleMiddleware');
 
 router.post('/', authMiddleware, roleMiddleware('admin'), TranDauController.createTranDau);
-router.get('/', authMiddleware, TranDauController.getAllTranDau);
+router.get('/', authMiddleware, TranDauController.getAllTranDau); // HỖ TRỢ ?maDoiHinh=
 router.get('/ma/:maTranDau', authMiddleware, TranDauController.getTranDauByMa);
 router.get('/id/:id', authMiddleware, TranDauController.getTranDauById);
 router.put('/ma/:maTranDau', authMiddleware, roleMiddleware('admin'), TranDauController.updateTranDauByMa);

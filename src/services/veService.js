@@ -52,6 +52,7 @@ class VeService {
         const ve = await Ve.create({
             maTranDau,
             maNguoiDung: userId,
+            maCauHinhVe: config.maCauHinhVe,   // THÊM DÒNG NÀY
             loaiVe: config.loaiVe,
             khuVuc,
             hangGhe,

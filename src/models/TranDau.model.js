@@ -23,6 +23,11 @@ const TranDauSchema = new mongoose.Schema(
       ref: 'DoiHinh',
       required: true, // Lưu mã đội hình của bảng đội hình
     },
+    status: {
+      type: String,
+      enum: ['upcoming', 'ongoing', 'completed'],
+      default: 'upcoming',
+    },
     // ĐỘI NHÀ & ĐỘI KHÁCH
     doiNha: { type: String, ref: 'DoiBong', required: true }, // Dùng mã đội bóng này để đưa lên vé luôn, không truy xuất để lấy tên
     doiKhach: { type: String, ref: 'DoiBong', required: true }, // Dùng mã đội bóng này để đưa lên vé luôn, không truy xuất để lấy tên

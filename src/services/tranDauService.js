@@ -1,11 +1,5 @@
 // src/services/tranDauService.js
-const TranDau = require('../models/TranDau.model');
-
 class TranDauService {
-  async createTranDau(data) {
-    return await TranDau.create(data);
-  }
-
   async getAllTranDau() {
     return await TranDau.find().sort({ ngayBatDau: 1 });
   }
@@ -16,6 +10,10 @@ class TranDauService {
 
   async getTranDauById(id) {
     return await TranDau.findById(id);
+  }
+
+  async createTranDau(data) {
+    return await TranDau.create(data);
   }
 
   async updateTranDauByMa(maTranDau, data) {
