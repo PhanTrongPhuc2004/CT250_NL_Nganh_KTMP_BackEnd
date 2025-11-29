@@ -2,73 +2,121 @@
   {
     "tenQuaLuuNiem": "Áo thi đấu có chữ ký",
     "gia": 1200000,
+    "giaGiam": 950000,
     "moTa": "Áo đấu chính thức của đội tuyển, có chữ ký của các cầu thủ nổi tiếng.",
-    "anhMinhHoa": "public/data/qua01.jpg"
+    "anhMinhHoa": "public/data/qua01.jpg",
+    "soSaoTrungBinh": 4.9,
+    "luotDanhGia": 28,
+    "luotBan": 80
   },
   {
     "tenQuaLuuNiem": "Bóng lưu niệm",
     "gia": 850000,
+    "giaGiam": 720000,
     "moTa": "Quả bóng da cao cấp in logo CLB và chữ ký huấn luyện viên trưởng.",
-   "anhMinhHoa": "public/data/qua02.jpg"
+    "anhMinhHoa": "public/data/qua02.jpg",
+    "soSaoTrungBinh": 4.7,
+    "luotDanhGia": 22,
+    "luotBan": 75
   },
   {
     "tenQuaLuuNiem": "Móc khóa logo đội bóng",
     "gia": 50000,
+    "giaGiam": 30000,
     "moTa": "Móc khóa kim loại khắc nổi logo câu lạc bộ, nhỏ gọn, tinh tế.",
-   "anhMinhHoa": "public/data/qua03.jpg"
+    "anhMinhHoa": "public/data/qua03.jpg",
+    "soSaoTrungBinh": 4.5,
+    "luotDanhGia": 12,
+    "luotBan": 60
   },
   {
     "tenQuaLuuNiem": "Cốc sứ in hình cầu thủ",
     "gia": 120000,
+    "giaGiam": 95000,
     "moTa": "Cốc sứ cao cấp in hình cầu thủ yêu thích, thích hợp làm quà tặng.",
-   "anhMinhHoa": "public/data/qua04.jpg"
+    "anhMinhHoa": "public/data/qua04.jpg",
+    "soSaoTrungBinh": 4.6,
+    "luotDanhGia": 16,
+    "luotBan": 55
   },
   {
     "tenQuaLuuNiem": "Mũ lưỡi trai đội tuyển",
     "gia": 180000,
+    "giaGiam": 150000,
     "moTa": "Mũ thể thao cotton thoáng mát, thêu logo đội tuyển quốc gia.",
-   "anhMinhHoa": "public/data/qua05.jpg"
+    "anhMinhHoa": "public/data/qua05.jpg",
+    "soSaoTrungBinh": 4.8,
+    "luotDanhGia": 26,
+    "luotBan": 70
   },
   {
     "tenQuaLuuNiem": "Khăn choàng cổ cổ vũ",
     "gia": 90000,
+    "giaGiam": 70000,
     "moTa": "Khăn choàng cổ màu đỏ, in khẩu hiệu cổ vũ đội tuyển Việt Nam.",
-   "anhMinhHoa": "public/data/qua06.jpg"
-  }
-    {
+    "anhMinhHoa": "public/data/qua06.jpg",
+    "soSaoTrungBinh": 4.4,
+    "luotDanhGia": 10,
+    "luotBan": 45
+  },
+  {
     "tenQuaLuuNiem": "Bình nước thể thao đội tuyển",
     "gia": 150000,
+    "giaGiam": 120000,
     "moTa": "Bình nước inox cao cấp, in logo đội tuyển và tên cầu thủ yêu thích.",
-    "anhMinhHoa": "public/data/qua07.jpg"
+    "anhMinhHoa": "public/data/qua07.jpg",
+    "soSaoTrungBinh": 4.7,
+    "luotDanhGia": 18,
+    "luotBan": 50
   },
   {
     "tenQuaLuuNiem": "Túi thể thao đội bóng",
     "gia": 320000,
+    "giaGiam": 280000,
     "moTa": "Túi thể thao vải dù chống nước, in logo câu lạc bộ và màu sắc chủ đạo.",
-    "anhMinhHoa": "public/data/qua08.jpg"
+    "anhMinhHoa": "public/data/qua08.jpg",
+    "soSaoTrungBinh": 4.6,
+    "luotDanhGia": 14,
+    "luotBan": 40
   },
   {
     "tenQuaLuuNiem": "Áo khoác cổ động viên",
     "gia": 450000,
+    "giaGiam": 390000,
     "moTa": "Áo khoác gió chống nắng, in khẩu hiệu cổ vũ đội tuyển Việt Nam.",
-    "anhMinhHoa": "public/data/qua09.jpg"
+    "anhMinhHoa": "public/data/qua09.jpg",
+    "soSaoTrungBinh": 4.8,
+    "luotDanhGia": 30,
+    "luotBan": 85
   },
   {
     "tenQuaLuuNiem": "Huy hiệu đội tuyển quốc gia",
     "gia": 60000,
+    "giaGiam": 40000,
     "moTa": "Huy hiệu nhỏ bằng kim loại, mạ vàng, in hình cờ Việt Nam và biểu tượng đội tuyển.",
-    "anhMinhHoa": "public/data/qua10.jpg"
+    "anhMinhHoa": "public/data/qua10.jpg",
+    "soSaoTrungBinh": 4.3,
+    "luotDanhGia": 8,
+    "luotBan": 30
   },
   {
     "tenQuaLuuNiem": "Poster cầu thủ nổi tiếng",
     "gia": 80000,
+    "giaGiam": 60000,
     "moTa": "Poster khổ lớn in hình cầu thủ và huấn luyện viên yêu thích, giấy cán bóng cao cấp.",
-    "anhMinhHoa": "public/data/qua11.jpg"
+    "anhMinhHoa": "public/data/qua11.jpg",
+    "soSaoTrungBinh": 4.6,
+    "luotDanhGia": 12,
+    "luotBan": 35
   },
   {
     "tenQuaLuuNiem": "Vòng tay cổ vũ",
     "gia": 40000,
+    "giaGiam": 25000,
     "moTa": "Vòng tay cao su dẻo, in khẩu hiệu và màu sắc đội tuyển quốc gia.",
-    "anhMinhHoa": "public/data/qua12.jpg"
+    "anhMinhHoa": "public/data/qua12.jpg",
+    "soSaoTrungBinh": 4.2,
+    "luotDanhGia": 9,
+    "luotBan": 42
   }
 ]

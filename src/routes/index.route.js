@@ -20,6 +20,8 @@ const GioHangRouter = require('./GioHangRouter');
 const doiBong = require('./doibong.route');
 const cauHinhVeRouter = require('./cauhinhve.route');
 const Tintuc = require('./Tintuc.routes');
+const binhluan = require('./Comment.routes');
+
 function route(app) {
   app.use('/nguoihammo', nguoiHamMoRouter);
   app.use('/nguoidung', nguoiDungRouter);
@@ -42,6 +44,8 @@ function route(app) {
   app.use('/giohang', GioHangRouter);
   app.use('/doibong', doiBong);
   app.use('/cauhinhve', cauHinhVeRouter);
+  app.use('/binhluan', binhluan);
+  
 
   app.use('/tintuc', Tintuc);
 }

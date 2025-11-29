@@ -1,33 +1,61 @@
 const mongoose = require("mongoose");
 
-// Định nghĩa schema cho Quà lưu niệm
 const qualuuniemSchema = new mongoose.Schema(
   {
     tenQuaLuuNiem: {
       type: String,
-      required: true, // tên là bắt buộc
+      required: true,
       trim: true,
     },
+
     gia: {
       type: Number,
-      required: true, // giá là bắt buộc
+      required: true,
       min: 0,
     },
+
+    // ⭐ Giá sau khi giảm
+    giaGiam: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
     moTa: {
       type: String,
-      required: false, // có thể để trống
       trim: true,
     },
+
     anhMinhHoa: {
-      type: String, // URL hoặc đường dẫn ảnh
-      required: false,
+      type: String,
       trim: true,
+    },
+
+    // ⭐ Điểm đánh giá trung bình (1–5)
+    soSaoTrungBinh: {
+      type: Number,
+      default: 0,
+      min: 0,
+      max: 5,
+    },
+
+    // ⭐ Tổng số lượt đánh giá
+    luotDanhGia: {
+      type: Number,
+      default: 0,
+      min: 0,
+    },
+
+    // ⭐ Tổng số lượt bán
+    luotBan: {
+      type: Number,
+      default: 0,
+      min: 0,
     },
   },
-  { timestamps: true } // tự động tạo createdAt, updatedAt
+  { timestamps: true }
 );
 
-// Tạo model từ schema
 const Qualuuniem = mongoose.model("Qualuuniem", qualuuniemSchema);
 
 module.exports = Qualuuniem;
