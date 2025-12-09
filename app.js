@@ -6,6 +6,7 @@ const cookieParser = require('cookie-parser');
 const logger = require('morgan');
 const db = require('./src/config/db');
 const route = require('./src/routes/index.route');
+const chatbotRoute = require('./src/routes/chatbot.route');
 const app = express();
 const cors = require('cors');
 
@@ -23,4 +24,8 @@ app.use(cookieParser());
 // Gán các route cho ứng dụng
 route(app);
 
+
+
+/**chatbot ******** */
+app.use("/chatbot", chatbotRoute);
 module.exports = app;
