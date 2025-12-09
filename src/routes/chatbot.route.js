@@ -13,10 +13,8 @@ const fs = require('fs');
 const path = require('path');
 
 function loadTrainingData() {
-  const filePath = path.join('src/training.txt');
   try {
     const content = fs.readFileSync('src/training.txt', 'utf-8');
-    console.log('Nội dung của training.txt:', content);
     return content;
   } catch (err) {
     console.error('Lỗi khi đọc training.txt:', err);
