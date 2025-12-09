@@ -1,3 +1,4 @@
+// src/routes/nguoiDung.route.js
 const NguoiDungController = require('../controller/NguoiDungController');
 const authMiddleware = require('../middlewares/authMiddleware');
 const nguoiDungRouter = require('express').Router();

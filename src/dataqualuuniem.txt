@@ -1,13 +1,13 @@
 [
   {
     "tenQuaLuuNiem": "Áo thi đấu có chữ ký",
-    "gia": 1200000,
-    "giaGiam": 950000,
+    "gia": 500000,
+    "giaGiam": 550000,
     "moTa": "Áo đấu chính thức của đội tuyển, có chữ ký của các cầu thủ nổi tiếng.",
     "anhMinhHoa": "public/data/qua01.jpg",
     "soSaoTrungBinh": 4.9,
-    "luotDanhGia": 28,
-    "luotBan": 80
+    "luotDanhGia": 8,
+    "luotBan": 30
   },
   {
     "tenQuaLuuNiem": "Bóng lưu niệm",
@@ -81,13 +81,13 @@
   },
   {
     "tenQuaLuuNiem": "Áo khoác cổ động viên",
-    "gia": 450000,
-    "giaGiam": 390000,
+    "gia": 390000,
+    "giaGiam": 450000,
     "moTa": "Áo khoác gió chống nắng, in khẩu hiệu cổ vũ đội tuyển Việt Nam.",
     "anhMinhHoa": "public/data/qua09.jpg",
     "soSaoTrungBinh": 4.8,
-    "luotDanhGia": 30,
-    "luotBan": 85
+    "luotDanhGia": 10,
+    "luotBan": 15
   },
   {
     "tenQuaLuuNiem": "Huy hiệu đội tuyển quốc gia",

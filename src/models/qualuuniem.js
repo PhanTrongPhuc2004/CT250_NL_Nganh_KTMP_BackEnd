@@ -14,7 +14,7 @@ const qualuuniemSchema = new mongoose.Schema(
       min: 0,
     },
 
-    // ⭐ Giá sau khi giảm
+    //  Giá sau khi giảm
     giaGiam: {
       type: Number,
       default: 0,
@@ -31,7 +31,7 @@ const qualuuniemSchema = new mongoose.Schema(
       trim: true,
     },
 
-    // ⭐ Điểm đánh giá trung bình (1–5)
+    //  Điểm đánh giá trung bình (1–5)
     soSaoTrungBinh: {
       type: Number,
       default: 0,
@@ -39,14 +39,14 @@ const qualuuniemSchema = new mongoose.Schema(
       max: 5,
     },
 
-    // ⭐ Tổng số lượt đánh giá
+    //  Tổng số lượt đánh giá
     luotDanhGia: {
       type: Number,
       default: 0,
       min: 0,
     },
 
-    // ⭐ Tổng số lượt bán
+    //  Tổng số lượt bán
     luotBan: {
       type: Number,
       default: 0,
