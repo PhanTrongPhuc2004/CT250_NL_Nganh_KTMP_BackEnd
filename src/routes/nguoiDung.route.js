@@ -57,7 +57,8 @@ nguoiDungRouter.post('/google', async (req, res) => {
       user = new NguoiDung({
         googleId,
         email,
-        hoVaten: name,
+        
+        hoVaTen: name,
         anhMinhHoa: picture,
         vaiTro: 'nguoihammo',
         isEmailVerified: true
