@@ -48,6 +48,9 @@ function route(app) {
   
 
   app.use('/tintuc', Tintuc);
+  
+
+
 }
 
 module.exports = route;
