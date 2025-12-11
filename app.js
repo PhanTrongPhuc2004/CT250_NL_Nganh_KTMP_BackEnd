@@ -10,6 +10,7 @@ const chatbotRoute = require('./src/routes/chatbot.route');
 const app = express();
 const cors = require('cors');
 
+
 // Kết nối đến cơ sở dữ liệu
 db.connectDB();
 
