@@ -13,8 +13,8 @@ require('dotenv').config();
 
 nguoiDungRouter.post('/google', async (req, res) => {
   try {
-    console.log('📨 Received Google login request');
-    console.log('Request body:', req.body);
+    // console.log('📨 Received Google login request');
+    // console.log('Request body:', req.body);
 
     const { clientId } = req.body;
     let credential = req.body.credential || req.body.token;
@@ -27,7 +27,7 @@ nguoiDungRouter.post('/google', async (req, res) => {
       });
     }
 
-    console.log('🔐 Verifying Google ID token...');
+    // console.log('🔐 Verifying Google ID token...');
 
     // Verify ID token với Google
     const ticket = await client.verifyIdToken({
@@ -38,7 +38,7 @@ nguoiDungRouter.post('/google', async (req, res) => {
     const payload = ticket.getPayload();
     const { sub: googleId, email, name, picture, email_verified } = payload;
 
-    console.log('👤 Google user info:', { email, name, googleId });
+    // console.log('👤 Google user info:', { email, name, googleId });
 
     if (!email_verified) {
       return res.status(400).json({
