@@ -150,7 +150,7 @@ class MuaGiaiController {
 
   async getTranDauByMaMuaGiai(req, res) {
     const maMuaGiai = req.params.maMuaGiai;
-    console.log(maMuaGiai);
+    // console.log(maMuaGiai);
     try {
       const trandaus = await muaGiaiService.getTranDauByMaMuaGiai(maMuaGiai);
       if (!trandaus) res.status(404).json('Không có trận đấu nào được tìm thấy');

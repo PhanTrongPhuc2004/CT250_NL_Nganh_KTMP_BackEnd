@@ -58,7 +58,7 @@ class VeService {
             hangGhe,
             soGhe,
             giaVe: config.giaVe,
-            trangThai: 'da_thanh_toan'
+            trangThai: 'cho_thanh_toan'
         });
 
         await CauHinhVe.updateOne(
@@ -118,7 +118,7 @@ class VeService {
                 hangGhe: config.hangGhe,
                 soGhe: soGhe.toString(),
                 giaVe: config.giaVe,
-                trangThai: 'da_thanh_toan'
+                trangThai: 'cho_thanh_toan'
             });
 
             // Tạo QR code

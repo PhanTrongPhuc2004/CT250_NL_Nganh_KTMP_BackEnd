@@ -188,7 +188,7 @@ class TranDauController {
     }
   }
   async getTranDaubyMaCauThu(req, res) {
-    console.log('goi den day ');
+    // console.log('goi den day ');
     try {
       const { maNguoiDung } = req.params;
       const nguoiDung = await NguoiDung.findOne({ maNguoiDung: maNguoiDung });

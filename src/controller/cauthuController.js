@@ -147,7 +147,7 @@ exports.deleteDoiHinh = async (req, res) => {
 
 
 exports.getCauThuByTranDauId = async (req, res) => {
-  console.log('goi den day ');
+  // console.log('goi den day ');
   try {
     const tranDauId = req.params.tranDauId;
     const trandau = await tranDauService.getTranDauById(tranDauId)

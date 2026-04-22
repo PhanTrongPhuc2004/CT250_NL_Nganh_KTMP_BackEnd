@@ -23,11 +23,11 @@ const NguoiDung = new Schema({
   },
   tenDangNhap: {
     type: String,
-    required: true,
+    required: false,
   },
   matKhau: {
     type: String,
-    required: true,
+    required: false,
   },
   vaiTro: {
     type: String,

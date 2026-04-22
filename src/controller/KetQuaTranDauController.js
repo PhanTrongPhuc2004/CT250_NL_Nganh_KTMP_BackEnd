@@ -21,7 +21,7 @@ class KetQuaTranDauController {
   }
 
   async getKetQuaTranDauByMa(req, res) {
-    console.log('🚀 ===== BẮT ĐẦU getKetQuaTranDauById =====');
+    // console.log('🚀 ===== BẮT ĐẦU getKetQuaTranDauById =====');
 
     try {
       const ketQuaTranDau = await KetQuaTranDau.findOne({ maTranDau: req.params.maTranDau });

@@ -34,7 +34,7 @@ class MuaGiaiService {
     return await MuaGiai.findByIdAndDelete(id);
   }
   async getTranDauByMaMuaGiai(maMuaGiai) {
-    console.log('lay danh sach tran dau co ma mua giai', maMuaGiai);
+    // console.log('lay danh sach tran dau co ma mua giai', maMuaGiai);
     return await TranDau.find({ maMuaGiai });
   }
   async getMuaGiaiByMaGiaiDau(maGiaiDau) {
